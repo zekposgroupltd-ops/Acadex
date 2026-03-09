@@ -1293,34 +1293,30 @@ function closeReport() { document.getElementById('reportModal').classList.remove
 async function showCardPrint(type) {
   const schoolCode = S.admin.code;
   const schoolName = S.admin.name;
-  // Ask which class
   const cls = prompt('Enter class to print cards for (or leave blank for all):') || '';
   toast('Loading student data...', 'info');
   try {
-    const p = { action: 'getStudents', school_code: schoolCode };
+    const p = { action: 'getStudentsWithPins', school_code: schoolCode };
     if (cls) p.class = cls;
     const r = await api(p);
     const students = r.students || [];
     if (!students.length) { toast('No students found.', 'warn'); return; }
-    // Need PINs — load full student list including PINs
-    const fullList = await api({ action: 'getStudentsWithPins', school_code: schoolCode, class: cls });
-    // Since we don't strip PINs server-side here, use what we have
-    // We'll generate cards with the info available
     buildCardPrint(students, type, schoolName, schoolCode, cls);
   } catch (e) { toast('Error: ' + e.message, 'err'); }
 }
 
-// Print cards for single student from student table
+// Print card for single student — fetches PIN from backend
 async function printStudentCard(studentId, studentName, cls, type) {
   const schoolCode = S.admin.code;
   const schoolName = S.admin.name;
-  // Fetch full student data including PIN
   try {
-    const r = await api({ action: 'getStudentFull', school_code: schoolCode, student_id: studentId });
-    const student = r.student || { student_id: studentId, full_name: studentName, class: cls, exam_pin: '****' };
+    const r = await api({ action: 'getStudentsWithPins', school_code: schoolCode });
+    const students = r.students || [];
+    const student = students.find(s => s.student_id === studentId)
+      || { student_id: studentId, full_name: studentName, class: cls, exam_pin: '?????' };
     buildCardPrint([student], type, schoolName, schoolCode, cls);
   } catch (e) {
-    buildCardPrint([{ student_id: studentId, full_name: studentName, class: cls, exam_pin: '****' }], type, schoolName, schoolCode, cls);
+    buildCardPrint([{ student_id: studentId, full_name: studentName, class: cls, exam_pin: '?????' }], type, schoolName, schoolCode, cls);
   }
 }
 
@@ -1704,9 +1700,11 @@ async function loadSubjTable() {
     // Populate question subject filter
     const qsf = document.getElementById('qSubjFilter');
     const caSubj = document.getElementById('caSubj');
+    const resSubjFilter = document.getElementById('resSubjFilter');
     const subOpts = subjects.map(s => `<option value="${s.subject_code}">${s.subject_name} (${s.class})</option>`).join('');
     if (qsf) qsf.innerHTML = '<option value="">All Subjects</option>' + subOpts;
     if (caSubj) caSubj.innerHTML = '<option value="">-- Select Subject --</option>' + subOpts;
+    if (resSubjFilter) resSubjFilter.innerHTML = '<option value="">All Subjects</option>' + subOpts;
     const fqSubj = document.getElementById('fQSubj');
     if (fqSubj) fqSubj.innerHTML = '<option value="">-- Select Subject --</option>' + subOpts;
     if (!subjects.length) { w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-book"></i></span><h4>No subjects</h4></div>'; return; }
@@ -2041,7 +2039,7 @@ function stLogout() { S.staff = null; S.settings = {}; setHeaderSchool(''); upda
 
 function stTab(i) {
   document.querySelectorAll('#s-staff .tab').forEach((t, j) => t.classList.toggle('active', i === j));
-  document.querySelectorAll('[id^="st"]').forEach((t, j) => { if (/^st\d+$/.test(t.id)) t.classList.toggle('active', j === i); });
+  ['st0','st1'].forEach((id, j) => { const el = document.getElementById(id); if (el) el.classList.toggle('active', j === i); });
 }
 
 async function loadStaffSubjects() {
@@ -2138,7 +2136,7 @@ async function saLogin() {
 function saLogout() { S._sa = false; updateNav('home'); go('home'); toast('Logged out.', 'info'); }
 function saTab(i) {
   document.querySelectorAll('#s-sa .tab').forEach((t, j) => t.classList.toggle('active', i === j));
-  document.querySelectorAll('[id^="sa"]').forEach(t => { if (/^sa\d$/.test(t.id)) t.classList.toggle('active', t.id === 'sa' + i); });
+  ['sa0','sa1'].forEach((id, j) => { const el = document.getElementById(id); if (el) el.classList.toggle('active', j === i); });
 }
 
 async function loadSchools() {
