@@ -1319,26 +1319,84 @@ async function deleteStu(id){
 
 // CSV Import Students
 function handleStudentCsv(file){
-  const r=new FileReader();
-  r.onload=async e=>{
+  const reader=new FileReader();
+  reader.onload=async e=>{
     const lines=e.target.result.split('\n').filter(l=>l.trim());
     if(lines.length<2){toast('CSV is empty or missing headers.','err');return;}
+
     const headers=parseCsv(lines[0]).map(h=>h.trim().toLowerCase().replace(/ /g,'_'));
-    let ok=0,fail=0;
+
+    // Parse all valid rows first
+    const rows=[];
     for(let i=1;i<lines.length;i++){
-      const vals=parseCsv(lines[i]);if(!vals.length)continue;
-      const row={};headers.forEach((h,j)=>row[h]=vals[j]||'');
-      try{
-        let sid=row.student_id||'';
-        if(!sid){const gr=await api({action:'generateStudentId',school_code:S.admin.code});if(gr.success)sid=gr.student_id;}
-        const res=await api({action:'addStudent',school_code:S.admin.code,student_id:sid,full_name:row.full_name||'',class:row.class||'',exam_pin:row.exam_pin||'',gender:row.gender||'',date_of_birth:row.date_of_birth||'',parent_phone:row.parent_phone||'',status:row.status||'active'});
-        if(res.success)ok++;else fail++;
-      }catch(e){fail++;}
+      const vals=parseCsv(lines[i]);
+      if(!vals.length||!vals.some(v=>v.trim()))continue;
+      const row={};
+      headers.forEach((h,j)=>row[h]=(vals[j]||'').trim());
+      rows.push(row);
     }
-    toast(`Import complete: ${ok} added, ${fail} failed.`,fail>0?'warn':'ok');
-    document.getElementById('stuCsvBox').classList.add('hidden');loadStudents();
+
+    if(!rows.length){toast('No data rows found in CSV.','err');return;}
+    toast(`Processing ${rows.length} student(s)...`,'info');
+
+    // ── KEY FIX: Pre-generate ALL student IDs sequentially before uploading.
+    // Calling generateStudentId inside the upload loop caused race conditions —
+    // each call saw the same sheet row count and returned duplicate IDs.
+    // By generating all IDs first (awaiting each one), the sheet count advances
+    // correctly before the next generate call is made.
+    const prepared=[];
+    for(let i=0;i<rows.length;i++){
+      const row=rows[i];
+      let sid=(row.student_id||'').trim();
+      let pin=(row.exam_pin||'').trim();
+      if(!sid){
+        try{
+          const gr=await api({action:'generateStudentId',school_code:S.admin.code});
+          if(gr.success){sid=gr.student_id;if(!pin)pin=gr.exam_pin;}
+          else{toast(`Row ${i+2}: Could not generate ID — ${gr.message}`,'err');continue;}
+        }catch(err){toast(`Row ${i+2}: Network error generating ID`,'err');continue;}
+      }
+      prepared.push({...row,student_id:sid,exam_pin:pin||'0000'});
+    }
+
+    if(!prepared.length){toast('No students could be prepared for upload.','err');return;}
+
+    // Now upload all students one by one with their pre-assigned IDs
+    let ok=0,fail=0,failMsgs=[];
+    for(let i=0;i<prepared.length;i++){
+      const row=prepared[i];
+      try{
+        const res=await api({
+          action:'addStudent',
+          school_code:   S.admin.code,
+          student_id:    row.student_id,
+          full_name:     row.full_name||'',
+          class:         row.class||'',
+          exam_pin:      row.exam_pin,
+          gender:        row.gender||'',
+          date_of_birth: row.date_of_birth||'',
+          parent_phone:  row.parent_phone||'',
+          status:        row.status||'active'
+        });
+        if(res.success)ok++;
+        else{fail++;failMsgs.push(`${row.full_name||row.student_id}: ${res.message}`);}
+      }catch(err){
+        fail++;
+        failMsgs.push(`${row.full_name||row.student_id}: Network error`);
+      }
+    }
+
+    // Show result summary
+    if(fail>0){
+      toast(`Done: ${ok} added, ${fail} failed.`,'warn');
+      console.warn('Failed rows:\n'+failMsgs.join('\n'));
+    } else {
+      toast(`All ${ok} student(s) imported successfully!`,'ok');
+    }
+    document.getElementById('stuCsvBox').classList.add('hidden');
+    loadStudents();
   };
-  r.readAsText(file);
+  reader.readAsText(file);
 }
 
 // ── STAFF
@@ -1479,23 +1537,66 @@ async function loadManualStudents(){
   const subj=document.getElementById('manSubj').value.trim().toUpperCase();
   const nonCbt=document.getElementById('manNonCbt').checked;
   if(!cls||!subj){toast('Enter class and subject code.','err');return;}
-  const btn=document.getElementById('btnLoadManStu');btn.innerHTML='<span class="loader"></span>';btn.disabled=true;
+  const btn=document.getElementById('btnLoadManStu');btn.innerHTML='<span class="loader"></span> Loading...';btn.disabled=true;
   try{
-    const[sr,rr]=await Promise.all([
-      api({action:'getStudents',school_code:S.admin.code,class:cls}),
-      api({action:'getResults',school_code:S.admin.code,subject_code:subj}).catch(()=>({results:[]}))
-    ]);
-    const stus=sr.students||[];const existing=rr.results||[];
-    if(!stus.length){toast('No students in '+cls,'warn');return;}
-    let h=`<div style="overflow-x:auto;"><table><thead><tr><th>Student</th><th>ID</th><th>1st Test (${S.settings.first_test_max||20})</th><th>2nd Test (${S.settings.second_test_max||20})</th>${nonCbt?`<th>Exam (${S.settings.exam_max||60})</th>`:''}</tr></thead><tbody>`;
-    stus.forEach(s=>{
-      const ex=existing.find(r=>r.student_id===s.student_id)||{};
-      h+=`<tr><td><strong>${s.full_name}</strong></td><td class="td-mono">${s.student_id}</td><td><input type="number" class="fc" style="width:80px;padding:6px;" data-sid="${s.student_id}" data-f="t1" min="0" max="${S.settings.first_test_max||20}" value="${ex.first_test||''}"></td><td><input type="number" class="fc" style="width:80px;padding:6px;" data-sid="${s.student_id}" data-f="t2" min="0" max="${S.settings.second_test_max||20}" value="${ex.second_test||''}"></td>${nonCbt?`<td><input type="number" class="fc" style="width:80px;padding:6px;" data-sid="${s.student_id}" data-f="ex" min="0" max="${S.settings.exam_max||60}" value="${ex.exam||''}"></td>`:''}</tr>`;
+    const sr=await api({action:'getStudents',school_code:S.admin.code,class:cls});
+    const stus=sr.students||[];
+    if(!stus.length){toast('No students in class: '+cls+'. Check the class name matches exactly.','warn');return;}
+
+    let existing=[];
+    try{const rr=await api({action:'getResults',school_code:S.admin.code,subject_code:subj});existing=rr.results||[];}catch(e){}
+
+    const ms={
+      t1:parseInt(S.settings.first_test_max)||20,
+      t2:parseInt(S.settings.second_test_max)||20,
+      ex:parseInt(S.settings.exam_max)||60
+    };
+
+    let h=`<div style="overflow-x:auto;margin-top:10px;">
+      <div class="alert a-info" style="margin-bottom:10px;"><i class="fas fa-users"></i> ${stus.length} student(s) in class <strong>${cls}</strong></div>
+      <table>
+        <thead><tr>
+          <th>#</th><th>Student Name</th><th>Student ID</th>
+          <th>1st Test<br><small style="font-weight:400;">(Max: ${ms.t1})</small></th>
+          <th>2nd Test<br><small style="font-weight:400;">(Max: ${ms.t2})</small></th>
+          ${nonCbt?`<th>Exam Score<br><small style="font-weight:400;">(Max: ${ms.ex})</small></th>`:''}
+        </tr></thead><tbody>`;
+
+    stus.forEach((s,idx)=>{
+      const ex=existing.find(r=>String(r.student_id).trim()===String(s.student_id).trim())||{};
+      const sid=s.student_id;
+      h+=`<tr>
+        <td style="text-align:center;color:var(--text-lt);">${idx+1}</td>
+        <td><strong>${s.full_name}</strong></td>
+        <td class="td-mono" style="font-size:.8rem;">${sid}</td>
+        <td style="text-align:center;">
+          <input type="number" class="fc man-score-input" style="width:75px;padding:6px;text-align:center;"
+            data-sid="${sid}" data-f="t1" min="0" max="${ms.t1}"
+            value="${ex.first_test!==undefined&&ex.first_test!==''?ex.first_test:''}"
+            placeholder="0" oninput="this.value=Math.min(this.value,${ms.t1})">
+        </td>
+        <td style="text-align:center;">
+          <input type="number" class="fc man-score-input" style="width:75px;padding:6px;text-align:center;"
+            data-sid="${sid}" data-f="t2" min="0" max="${ms.t2}"
+            value="${ex.second_test!==undefined&&ex.second_test!==''?ex.second_test:''}"
+            placeholder="0" oninput="this.value=Math.min(this.value,${ms.t2})">
+        </td>
+        ${nonCbt?`<td style="text-align:center;">
+          <input type="number" class="fc man-score-input" style="width:75px;padding:6px;text-align:center;"
+            data-sid="${sid}" data-f="ex" min="0" max="${ms.ex}"
+            value="${ex.exam!==undefined&&ex.exam!==''?ex.exam:''}"
+            placeholder="0" oninput="this.value=Math.min(this.value,${ms.ex})">
+        </td>`:''}
+      </tr>`;
     });
     h+='</tbody></table></div>';
     document.getElementById('manStuTable').innerHTML=h;
     document.getElementById('manSaveBtns').classList.remove('hidden');
-  }catch(e){toast(e.message,'err');}
+    toast(`${stus.length} students loaded!`,'ok');
+  }catch(e){
+    toast('Error: '+e.message,'err');
+    document.getElementById('manStuTable').innerHTML=`<div class="alert a-err"><i class="fas fa-exclamation-triangle"></i> ${e.message}</div>`;
+  }
   finally{btn.innerHTML='<i class="fas fa-users"></i> Load Students';btn.disabled=false;}
 }
 
@@ -1590,10 +1691,12 @@ async function staffLogin(){
   try{
     const r=await api({action:'staffLogin',school_code:code,staff_id:id,password:pass});
     if(r.success){
-      S.staff=r.staff;S.settings=r.settings||{};
+      // Attach school_code directly onto staff object — it comes from the login form, not the staff row
+      S.staff=Object.assign({},r.staff,{school_code:code});
+      S.settings=r.settings||{};
       setHeaderSchool(r.school_name||code);
       document.getElementById('stPanelName').textContent=r.staff.full_name||id;
-      document.getElementById('stPanelMeta').textContent=`${r.staff.subject_code||'All subjects'} · ${r.staff.class||'All classes'} · ${r.school_name||code}`;
+      document.getElementById('stPanelMeta').textContent=`${r.staff.subject_code||'All subjects'} · ${r.staff.class||'All classes'} · ${r.school_name||code} [${code}]`;
       go('staff');msg('stLMsg','');toast('Welcome, '+r.staff.full_name+'!','ok');
     } else msg('stLMsg',r.message||'Invalid credentials.');
   }catch(e){msg('stLMsg','Network error: '+e.message);}
@@ -1606,45 +1709,130 @@ async function stLoadStudents(){
   const subj=document.getElementById('stSubj').value.trim().toUpperCase();
   const nonCbt=document.getElementById('stNonCbt').checked;
   if(!cls||!subj){toast('Enter class and subject code.','err');return;}
-  const btn=document.getElementById('btnStLoad');btn.innerHTML='<span class="loader"></span>';btn.disabled=true;
+  if(!S.staff||!S.staff.school_code){toast('Staff session error. Please login again.','err');return;}
+  const btn=document.getElementById('btnStLoad');btn.innerHTML='<span class="loader"></span> Loading...';btn.disabled=true;
   try{
-    const[sr,rr]=await Promise.all([
-      api({action:'getStudents',school_code:S.staff.school_code,class:cls}),
-      api({action:'getResults',school_code:S.staff.school_code,subject_code:subj}).catch(()=>({results:[]}))
-    ]);
-    const stus=sr.students||[];const existing=rr.results||[];
-    if(!stus.length){toast('No students in '+cls,'warn');return;}
-    const ms={t1:parseInt(S.settings.first_test_max)||20,t2:parseInt(S.settings.second_test_max)||20,ex:parseInt(S.settings.exam_max)||60};
-    let h=`<div style="overflow-x:auto;"><table><thead><tr><th>Student</th><th>ID</th><th>1st Test (${ms.t1})</th><th>2nd Test (${ms.t2})</th>${nonCbt?`<th>Exam (${ms.ex})</th>`:''}</tr></thead><tbody>`;
-    stus.forEach(s=>{
-      const ex=existing.find(r=>r.student_id===s.student_id)||{};
-      h+=`<tr><td><strong>${s.full_name}</strong></td><td class="td-mono">${s.student_id}</td><td><input type="number" class="fc" style="width:80px;padding:6px;" data-sid="${s.student_id}" data-f="t1" min="0" max="${ms.t1}" value="${ex.first_test||''}"></td><td><input type="number" class="fc" style="width:80px;padding:6px;" data-sid="${s.student_id}" data-f="t2" min="0" max="${ms.t2}" value="${ex.second_test||''}"></td>${nonCbt?`<td><input type="number" class="fc" style="width:80px;padding:6px;" data-sid="${s.student_id}" data-f="ex" min="0" max="${ms.ex}" value="${ex.exam||''}"></td>`:''}</tr>`;
+    // Load students and existing results separately and safely
+    const sr = await api({action:'getStudents', school_code:S.staff.school_code, class:cls});
+    const stus = sr.students||[];
+    if(!stus.length){toast('No students found in class: '+cls+'. Make sure the class name matches exactly.','warn');return;}
+
+    // Load existing results for this subject (ignore errors)
+    let existing=[];
+    try{
+      const rr=await api({action:'getResults', school_code:S.staff.school_code, subject_code:subj});
+      existing=rr.results||[];
+    }catch(e){}
+
+    const ms={
+      t1:parseInt(S.settings.first_test_max)||20,
+      t2:parseInt(S.settings.second_test_max)||20,
+      ex:parseInt(S.settings.exam_max)||60
+    };
+
+    let h=`<div style="overflow-x:auto;margin-top:10px;">
+      <div class="alert a-info" style="margin-bottom:10px;"><i class="fas fa-users"></i> ${stus.length} student(s) loaded for class <strong>${cls}</strong></div>
+      <table>
+        <thead><tr>
+          <th>#</th><th>Student Name</th><th>Student ID</th>
+          <th>1st Test<br><small style="font-weight:400;">(Max: ${ms.t1})</small></th>
+          <th>2nd Test<br><small style="font-weight:400;">(Max: ${ms.t2})</small></th>
+          ${nonCbt?`<th>Exam Score<br><small style="font-weight:400;">(Max: ${ms.ex})</small></th>`:''}
+        </tr></thead><tbody>`;
+
+    stus.forEach((s,idx)=>{
+      // Match existing result using string comparison to avoid type mismatch
+      const ex=existing.find(r=>String(r.student_id).trim()===String(s.student_id).trim())||{};
+      const sid=s.student_id;
+      h+=`<tr>
+        <td style="text-align:center;color:var(--text-lt);">${idx+1}</td>
+        <td><strong>${s.full_name}</strong></td>
+        <td class="td-mono" style="font-size:.8rem;">${sid}</td>
+        <td style="text-align:center;">
+          <input type="number" class="fc score-input" style="width:75px;padding:6px;text-align:center;"
+            data-sid="${sid}" data-f="t1" min="0" max="${ms.t1}"
+            value="${ex.first_test!==undefined&&ex.first_test!==''?ex.first_test:''}"
+            placeholder="0" oninput="this.value=Math.min(this.value,${ms.t1})">
+        </td>
+        <td style="text-align:center;">
+          <input type="number" class="fc score-input" style="width:75px;padding:6px;text-align:center;"
+            data-sid="${sid}" data-f="t2" min="0" max="${ms.t2}"
+            value="${ex.second_test!==undefined&&ex.second_test!==''?ex.second_test:''}"
+            placeholder="0" oninput="this.value=Math.min(this.value,${ms.t2})">
+        </td>
+        ${nonCbt?`<td style="text-align:center;">
+          <input type="number" class="fc score-input" style="width:75px;padding:6px;text-align:center;"
+            data-sid="${sid}" data-f="ex" min="0" max="${ms.ex}"
+            value="${ex.exam!==undefined&&ex.exam!==''?ex.exam:''}"
+            placeholder="0" oninput="this.value=Math.min(this.value,${ms.ex})">
+        </td>`:''}
+      </tr>`;
     });
+
     h+='</tbody></table></div>';
     document.getElementById('stStuTable').innerHTML=h;
     document.getElementById('stSaveBtns').classList.remove('hidden');
     document.getElementById('stSaveBtns').dataset.subj=subj;
     document.getElementById('stSaveBtns').dataset.nonCbt=nonCbt;
-  }catch(e){toast(e.message,'err');}
+    document.getElementById('stSaveBtns').dataset.schoolCode=S.staff.school_code;
+    toast(`${stus.length} students loaded successfully!`,'ok');
+  }catch(e){
+    toast('Error loading students: '+e.message,'err');
+    document.getElementById('stStuTable').innerHTML=`<div class="alert a-err"><i class="fas fa-exclamation-triangle"></i> Failed to load: ${e.message}</div>`;
+  }
   finally{btn.innerHTML='<i class="fas fa-users"></i> Load Students';btn.disabled=false;}
 }
 
 async function stSaveScores(){
   const subj=document.getElementById('stSaveBtns').dataset.subj;
   const nonCbt=document.getElementById('stSaveBtns').dataset.nonCbt==='true';
-  const inputs=document.querySelectorAll('#stStuTable input[data-sid]');
+  const schoolCode=document.getElementById('stSaveBtns').dataset.schoolCode||S.staff.school_code;
+
+  // Collect all inputs grouped by student ID
+  const inputs=document.querySelectorAll('#stStuTable input.score-input[data-sid]');
+  if(!inputs.length){toast('No score inputs found. Load students first.','err');return;}
+
   const grouped={};
-  inputs.forEach(inp=>{const sid=inp.dataset.sid;const f=inp.dataset.f;if(!grouped[sid])grouped[sid]={};grouped[sid][f]=inp.value;});
-  const btn=document.getElementById('btnStSave');btn.innerHTML='<span class="loader"></span> Saving...';btn.disabled=true;
+  inputs.forEach(inp=>{
+    const sid=inp.dataset.sid;
+    const f=inp.dataset.f;
+    const v=inp.value.trim();
+    if(!grouped[sid])grouped[sid]={};
+    grouped[sid][f]=v===''?'0':v;
+  });
+
+  const studentIds=Object.keys(grouped);
+  if(!studentIds.length){toast('No students to save.','err');return;}
+
+  const btn=document.getElementById('btnStSave');
+  btn.innerHTML=`<span class="loader"></span> Saving 0/${studentIds.length}...`;
+  btn.disabled=true;
+
   let ok=0,fail=0;
-  for(const sid of Object.keys(grouped)){
+  for(let i=0;i<studentIds.length;i++){
+    const sid=studentIds[i];
     const g=grouped[sid];
-    const p={action:'saveManualResult',school_code:S.staff.school_code,student_id:sid,subject_code:subj,first_test:g.t1||0,second_test:g.t2||0,submitted_by:S.staff.staff_id};
-    if(nonCbt&&g.ex!==undefined)p.exam=g.ex;
-    try{const r=await api(p);if(r.success)ok++;else fail++;}catch(e){fail++;}
+    btn.innerHTML=`<span class="loader"></span> Saving ${i+1}/${studentIds.length}...`;
+    const p={
+      action:'saveManualResult',
+      school_code:schoolCode,
+      student_id:sid,
+      subject_code:subj,
+      first_test:parseFloat(g.t1)||0,
+      second_test:parseFloat(g.t2)||0,
+      submitted_by:S.staff?.staff_id||'teacher'
+    };
+    if(nonCbt&&g.ex!==undefined) p.exam=parseFloat(g.ex)||0;
+    try{
+      const r=await api(p);
+      if(r.success)ok++;else{fail++;console.warn('Failed for '+sid+':',r.message);}
+    }catch(e){fail++;console.error('Error for '+sid+':',e.message);}
   }
-  toast(`Saved: ${ok} · Failed: ${fail}`,fail>0?'warn':'ok');
-  btn.innerHTML='<i class="fas fa-save"></i> Save Scores';btn.disabled=false;
+
+  const type=fail===0?'ok':ok===0?'err':'warn';
+  toast(`Done! ${ok} saved · ${fail} failed out of ${studentIds.length} students`,type);
+  btn.innerHTML='<i class="fas fa-save"></i> Save Scores';
+  btn.disabled=false;
 }
 
 async function stLoadResults(){
