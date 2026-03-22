@@ -168,11 +168,24 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   .card-grid{grid-template-columns:1fr;}
 }
 @media print{
+  @page{margin:0;size:A4 portrait;}
+  html,body{margin:0;padding:0;background:#fff!important;}
   body *{visibility:hidden;}
   #reportSheet,#reportSheet *,#cardPrintArea,#cardPrintArea *{visibility:visible;}
-  #reportSheet{position:fixed;left:0;top:0;width:210mm;box-shadow:none;border-radius:0;padding:14mm;margin:0;}
-  #cardPrintArea{position:fixed;left:0;top:0;width:210mm;box-shadow:none;border-radius:0;padding:8mm;margin:0;}
+  #reportModal,#cardModal{display:block!important;position:static!important;background:none!important;padding:0!important;overflow:visible!important;}
+  #reportSheet{
+    position:absolute;left:0;top:0;
+    width:210mm;min-height:297mm;
+    padding:12mm 14mm;margin:0;
+    box-shadow:none;border-radius:0;
+  }
+  #cardPrintArea{
+    position:absolute;left:0;top:0;
+    width:210mm;padding:8mm;margin:0;
+    box-shadow:none;border-radius:0;
+  }
   .ptb{display:none!important;}
+  .exam-card{page-break-inside:avoid;}
 }
 </style>
 </head>
@@ -605,6 +618,7 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
           <select id="setRDisp" class="fc"><option value="grade_only">Grade Only</option><option value="grade_and_position">Grade + Position</option></select>
         </div>
       </div>
+      <div class="fg"><label class="fl">School Logo URL</label><input id="setLogo" class="fc" placeholder="https://... (direct image link)"><div class="fh">Paste a direct link to your school logo image. It will appear on result sheets.</div></div>
       <div class="fg"><label class="fl">API URL</label><input id="setApi" class="fc fc-mono" placeholder="https://script.google.com/macros/s/..."></div>
       <div class="fa"><button class="btn btn-gold" onclick="saveSettings()"><i class="fas fa-save"></i> Save Settings</button></div>
     </div>
@@ -1247,31 +1261,53 @@ function showResultView(d, meta) {
 function printReport() {
   if (!window._printData) return;
   const { d, meta } = window._printData;
-  const student = d.student || {};
-  const results = d.results || [];
-  const settings = d.schoolSettings || {};
-  const ms = { t1: 20, t2: 20, ex: 60 };
+  const student  = d.student || {};
+  const results  = d.results || [];
+  const sc       = d.schoolSettings || {};
+  const ms = {
+    t1: sc.first_test_max  || 20,
+    t2: sc.second_test_max || 20,
+    ex: sc.exam_max        || 60
+  };
+  const schoolName = sc.school_name || meta.school_code || '';
+  const address    = [sc.address, sc.town, sc.state].filter(Boolean).join(', ');
+  const logoUrl    = sc.logo_url || '';
+  const principal  = sc.principal_name || '';
+  const motto      = sc.motto || '';
+  const term       = sc.term || meta.term || '';
+  const session    = sc.session || meta.session || '';
+
   const rows = results.map(r => {
     const g = gradeOf(r.total);
-    return `<tr><td>${r.subject_name || r.subject_code}</td><td>${r.first_test || 0}</td><td>${r.second_test || 0}</td><td>${r.exam || 0}</td><td>${r.total || 0}</td><td><span class="grade ${g.cls}">${g.g}</span></td><td>${g.r}</td></tr>`;
+    return `<tr><td>${r.subject_name || r.subject_code}</td><td>${r.first_test || 0}</td><td>${r.second_test || 0}</td><td>${r.exam || 0}</td><td><strong>${r.total || 0}</strong></td><td><span class="grade ${g.cls}">${g.g}</span></td><td>${g.r}</td></tr>`;
   }).join('');
+
+  const logoHtml = logoUrl
+    ? `<img src="${logoUrl}" alt="Logo" style="width:70px;height:70px;object-fit:contain;border-radius:50%;border:2px solid #0d1b2a;margin-bottom:6px;">`
+    : `<div style="width:70px;height:70px;border-radius:50%;background:#0d1b2a;display:flex;align-items:center;justify-content:center;color:#e8b84b;font-weight:900;font-size:1.4rem;margin:0 auto 6px;">${(schoolName||'').substring(0,2).toUpperCase()}</div>`;
+
   document.getElementById('reportSheet').innerHTML = `
-    <div class="rsh"><div class="rshn">${student.school_code || meta.school_code}</div><div class="rsha">&nbsp;</div></div>
+    <div class="rsh" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;">
+      ${logoHtml}
+      <div class="rshn">${schoolName}</div>
+      ${address ? `<div class="rsha">${address}</div>` : ''}
+      ${motto    ? `<div style="font-size:.72rem;color:#777;font-style:italic;">"${motto}"</div>` : ''}
+    </div>
     <div class="rst2">Student Academic Report Sheet</div>
-    <div class="rsterm">${meta.term || ''} &nbsp;·&nbsp; ${meta.session || ''}</div>
+    <div class="rsterm">${term} &nbsp;·&nbsp; ${session}</div>
     <div class="rsig">
       <div class="rsii"><span class="rsil">Name:</span><span>${student.full_name || meta.student_id}</span></div>
-      <div class="rsii"><span class="rsil">Student ID:</span><span style="font-family:monospace;">${meta.student_id}</span></div>
+      <div class="rsii"><span class="rsil">Student ID:</span><span style="font-family:monospace;">${student.student_id || meta.student_id}</span></div>
       <div class="rsii"><span class="rsil">Class:</span><span>${student.class || '—'}</span></div>
       <div class="rsii"><span class="rsil">Gender:</span><span>${student.gender || '—'}</span></div>
-      <div class="rsii"><span class="rsil">Term:</span><span>${meta.term || '—'}</span></div>
-      <div class="rsii"><span class="rsil">Session:</span><span>${meta.session || '—'}</span></div>
+      <div class="rsii"><span class="rsil">Term:</span><span>${term || '—'}</span></div>
+      <div class="rsii"><span class="rsil">Session:</span><span>${session || '—'}</span></div>
     </div>
-    <table class="rstbl"><thead><tr><th style="text-align:left;width:26%">Subject</th><th>1st Test (${ms.t1})</th><th>2nd Test (${ms.t2})</th><th>Exam (${ms.ex})</th><th>Total (100)</th><th>Grade</th><th>Remark</th></tr></thead><tbody>${rows}</tbody></table>
+    <table class="rstbl"><thead><tr><th style="text-align:left;width:28%">Subject</th><th>1st Test (${ms.t1})</th><th>2nd Test (${ms.t2})</th><th>Exam (${ms.ex})</th><th>Total (100)</th><th>Grade</th><th>Remark</th></tr></thead><tbody>${rows}</tbody></table>
     <div class="rssum">
       <div class="rssb"><div class="rssbl">Grand Total</div><div class="rssbv">${d.grand_total || 0}</div></div>
       <div class="rssb"><div class="rssbl">Average</div><div class="rssbv">${d.average || 0}%</div></div>
-      <div class="rssb"><div class="rssbl">Grade</div><div class="rssbv">${gradeOf(d.average || 0).g}</div></div>
+      <div class="rssb"><div class="rssbl">Overall Grade</div><div class="rssbv">${gradeOf(d.average || 0).g}</div></div>
     </div>
     <div class="rscmt">
       <div class="rscb"><div class="rscbl"><i class="fas fa-chalkboard-teacher"></i> Class Teacher's Comment</div><div class="rsline"></div><div class="rsline"></div><div class="rsline"></div></div>
@@ -1279,10 +1315,10 @@ function printReport() {
     </div>
     <div class="rssigs">
       <div class="rssig"><div class="rssig-l">Class Teacher's Signature</div></div>
-      <div class="rssig"><div class="rssig-l">Principal's Signature &amp; Stamp</div></div>
+      <div class="rssig"><div class="rssig-l">${principal ? principal + '<br>' : ''}Principal's Signature &amp; Stamp</div></div>
       <div class="rssig"><div class="rssig-l">Date</div></div>
     </div>
-    <div class="rsfoot">&copy; 2026 ACADEX &mdash; Designed by Zekpo Destiny &nbsp;&bull;&nbsp; Computer-generated result</div>`;
+    <div class="rsfoot">&copy; 2026 ACADEX &mdash; Designed by Zekpo Destiny &nbsp;&bull;&nbsp; ${schoolName}</div>`;
   document.getElementById('reportModal').classList.add('open');
 }
 function closeReport() { document.getElementById('reportModal').classList.remove('open'); }
@@ -1322,8 +1358,8 @@ async function printStudentCard(studentId, studentName, cls, type) {
 
 function buildCardPrint(students, type, schoolName, schoolCode, cls) {
   const isScratch = type === 'scratch';
-  const term = S.settings.term || 'Current Term';
-  const session = S.settings.session || '';
+  const term    = S.settings.term    || S.admin?.settings?.term    || 'Current Term';
+  const session = S.settings.session || S.admin?.settings?.session || '';
   const cards = students.map(s => {
     if (isScratch) {
       return `<div class="exam-card">
@@ -1343,16 +1379,18 @@ function buildCardPrint(students, type, schoolName, schoolCode, cls) {
         <div class="ec-school">${schoolName}</div>
         <div class="ec-type">📋 Exam Pass / Login Card</div>
         <div class="ec-name">${s.full_name || s.student_id}</div>
-        <div class="ec-class">Class: ${s.class || '—'}</div>
+        <div class="ec-class">Class: ${s.class || '—'} &nbsp;·&nbsp; ${term} ${session}</div>
         <div class="ec-row"><span class="ec-label">Student ID:</span><span class="ec-val">${s.student_id}</span></div>
-        <div class="ec-row"><span class="ec-label">Term:</span><span class="ec-val">${term} ${session}</span></div>
-        <div style="margin-top:1.5mm;font-size:6pt;color:#777;">Exam PIN:</div>
-        <div class="ec-pin-box">${s.exam_pin !== undefined ? s.exam_pin : '****'}</div>
-        <div class="ec-footer">© 2026 ACADEX · Keep this card safe</div>
+        <div style="margin-top:1.5mm;font-size:6pt;color:#777;font-weight:700;">EXAM PIN:</div>
+        <div class="ec-pin-box">${s.exam_pin !== undefined && s.exam_pin !== '' ? s.exam_pin : '????'}</div>
+        <div class="ec-footer">© 2026 ACADEX · Keep this card safe · ${schoolCode}</div>
       </div>`;
     }
   }).join('');
-  document.getElementById('cardPrintArea').innerHTML = `<div style="text-align:center;margin-bottom:5mm;font-size:9pt;font-weight:700;color:#0d1b2a;">${schoolName} — ${isScratch ? 'Scratch Cards' : 'Exam Cards'} ${cls ? '· Class: ' + cls : ''}</div><div class="card-grid">${cards}</div>`;
+  document.getElementById('cardPrintArea').innerHTML =
+    `<div style="text-align:center;margin-bottom:5mm;font-size:9pt;font-weight:900;color:#0d1b2a;text-transform:uppercase;letter-spacing:1px;">${schoolName}</div>
+     <div style="text-align:center;margin-bottom:4mm;font-size:7pt;color:#555;">${isScratch ? 'Result Scratch Cards' : 'Exam Pass Cards'} ${cls ? '— Class: ' + cls : ''} ${term ? '· ' + term : ''}</div>
+     <div class="card-grid">${cards}</div>`;
   document.getElementById('cardModal').classList.add('open');
 }
 
@@ -1393,7 +1431,15 @@ async function adminLogin() {
   try {
     const r = await api({ action: 'adminLogin', school_code: code, username: user, password: pass });
     if (r.success) {
-      S.admin = { code, name: r.school_name || code }; S.settings = r.settings || {};
+      S.admin = {
+        code:     code,
+        name:     r.school_name || code,
+        address:  r.address  || '',
+        town:     r.town     || '',
+        state:    r.state    || '',
+        logo_url: r.logo_url || ''
+      };
+      S.settings = r.settings || {};
       setHeaderSchool(r.school_name || code);
       document.getElementById('adminIcon').textContent = (code || 'AD').substring(0, 2);
       document.getElementById('adminName').textContent = r.school_name || code;
@@ -1978,9 +2024,10 @@ async function loadSettings() {
     document.getElementById('setT1').value = s.first_test_max || 20;
     document.getElementById('setT2').value = s.second_test_max || 20;
     document.getElementById('setEx').value = s.exam_max || 60;
-    document.getElementById('setRChk').value = s.result_checking || 'yes';
-    document.getElementById('setRDisp').value = s.result_display || 'grade_only';
-    document.getElementById('setApi').value = localStorage.getItem('acadex_api') || DEFAULT_API;
+    document.getElementById('setRChk').value  = s.result_checking || 'yes';
+    document.getElementById('setRDisp').value  = s.result_display  || 'grade_only';
+    if (document.getElementById('setLogo')) document.getElementById('setLogo').value = s.logo_url || '';
+    document.getElementById('setApi').value    = localStorage.getItem('acadex_api') || DEFAULT_API;
     S.settings = s;
   } catch (e) {}
 }
@@ -2004,7 +2051,8 @@ async function saveSettings() {
       second_test_max: document.getElementById('setT2').value,
       exam_max: document.getElementById('setEx').value,
       result_checking: document.getElementById('setRChk').value,
-      result_display: document.getElementById('setRDisp').value
+      result_display:  document.getElementById('setRDisp').value,
+      logo_url:        document.getElementById('setLogo') ? document.getElementById('setLogo').value.trim() : ''
     });
     if (r.success) { toast('Settings saved!', 'ok'); loadSettings(); }
     else { toast(r.message, 'err'); }
