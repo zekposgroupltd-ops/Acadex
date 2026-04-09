@@ -130,15 +130,33 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
 #reportModal,#cardModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9000;overflow-y:auto;padding:20px;}
 #reportModal.open,#cardModal.open{display:flex;align-items:flex-start;justify-content:center;}
 .ptb{position:fixed;top:12px;right:12px;z-index:9001;display:flex;gap:8px;}
-#reportSheet{background:#fff;width:210mm;min-height:297mm;padding:14mm;border-radius:4px;box-shadow:0 12px 60px rgba(0,0,0,.4);margin-top:60px;}
-.rsh{text-align:center;border-bottom:3px double #0d1b2a;padding-bottom:12px;margin-bottom:12px;}.rshn{font-size:1.25rem;font-weight:900;color:#0d1b2a;text-transform:uppercase;letter-spacing:1.5px;}.rsha{font-size:.78rem;color:#555;margin-top:3px;}
-.rst2{font-size:.95rem;font-weight:800;color:#0d1b2a;text-align:center;margin:8px 0;text-transform:uppercase;letter-spacing:.8px;}.rsterm{text-align:center;font-size:.78rem;color:#666;margin-bottom:10px;}
-.rsig{display:grid;grid-template-columns:1fr 1fr;gap:5px;font-size:.78rem;border:1px solid #ccd;border-radius:6px;padding:10px;margin-bottom:12px;}.rsii{display:flex;gap:6px;}.rsil{font-weight:800;color:#0d1b2a;min-width:65px;}
-.rstbl{width:100%;border-collapse:collapse;font-size:.76rem;margin-bottom:12px;}.rstbl th{background:#0d1b2a;color:#fff;padding:6px 8px;text-align:center;font-size:.72rem;}.rstbl th:first-child{text-align:left;}.rstbl td{padding:5px 8px;border:1px solid #dde;text-align:center;}.rstbl td:first-child{text-align:left;font-weight:700;}.rstbl tr:nth-child(even) td{background:#f8f9ff;}
-.rssum{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;}.rssb{border:1px solid #dde;border-radius:6px;padding:8px;text-align:center;}.rssbl{font-size:.7rem;color:#777;font-weight:700;text-transform:uppercase;}.rssbv{font-size:1.1rem;font-weight:900;color:#0d1b2a;margin-top:2px;}
-.rscmt{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}.rscb{border:1px solid #dde;border-radius:6px;padding:8px;}.rscbl{font-size:.72rem;font-weight:800;color:#0d1b2a;margin-bottom:6px;}.rsline{border-bottom:1px solid #ccd;height:18px;margin-bottom:3px;}
-.rssigs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:16px;}.rssig{text-align:center;font-size:.72rem;}.rssig-l{border-top:1px solid #333;padding-top:4px;margin-top:22px;}
-.rsfoot{text-align:center;font-size:.68rem;color:#aaa;margin-top:14px;border-top:1px solid #eee;padding-top:6px;}
+#reportSheet{background:#fff;width:210mm;min-height:auto;padding:8mm 10mm;border-radius:4px;box-shadow:0 12px 60px rgba(0,0,0,.4);margin-top:60px;font-family:Arial,sans-serif;}
+.rsh{text-align:center;border-bottom:2px solid #0d1b2a;padding-bottom:6px;margin-bottom:6px;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.rshn{font-size:11pt;font-weight:900;color:#0d1b2a;text-transform:uppercase;letter-spacing:1px;}
+.rsha{font-size:7pt;color:#555;margin-top:1px;}
+.rst2{font-size:8pt;font-weight:800;color:#0d1b2a;text-align:center;margin:4px 0;text-transform:uppercase;letter-spacing:.6px;}
+.rsterm{text-align:center;font-size:7pt;color:#666;margin-bottom:4px;}
+.rsig{display:grid;grid-template-columns:1fr 1fr;gap:2px;font-size:7pt;border:1px solid #ccd;border-radius:4px;padding:5px 8px;margin-bottom:5px;}
+.rsii{display:flex;gap:4px;line-height:1.5;}
+.rsil{font-weight:800;color:#0d1b2a;min-width:60px;flex-shrink:0;}
+.rstbl{width:100%;border-collapse:collapse;font-size:7pt;margin-bottom:5px;}
+.rstbl th{background:#0d1b2a;color:#fff;padding:4px 6px;text-align:center;font-size:6.5pt;font-weight:700;}
+.rstbl th:first-child{text-align:left;}
+.rstbl td{padding:3px 6px;border:1px solid #dde;text-align:center;}
+.rstbl td:first-child{text-align:left;font-weight:700;}
+.rstbl tr:nth-child(even) td{background:#f8f9ff;}
+.rssum{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:5px;}
+.rssb{border:1px solid #dde;border-radius:4px;padding:5px;text-align:center;}
+.rssbl{font-size:6pt;color:#777;font-weight:700;text-transform:uppercase;}
+.rssbv{font-size:9pt;font-weight:900;color:#0d1b2a;margin-top:1px;}
+.rscmt{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:5px;}
+.rscb{border:1px solid #dde;border-radius:4px;padding:5px;}
+.rscbl{font-size:6.5pt;font-weight:800;color:#0d1b2a;margin-bottom:4px;}
+.rsline{border-bottom:1px solid #ccd;height:14px;margin-bottom:2px;}
+.rssigs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px;}
+.rssig{text-align:center;font-size:6.5pt;}
+.rssig-l{border-top:1px solid #333;padding-top:3px;margin-top:18px;}
+.rsfoot{text-align:center;font-size:6pt;color:#aaa;margin-top:6px;border-top:1px solid #eee;padding-top:4px;}
 #cardPrintArea{background:#fff;width:210mm;padding:8mm;border-radius:4px;box-shadow:0 12px 60px rgba(0,0,0,.4);margin-top:60px;}
 .card-grid{display:grid;grid-template-columns:1fr 1fr;gap:5mm;}
 .exam-card{border:1.5px solid #0d1b2a;border-radius:4px;padding:5mm 6mm;page-break-inside:avoid;background:#fff;position:relative;overflow:hidden;}
@@ -167,32 +185,49 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   .lcard{padding:24px 18px;}.enr{flex-direction:column;}.enr .btn{width:100%;}
   .card-grid{grid-template-columns:1fr;}
 }
+#staffEditModal,#assignModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:8500;align-items:center;justify-content:center;padding:16px;}
+#staffEditModal.open,#assignModal.open{display:flex;}
+.assign-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:var(--r);border:1px solid var(--border);margin-bottom:6px;background:#fff;}
+.assign-item-info{font-size:.85rem;font-weight:700;color:var(--navy);}
+.assign-item-sub{font-size:.75rem;color:var(--tlt);}
 @media print{
   @page{margin:0;size:A4 portrait;}
-  html,body{margin:0;padding:0;background:#fff!important;}
-  body *{visibility:hidden;}
-  #reportSheet,#reportSheet *,#cardPrintArea,#cardPrintArea *{visibility:visible;}
+  html,body{margin:0!important;padding:0!important;background:#fff!important;}
+  body *{visibility:hidden!important;}
+  #reportSheet,#reportSheet *,#cardPrintArea,#cardPrintArea *{visibility:visible!important;}
   #reportModal,#cardModal{display:block!important;position:static!important;background:none!important;padding:0!important;overflow:visible!important;}
   #reportSheet{
-    position:absolute;left:0;top:0;
-    width:210mm;min-height:297mm;
-    padding:12mm 14mm;margin:0;
-    box-shadow:none;border-radius:0;
+    position:fixed!important;left:0!important;top:0!important;
+    width:210mm!important;height:297mm!important;
+    max-height:297mm!important;overflow:hidden!important;
+    padding:6mm 8mm!important;margin:0!important;
+    box-shadow:none!important;border-radius:0!important;
+    font-size:7pt!important;
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+    color-adjust:exact!important;
   }
   #cardPrintArea{
-    position:absolute;left:0;top:0;
-    width:210mm;padding:8mm;margin:0;
-    box-shadow:none;border-radius:0;
+    position:fixed!important;left:0!important;top:0!important;
+    width:210mm!important;padding:6mm!important;margin:0!important;
+    box-shadow:none!important;border-radius:0!important;
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+    color-adjust:exact!important;
   }
   .ptb{display:none!important;}
-  .exam-card{page-break-inside:avoid;}
+  .exam-card{page-break-inside:avoid!important;}
+  .grade,.gA1,.gB2,.gB3,.gC4,.gC5,.gC6,.gD7,.gE8,.gF9{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  .rstbl th{background:#0d1b2a!important;color:#fff!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  .rstbl tr:nth-child(even) td{background:#f8f9ff!important;}
+  .ec-pin-box{background:#0d1b2a!important;color:#e8b84b!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  .exam-card::before{background:linear-gradient(90deg,#0d1b2a,#c9922a)!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
 }
 </style>
 </head>
 <body>
 <!-- TOAST -->
 <div id="tw"></div>
-
 <!-- HEADER -->
 <header>
 <div class="hi">
@@ -208,7 +243,6 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   </div>
 </div>
 </header>
-
 <!-- HOME -->
 <div id="s-home" class="section active">
 <div class="con">
@@ -238,7 +272,6 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   </div>
 </div>
 </div>
-
 <!-- PORTAL SELECT -->
 <div id="s-portal" class="section">
 <div class="con"><div class="pw">
@@ -261,7 +294,6 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   <div style="text-align:center;margin-top:20px;"><button class="btn btn-ghost" onclick="go('home')"><i class="fas fa-arrow-left"></i> Back</button></div>
 </div></div>
 </div>
-
 <!-- STUDENT LOGIN -->
 <div id="s-student" class="section">
 <div class="con"><div class="pw">
@@ -277,7 +309,6 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   </div>
 </div></div>
 </div>
-
 <!-- SUBJECTS LIST -->
 <div id="s-subjects" class="section">
 <div class="con">
@@ -292,7 +323,6 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   </div>
 </div>
 </div>
-
 <!-- EXAM ENGINE -->
 <div id="s-exam" class="section">
 <div class="con" style="max-width:820px;margin:0 auto;">
@@ -314,7 +344,6 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   </div>
 </div>
 </div>
-
 <!-- RESULTS CHECK -->
 <div id="s-results" class="section">
 <div class="con"><div class="pw">
@@ -329,7 +358,6 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   </div>
 </div></div>
 </div>
-
 <!-- RESULT DISPLAY -->
 <div id="s-result-view" class="section">
 <div class="con" style="max-width:820px;margin:0 auto;">
@@ -341,7 +369,6 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   </div>
 </div>
 </div>
-
 <!-- ADMIN LOGIN -->
 <div id="s-admin-login" class="section">
 <div class="con"><div class="pw">
@@ -358,7 +385,6 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   </div>
 </div></div>
 </div>
-
 <!-- ADMIN PANEL -->
 <div id="s-admin" class="section">
 <div class="con">
@@ -376,19 +402,18 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
     <div class="tab active" onclick="aTab(0)"><i class="fas fa-tachometer-alt"></i> Dashboard</div>
     <div class="tab" onclick="aTab(1)"><i class="fas fa-users"></i> Students</div>
     <div class="tab" onclick="aTab(2)"><i class="fas fa-chalkboard-teacher"></i> Staff</div>
-    <div class="tab" onclick="aTab(3)"><i class="fas fa-book"></i> Subjects</div>
-    <div class="tab" onclick="aTab(4)"><i class="fas fa-question-circle"></i> Questions</div>
-    <div class="tab" onclick="aTab(5)"><i class="fas fa-chart-bar"></i> Results</div>
-    <div class="tab" onclick="aTab(6)"><i class="fas fa-id-card"></i> Result IDs</div>
-    <div class="tab" onclick="aTab(7)"><i class="fas fa-cog"></i> Settings</div>
+    <div class="tab" onclick="aTab(3)"><i class="fas fa-school"></i> Classes</div>
+    <div class="tab" onclick="aTab(4)"><i class="fas fa-book"></i> Subjects</div>
+    <div class="tab" onclick="aTab(5)"><i class="fas fa-question-circle"></i> Questions</div>
+    <div class="tab" onclick="aTab(6)"><i class="fas fa-chart-bar"></i> Results</div>
+    <div class="tab" onclick="aTab(7)"><i class="fas fa-id-card"></i> Result IDs</div>
+    <div class="tab" onclick="aTab(8)"><i class="fas fa-cog"></i> Settings</div>
   </div>
-
   <!-- DASHBOARD TAB -->
   <div id="at0" class="tc active">
     <div class="sg" id="dashStats"><div class="ls"><div class="loader loader-dk"></div></div></div>
     <div id="dashInfo"></div>
   </div>
-
   <!-- STUDENTS TAB -->
   <div id="at1" class="tc">
     <div class="card">
@@ -405,7 +430,9 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
         <div style="font-weight:800;color:var(--navy);margin-bottom:14px;font-size:.95rem;"><i class="fas fa-user-plus"></i> Add New Student</div>
         <div class="fr2">
           <div class="fg"><label class="fl">Full Name <span style="color:red">*</span></label><input id="fSName" class="fc" placeholder="Student full name"></div>
-          <div class="fg"><label class="fl">Class <span style="color:red">*</span></label><input id="fSClass" class="fc" placeholder="e.g. JSS1A"></div>
+          <div class="fg"><label class="fl">Class <span style="color:red">*</span></label>
+            <select id="fSClass" class="fc"><option value="">-- Select Class --</option></select>
+          </div>
         </div>
         <div class="fr2">
           <div class="fg"><label class="fl">Gender</label>
@@ -430,7 +457,6 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       <div id="stuTable" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
     </div>
   </div>
-
   <!-- STAFF TAB -->
   <div id="at2" class="tc">
     <div class="card">
@@ -459,9 +485,30 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       <div id="staffTable" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
     </div>
   </div>
-
-  <!-- SUBJECTS TAB -->
+  <!-- CLASSES TAB -->
   <div id="at3" class="tc">
+    <div class="card">
+      <div class="ch">
+        <div><div class="ct"><i class="fas fa-school"></i> Classes</div><div class="cs">Manage school classes — students and subjects are assigned to these</div></div>
+        <div class="fa"><button class="btn btn-ok btn-sm" onclick="toggleForm('classForm')"><i class="fas fa-plus"></i> Add Class</button></div>
+      </div>
+      <div id="classForm" class="hidden" style="background:var(--off);border-radius:var(--rl);padding:20px;margin-bottom:16px;">
+        <div style="font-weight:800;color:var(--navy);margin-bottom:14px;"><i class="fas fa-school"></i> Add New Class</div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Class Name <span style="color:red">*</span></label><input id="fClsName" class="fc" placeholder="e.g. JSS 1, SS2A"></div>
+          <div class="fg"><label class="fl">Level</label><input id="fClsLevel" class="fc" placeholder="e.g. Junior, Senior"></div>
+        </div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Arm / Stream</label><input id="fClsArm" class="fc" placeholder="e.g. A, Science, Arts (optional)"></div>
+          <div class="fg"><label class="fl">Capacity</label><input id="fClsCap" class="fc" type="number" placeholder="Max students (optional)"></div>
+        </div>
+        <div class="fa"><button class="btn btn-ok" id="btnSaveCls" onclick="saveClass()"><i class="fas fa-save"></i> Save Class</button><button class="btn btn-ghost" onclick="toggleForm('classForm',true)">Cancel</button></div>
+      </div>
+      <div id="classTable" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
+    </div>
+  </div>
+  <!-- SUBJECTS TAB -->
+  <div id="at4" class="tc">
     <div class="card">
       <div class="ch">
         <div><div class="ct"><i class="fas fa-book"></i> Subjects</div></div>
@@ -473,7 +520,9 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
           <div class="fg"><label class="fl">Subject Name <span style="color:red">*</span></label><input id="fSubName" class="fc" placeholder="e.g. Mathematics"></div>
         </div>
         <div class="fr2">
-          <div class="fg"><label class="fl">Class <span style="color:red">*</span></label><input id="fSubClass" class="fc" placeholder="e.g. JSS1A"></div>
+          <div class="fg"><label class="fl">Class <span style="color:red">*</span></label>
+            <select id="fSubClass" class="fc"><option value="">-- Select Class --</option></select>
+          </div>
           <div class="fg"><label class="fl">Duration (minutes)</label><input id="fSubDur" class="fc" type="number" placeholder="45" value="45"></div>
         </div>
         <div class="fr2">
@@ -489,9 +538,8 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       <div id="subjTable" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
     </div>
   </div>
-
   <!-- QUESTIONS TAB -->
-  <div id="at4" class="tc">
+  <div id="at5" class="tc">
     <div class="card">
       <div class="ch">
         <div><div class="ct"><i class="fas fa-question-circle"></i> Questions</div></div>
@@ -530,19 +578,21 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       <div id="qTable" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
     </div>
   </div>
-
   <!-- RESULTS TAB -->
-  <div id="at5" class="tc">
+  <div id="at6" class="tc">
     <div class="card">
       <div class="ch"><div class="ct"><i class="fas fa-chart-bar"></i> Results</div>
         <div class="fa">
           <button class="btn btn-info btn-sm" onclick="toggleForm('caForm')"><i class="fas fa-keyboard"></i> Enter CA Scores</button>
+          <button class="btn btn-warn btn-sm" onclick="runDedup()" title="Remove duplicate result rows"><i class="fas fa-broom"></i> Clean Duplicates</button>
         </div>
       </div>
       <div id="caForm" class="hidden" style="background:var(--off);border-radius:var(--rl);padding:20px;margin-bottom:16px;">
         <div style="font-weight:800;color:var(--navy);margin-bottom:14px;"><i class="fas fa-keyboard"></i> Enter Continuous Assessment Scores</div>
         <div class="fr3">
-          <div class="fg"><label class="fl">Class</label><input id="caClass" class="fc" placeholder="e.g. JSS1A"></div>
+          <div class="fg"><label class="fl">Class</label>
+            <select id="caClass" class="fc"><option value="">-- Select Class --</option></select>
+          </div>
           <div class="fg"><label class="fl">Subject</label>
             <select id="caSubj" class="fc"><option value="">-- Select --</option></select>
           </div>
@@ -559,9 +609,8 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       <div id="resTable" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
     </div>
   </div>
-
   <!-- RESULT IDS TAB -->
-  <div id="at6" class="tc">
+  <div id="at7" class="tc">
     <div class="card">
       <div class="ch">
         <div><div class="ct"><i class="fas fa-id-card"></i> Result IDs</div><div class="cs">Generate and manage result access IDs</div></div>
@@ -579,9 +628,8 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       <div id="ridTable" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
     </div>
   </div>
-
   <!-- SETTINGS TAB -->
-  <div id="at7" class="tc">
+  <div id="at8" class="tc">
     <div class="card">
       <div class="ch"><div class="ct"><i class="fas fa-cog"></i> School Settings</div></div>
       <div class="fr2">
@@ -625,7 +673,6 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   </div>
 </div>
 </div>
-
 <!-- STAFF LOGIN -->
 <div id="s-staff-login" class="section">
 <div class="con"><div class="pw">
@@ -641,7 +688,6 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   </div>
 </div></div>
 </div>
-
 <!-- STAFF PANEL -->
 <div id="s-staff" class="section">
 <div class="con">
@@ -660,7 +706,9 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
     <div class="card">
       <div class="ch"><div class="ct">Enter CA Scores</div></div>
       <div class="fr2">
-        <div class="fg"><label class="fl">Class</label><input id="stCaClass" class="fc" placeholder="e.g. JSS1A"></div>
+        <div class="fg"><label class="fl">Class</label>
+          <select id="stCaClass" class="fc"><option value="">-- Select Class --</option></select>
+        </div>
         <div class="fg"><label class="fl">Subject</label>
           <select id="stCaSubj" class="fc"><option value="">-- Select Subject --</option></select>
         </div>
@@ -676,7 +724,9 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
     <div class="card">
       <div class="ch"><div class="ct">Class Results</div></div>
       <div class="fr2">
-        <div class="fg"><label class="fl">Class</label><input id="stResClass" class="fc" placeholder="e.g. JSS1A"></div>
+        <div class="fg"><label class="fl">Class</label>
+          <select id="stResClass" class="fc"><option value="">-- Select Class --</option></select>
+        </div>
         <div class="fg"><label class="fl">Subject</label>
           <select id="stResSubj" class="fc"><option value="">All Subjects</option></select>
         </div>
@@ -687,7 +737,6 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   </div>
 </div>
 </div>
-
 <!-- SUPER ADMIN LOGIN -->
 <div id="s-sa-login" class="section">
 <div class="con"><div class="pw">
@@ -702,7 +751,6 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   </div>
 </div></div>
 </div>
-
 <!-- SUPER ADMIN PANEL -->
 <div id="s-sa" class="section">
 <div class="con">
@@ -741,7 +789,6 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   </div>
 </div>
 </div>
-
 <!-- REPORT MODAL -->
 <div id="reportModal">
   <div class="ptb">
@@ -750,7 +797,6 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   </div>
   <div id="reportSheet"></div>
 </div>
-
 <!-- CARD PRINT MODAL -->
 <div id="cardModal">
   <div class="ptb">
@@ -759,7 +805,6 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   </div>
   <div id="cardPrintArea"></div>
 </div>
-
 <!-- EDIT STUDENT MODAL -->
 <div id="editModal">
   <div class="modal-box">
@@ -789,24 +834,66 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
     <div class="fa"><button class="btn btn-gold" id="btnEditSave" onclick="saveEdit()"><i class="fas fa-save"></i> Save Changes</button><button class="btn btn-ghost" onclick="closeEdit()">Cancel</button></div>
   </div>
 </div>
+<!-- STAFF EDIT MODAL -->
+<div id="staffEditModal">
+  <div class="modal-box">
+    <div class="modal-title">
+      <span><i class="fas fa-user-edit"></i> Edit Staff</span>
+      <button class="btn btn-ghost btn-sm" onclick="closeStaffEdit()"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="staffEditMsg"></div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Full Name</label><input id="seStName" class="fc" placeholder="Full name"></div>
+      <div class="fg"><label class="fl">Role</label>
+        <select id="seStRole" class="fc"><option value="teacher">Teacher</option><option value="head_teacher">Head Teacher</option><option value="coordinator">Coordinator</option></select>
+      </div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Subject Code (legacy)</label><input id="seStSubj" class="fc" placeholder="e.g. MATH"></div>
+      <div class="fg"><label class="fl">Class (legacy)</label><input id="seStClass" class="fc" placeholder="e.g. JSS 1"></div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">New Password (blank = keep)</label><input id="seStPass" class="fc" type="text" placeholder="Leave blank to keep current"></div>
+      <div class="fg"><label class="fl">Status</label>
+        <select id="seStStatus" class="fc"><option value="active">Active</option><option value="inactive">Inactive</option></select>
+      </div>
+    </div>
+    <input type="hidden" id="seStId">
+    <div class="fa"><button class="btn btn-gold" id="btnSeStSave" onclick="saveStaffEdit()"><i class="fas fa-save"></i> Save Changes</button><button class="btn btn-ghost" onclick="closeStaffEdit()">Cancel</button></div>
+  </div>
+</div>
+<!-- ASSIGN SUBJECTS MODAL -->
+<div id="assignModal">
+  <div class="modal-box" style="max-width:680px;">
+    <div class="modal-title">
+      <span><i class="fas fa-book"></i> Assign Subjects — <span id="assignStaffName"></span></span>
+      <button class="btn btn-ghost btn-sm" onclick="closeAssign()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="alert a-info" style="margin-bottom:14px;"><i class="fas fa-info-circle"></i> Staff can only see and enter scores for subjects assigned to them.</div>
+    <div class="fr2" style="margin-bottom:14px;">
+      <div class="fg"><label class="fl">Subject</label><select id="assignSubjSel" class="fc"><option value="">-- Select Subject --</option></select></div>
+      <div class="fg"><label class="fl">Class</label><select id="assignClassSel" class="fc"><option value="">-- Select Class --</option></select></div>
+    </div>
+    <div class="fa" style="margin-bottom:14px;"><button class="btn btn-ok" onclick="doAssignSubject()"><i class="fas fa-plus"></i> Assign</button></div>
+    <div id="assignedList"></div>
+    <input type="hidden" id="assignStaffId">
+  </div>
+</div>
 <script>
 // ════════════════════════════════════════════════
 // CONFIG & STATE
 // ════════════════════════════════════════════════
 const DEFAULT_API = 'https://script.google.com/macros/s/AKfycbxhKfdH0RaXQdPUFWpcQe1Bb15kh3VDsU7A_Tnx1X_fU_lhYykMuNc1ylO5UgKLgE_c/exec';
 const EXAM_SAVE_KEY = 'acadex_exam_state';
-
 const S = {
   student: null, admin: null, staff: null,
   subjects: [], questions: [], answers: {},
   qIndex: 0, timer: null, currentSubj: null,
   settings: {}, timerRemaining: 0
 };
-
 function apiUrl() {
   return localStorage.getItem('acadex_api') || DEFAULT_API;
 }
-
 // ════════════════════════════════════════════════
 // API CALL — with timeout and retry
 // ════════════════════════════════════════════════
@@ -829,7 +916,6 @@ async function api(params, retries = 2) {
     }
   }
 }
-
 // ════════════════════════════════════════════════
 // NAVIGATION
 // ════════════════════════════════════════════════
@@ -840,7 +926,6 @@ function go(id) {
   window.scrollTo(0, 0);
   updateNav(id);
 }
-
 function updateNav(id) {
   const loggedIn = S.student || S.admin || S.staff;
   document.getElementById('btnResults').classList.toggle('hidden', !!S.student || !!S.admin || !!S.staff);
@@ -854,7 +939,6 @@ function updateNav(id) {
   hs.classList.toggle('hidden', !name);
   hs.textContent = name;
 }
-
 // ════════════════════════════════════════════════
 // TOAST
 // ════════════════════════════════════════════════
@@ -867,7 +951,6 @@ function toast(msg, type = 'info', dur = 3500) {
   tw.appendChild(t);
   setTimeout(() => { t.style.animation = 'none'; t.style.opacity = '0'; t.style.transform = 'translateX(110%)'; t.style.transition = 'all .3s'; setTimeout(() => t.remove(), 300); }, dur);
 }
-
 function msg(id, text, type = 'err') {
   const el = document.getElementById(id);
   if (!el) return;
@@ -875,7 +958,6 @@ function msg(id, text, type = 'err') {
   const icons = { ok: 'check-circle', err: 'exclamation-circle', warn: 'exclamation-triangle', info: 'info-circle' };
   el.innerHTML = `<div class="alert a-${type}"><i class="fas fa-${icons[type]}"></i>${text}</div>`;
 }
-
 // ════════════════════════════════════════════════
 // HELPERS
 // ════════════════════════════════════════════════
@@ -885,7 +967,6 @@ function toggleForm(id, forceClose) {
   if (forceClose) el.classList.add('hidden');
   else el.classList.toggle('hidden');
 }
-
 function gradeOf(score) {
   const s = parseFloat(score) || 0;
   if (s >= 75) return { g: 'A1', r: 'Excellent', cls: 'gA1' };
@@ -898,13 +979,11 @@ function gradeOf(score) {
   if (s >= 40) return { g: 'E8', r: 'Pass', cls: 'gE8' };
   return { g: 'F9', r: 'Fail', cls: 'gF9' };
 }
-
 function ordinal(n) {
   const s = ['th','st','nd','rd'];
   const v = n % 100;
   return s[(v - 20) % 10] || s[v] || s[0];
 }
-
 function parseCsv(line) {
   const r = []; let cur = '', inQ = false;
   for (const c of line) {
@@ -914,13 +993,11 @@ function parseCsv(line) {
   }
   r.push(cur.trim()); return r;
 }
-
 function setHeaderSchool(name) {
   const el = document.getElementById('hSchool');
   el.textContent = name;
   el.classList.toggle('hidden', !name);
 }
-
 // ════════════════════════════════════════════════
 // HOME STATS
 // ════════════════════════════════════════════════
@@ -935,7 +1012,6 @@ async function loadHomeStats() {
       <div class="sc"><div class="si">🔒</div><div class="sv">Secure</div><div class="sl">Platform</div></div>`;
   } catch (e) { document.getElementById('homeStats').innerHTML = ''; }
 }
-
 // ════════════════════════════════════════════════
 // STUDENT LOGIN
 // ════════════════════════════════════════════════
@@ -960,7 +1036,6 @@ async function studentLogin() {
   } catch (e) { msg('sLMsg', 'Network error: ' + e.message); }
   finally { btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login'; btn.disabled = false; }
 }
-
 function studentLogout() {
   S.student = null; S.subjects = []; S.questions = []; S.answers = {};
   if (S.timer) { clearInterval(S.timer); S.timer = null; }
@@ -968,7 +1043,6 @@ function studentLogout() {
   document.getElementById('sLId').value = ''; document.getElementById('sLPin').value = '';
   updateNav('home'); go('home'); toast('Logged out.', 'info');
 }
-
 // ════════════════════════════════════════════════
 // SUBJECTS
 // ════════════════════════════════════════════════
@@ -1002,12 +1076,10 @@ async function loadSubjects() {
     }).join('');
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
 }
-
 // ════════════════════════════════════════════════
 // EXAM ENGINE — with offline persistence
 // ════════════════════════════════════════════════
 function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
-
 function saveExamState() {
   try {
     localStorage.setItem(EXAM_SAVE_KEY, JSON.stringify({
@@ -1022,7 +1094,6 @@ function saveExamState() {
     }));
   } catch (e) {}
 }
-
 function loadExamState() {
   try {
     const raw = localStorage.getItem(EXAM_SAVE_KEY);
@@ -1034,12 +1105,10 @@ function loadExamState() {
     return state;
   } catch (e) { return null; }
 }
-
 async function startExam(sc) {
   const subj = S.subjects.find(s => s.subject_code === sc);
   if (!subj) { toast('Subject not found.', 'err'); return; }
   S.currentSubj = subj;
-
   // Check for saved state for this same subject
   const saved = loadExamState();
   if (saved && saved.subject_code === sc) {
@@ -1057,7 +1126,6 @@ async function startExam(sc) {
       return;
     }
   }
-
   document.getElementById('subjMsg').innerHTML = '<div class="alert a-info"><span class="loader loader-dk"></span> Loading questions...</div>';
   try {
     const r = await api({ action: 'getQuestions', school_code: S.student.school_code, subject_code: sc });
@@ -1074,16 +1142,13 @@ async function startExam(sc) {
     document.getElementById('subjMsg').innerHTML = '';
   } catch (e) { msg('subjMsg', 'Failed to load questions: ' + e.message, 'err'); }
 }
-
 function checkOffline() {
   const bar = document.getElementById('offlineBar');
   if (!navigator.onLine) bar.classList.remove('hidden');
   else bar.classList.add('hidden');
 }
-
 window.addEventListener('online', () => { document.getElementById('offlineBar')?.classList.add('hidden'); toast('Back online!', 'ok'); });
 window.addEventListener('offline', () => { document.getElementById('offlineBar')?.classList.remove('hidden'); toast('Offline — exam answers are safe locally.', 'warn', 5000); });
-
 function drawDots() {
   document.getElementById('qNav').innerHTML = S.questions.map((_, i) => {
     let c = 'qd';
@@ -1092,7 +1157,6 @@ function drawDots() {
     return `<div class="${c}" onclick="showQ(${i})">${i + 1}</div>`;
   }).join('');
 }
-
 function showQ(i) {
   if (i < 0 || i >= S.questions.length) return;
   S.qIndex = i; drawDots();
@@ -1106,10 +1170,8 @@ function showQ(i) {
   document.getElementById('prevQ').disabled = i === 0;
   document.getElementById('nextQ').disabled = i === S.questions.length - 1;
 }
-
 function pick(i, l) { S.answers[i] = l; saveExamState(); showQ(i); }
 function navQ(dir) { showQ(S.qIndex + dir); }
-
 function startTimer(secs) {
   if (S.timer) clearInterval(S.timer);
   S.timerRemaining = secs;
@@ -1121,7 +1183,6 @@ function startTimer(secs) {
     if (S.timerRemaining <= 0) { clearInterval(S.timer); toast('Time up! Submitting...', 'warn'); doSubmit(true); }
   }, 1000);
 }
-
 function tickTimer(rem, total) {
   const el = document.getElementById('examTimer'); if (!el) return;
   const m = String(Math.floor(rem / 60)).padStart(2, '0');
@@ -1131,7 +1192,6 @@ function tickTimer(rem, total) {
   else if (rem > 120) el.classList.add('warn');
   else el.classList.add('danger');
 }
-
 async function doSubmit(auto = false) {
   if (!auto) {
     const un = S.questions.length - Object.keys(S.answers).length;
@@ -1192,7 +1252,6 @@ async function doSubmit(auto = false) {
     btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Exam'; btn.disabled = false;
   }
 }
-
 // Keyboard shortcuts
 document.addEventListener('keydown', e => {
   if (!document.getElementById('s-exam').classList.contains('active')) return;
@@ -1205,7 +1264,6 @@ document.addEventListener('keydown', e => {
   else if (k === 'P' || k === 'ARROWLEFT') navQ(-1);
   else if (k === 'S') doSubmit();
 });
-
 // ════════════════════════════════════════════════
 // RESULT CHECK
 // ════════════════════════════════════════════════
@@ -1225,7 +1283,6 @@ async function checkResult() {
   } catch (e) { msg('rChkMsg', 'Error: ' + e.message); }
   finally { btn.innerHTML = '<i class="fas fa-search"></i> View Result'; btn.disabled = false; }
 }
-
 function showResultView(d, meta) {
   const settings = S.settings || {};
   const student = d.student || {};
@@ -1254,75 +1311,152 @@ function showResultView(d, meta) {
   // Store for print
   window._printData = { d, meta };
 }
-
 // ════════════════════════════════════════════════
 // PRINT REPORT SHEET
 // ════════════════════════════════════════════════
 function printReport() {
   if (!window._printData) return;
   const { d, meta } = window._printData;
-  const student  = d.student || {};
-  const results  = d.results || [];
-  const sc       = d.schoolSettings || {};
+  const student = d.student || {};
+  const results = d.results || [];
+  const sc = d.schoolSettings || {};
   const ms = {
-    t1: sc.first_test_max  || 20,
-    t2: sc.second_test_max || 20,
-    ex: sc.exam_max        || 60
+    t1: sc.first_test_max   || 20,
+    t2: sc.second_test_max  || 20,
+    ex: sc.exam_max         || 60
   };
   const schoolName = sc.school_name || meta.school_code || '';
   const address    = [sc.address, sc.town, sc.state].filter(Boolean).join(', ');
   const logoUrl    = sc.logo_url || '';
   const principal  = sc.principal_name || '';
   const motto      = sc.motto || '';
-  const term       = sc.term || meta.term || '';
+  const term       = sc.term    || meta.term    || '';
   const session    = sc.session || meta.session || '';
-
+  const subjectCount = results.length;
+  // Scale font size based on number of subjects — fewer = slightly larger
+  const tblFont = subjectCount > 14 ? '6pt' : subjectCount > 10 ? '6.5pt' : '7pt';
+  const rowPad  = subjectCount > 14 ? '2px 4px' : subjectCount > 10 ? '3px 5px' : '3.5px 6px';
   const rows = results.map(r => {
     const g = gradeOf(r.total);
-    return `<tr><td>${r.subject_name || r.subject_code}</td><td>${r.first_test || 0}</td><td>${r.second_test || 0}</td><td>${r.exam || 0}</td><td><strong>${r.total || 0}</strong></td><td><span class="grade ${g.cls}">${g.g}</span></td><td>${g.r}</td></tr>`;
+    const gradeColors = {
+      gA1:'background:#c8f0d8;color:#0a4a20',
+      gB2:'background:#d0e8ff;color:#0a3060',
+      gB3:'background:#dceeff;color:#0a3878',
+      gC4:'background:#fff4c8;color:#6a4400',
+      gC5:'background:#fff4c8;color:#6a4400',
+      gC6:'background:#fff4c8;color:#6a4400',
+      gD7:'background:#ffe8c0;color:#6a3000',
+      gE8:'background:#ffe8c0;color:#6a3000',
+      gF9:'background:#ffd0d0;color:#6a0000'
+    };
+    const gc = gradeColors[g.cls] || '';
+    return `<tr>
+      <td style="padding:${rowPad};border:1px solid #dde;text-align:left;font-weight:700;font-size:${tblFont};">${r.subject_name || r.subject_code}</td>
+      <td style="padding:${rowPad};border:1px solid #dde;text-align:center;font-size:${tblFont};">${r.first_test || 0}</td>
+      <td style="padding:${rowPad};border:1px solid #dde;text-align:center;font-size:${tblFont};">${r.second_test || 0}</td>
+      <td style="padding:${rowPad};border:1px solid #dde;text-align:center;font-size:${tblFont};">${r.exam || 0}</td>
+      <td style="padding:${rowPad};border:1px solid #dde;text-align:center;font-weight:900;font-size:${tblFont};">${r.total || 0}</td>
+      <td style="padding:${rowPad};border:1px solid #dde;text-align:center;"><span style="display:inline-block;padding:1px 5px;border-radius:3px;font-weight:800;font-size:6pt;${gc};">${g.g}</span></td>
+      <td style="padding:${rowPad};border:1px solid #dde;text-align:center;font-size:${tblFont};">${g.r}</td>
+    </tr>`;
   }).join('');
-
   const logoHtml = logoUrl
-    ? `<img src="${logoUrl}" alt="Logo" style="width:70px;height:70px;object-fit:contain;border-radius:50%;border:2px solid #0d1b2a;margin-bottom:6px;">`
-    : `<div style="width:70px;height:70px;border-radius:50%;background:#0d1b2a;display:flex;align-items:center;justify-content:center;color:#e8b84b;font-weight:900;font-size:1.4rem;margin:0 auto 6px;">${(schoolName||'').substring(0,2).toUpperCase()}</div>`;
-
+    ? `<img src="${logoUrl}" alt="Logo" style="width:44px;height:44px;object-fit:contain;border-radius:50%;border:2px solid #0d1b2a;display:block;margin:0 auto 3px;">`
+    : `<div style="width:44px;height:44px;border-radius:50%;background:#0d1b2a;display:flex;align-items:center;justify-content:center;color:#e8b84b;font-weight:900;font-size:12pt;margin:0 auto 3px;">${(schoolName||'').substring(0,2).toUpperCase()}</div>`;
+  const overallG = gradeOf(d.average || 0);
+  const gradeColorMap = {
+    A1:'background:#c8f0d8;color:#0a4a20',B2:'background:#d0e8ff;color:#0a3060',
+    B3:'background:#dceeff;color:#0a3878',C4:'background:#fff4c8;color:#6a4400',
+    C5:'background:#fff4c8;color:#6a4400',C6:'background:#fff4c8;color:#6a4400',
+    D7:'background:#ffe8c0;color:#6a3000',E8:'background:#ffe8c0;color:#6a3000',
+    F9:'background:#ffd0d0;color:#6a0000'
+  };
+  const avgGradeStyle = gradeColorMap[overallG.g] || '';
   document.getElementById('reportSheet').innerHTML = `
-    <div class="rsh" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;">
-      ${logoHtml}
-      <div class="rshn">${schoolName}</div>
-      ${address ? `<div class="rsha">${address}</div>` : ''}
-      ${motto    ? `<div style="font-size:.72rem;color:#777;font-style:italic;">"${motto}"</div>` : ''}
+<div style="width:100%;font-family:Arial,sans-serif;font-size:7pt;color:#111;">
+  <!-- HEADER -->
+  <div style="text-align:center;border-bottom:2.5px solid #0d1b2a;padding-bottom:5px;margin-bottom:5px;">
+    ${logoHtml}
+    <div style="font-size:11pt;font-weight:900;color:#0d1b2a;text-transform:uppercase;letter-spacing:1px;line-height:1.2;">${schoolName}</div>
+    ${address ? `<div style="font-size:6.5pt;color:#555;margin-top:1px;">${address}</div>` : ''}
+    ${motto    ? `<div style="font-size:6pt;color:#888;font-style:italic;margin-top:1px;">"${motto}"</div>` : ''}
+    <div style="font-size:8pt;font-weight:800;color:#0d1b2a;text-transform:uppercase;letter-spacing:.5px;margin-top:3px;">Student Academic Report Sheet</div>
+    <div style="font-size:6.5pt;color:#666;margin-top:1px;">${term} &nbsp;&middot;&nbsp; ${session}</div>
+  </div>
+  <!-- STUDENT INFO -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;font-size:6.5pt;border:1px solid #ccd;border-radius:3px;padding:4px 8px;margin-bottom:5px;">
+    <div style="display:flex;gap:4px;"><span style="font-weight:800;color:#0d1b2a;min-width:56px;">Name:</span><span>${student.full_name || meta.student_id || '—'}</span></div>
+    <div style="display:flex;gap:4px;"><span style="font-weight:800;color:#0d1b2a;min-width:56px;">Student ID:</span><span style="font-family:monospace;">${student.student_id || meta.student_id || '—'}</span></div>
+    <div style="display:flex;gap:4px;"><span style="font-weight:800;color:#0d1b2a;min-width:56px;">Class:</span><span>${student.class || '—'}</span></div>
+    <div style="display:flex;gap:4px;"><span style="font-weight:800;color:#0d1b2a;min-width:56px;">Gender:</span><span>${student.gender || '—'}</span></div>
+    <div style="display:flex;gap:4px;"><span style="font-weight:800;color:#0d1b2a;min-width:56px;">Term:</span><span>${term || '—'}</span></div>
+    <div style="display:flex;gap:4px;"><span style="font-weight:800;color:#0d1b2a;min-width:56px;">Session:</span><span>${session || '—'}</span></div>
+  </div>
+  <!-- RESULTS TABLE -->
+  <table style="width:100%;border-collapse:collapse;margin-bottom:5px;">
+    <thead>
+      <tr style="background:#0d1b2a;">
+        <th style="padding:4px 6px;text-align:left;color:#fff;font-size:6.5pt;font-weight:700;width:32%;">Subject</th>
+        <th style="padding:4px 5px;text-align:center;color:#fff;font-size:6.5pt;font-weight:700;">1st (${ms.t1})</th>
+        <th style="padding:4px 5px;text-align:center;color:#fff;font-size:6.5pt;font-weight:700;">2nd (${ms.t2})</th>
+        <th style="padding:4px 5px;text-align:center;color:#fff;font-size:6.5pt;font-weight:700;">Exam (${ms.ex})</th>
+        <th style="padding:4px 5px;text-align:center;color:#fff;font-size:6.5pt;font-weight:700;">Total</th>
+        <th style="padding:4px 5px;text-align:center;color:#fff;font-size:6.5pt;font-weight:700;">Grade</th>
+        <th style="padding:4px 5px;text-align:center;color:#fff;font-size:6.5pt;font-weight:700;">Remark</th>
+      </tr>
+    </thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <!-- SUMMARY ROW -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:5px;">
+    <div style="border:1px solid #dde;border-radius:3px;padding:4px;text-align:center;">
+      <div style="font-size:6pt;color:#777;font-weight:700;text-transform:uppercase;">Grand Total</div>
+      <div style="font-size:10pt;font-weight:900;color:#0d1b2a;margin-top:1px;">${d.grand_total || 0}</div>
     </div>
-    <div class="rst2">Student Academic Report Sheet</div>
-    <div class="rsterm">${term} &nbsp;·&nbsp; ${session}</div>
-    <div class="rsig">
-      <div class="rsii"><span class="rsil">Name:</span><span>${student.full_name || meta.student_id}</span></div>
-      <div class="rsii"><span class="rsil">Student ID:</span><span style="font-family:monospace;">${student.student_id || meta.student_id}</span></div>
-      <div class="rsii"><span class="rsil">Class:</span><span>${student.class || '—'}</span></div>
-      <div class="rsii"><span class="rsil">Gender:</span><span>${student.gender || '—'}</span></div>
-      <div class="rsii"><span class="rsil">Term:</span><span>${term || '—'}</span></div>
-      <div class="rsii"><span class="rsil">Session:</span><span>${session || '—'}</span></div>
+    <div style="border:1px solid #dde;border-radius:3px;padding:4px;text-align:center;">
+      <div style="font-size:6pt;color:#777;font-weight:700;text-transform:uppercase;">Average</div>
+      <div style="font-size:10pt;font-weight:900;color:#0d1b2a;margin-top:1px;">${d.average || 0}%</div>
     </div>
-    <table class="rstbl"><thead><tr><th style="text-align:left;width:28%">Subject</th><th>1st Test (${ms.t1})</th><th>2nd Test (${ms.t2})</th><th>Exam (${ms.ex})</th><th>Total (100)</th><th>Grade</th><th>Remark</th></tr></thead><tbody>${rows}</tbody></table>
-    <div class="rssum">
-      <div class="rssb"><div class="rssbl">Grand Total</div><div class="rssbv">${d.grand_total || 0}</div></div>
-      <div class="rssb"><div class="rssbl">Average</div><div class="rssbv">${d.average || 0}%</div></div>
-      <div class="rssb"><div class="rssbl">Overall Grade</div><div class="rssbv">${gradeOf(d.average || 0).g}</div></div>
+    <div style="border:1px solid #dde;border-radius:3px;padding:4px;text-align:center;">
+      <div style="font-size:6pt;color:#777;font-weight:700;text-transform:uppercase;">Overall Grade</div>
+      <div style="margin-top:2px;"><span style="display:inline-block;padding:2px 10px;border-radius:4px;font-weight:900;font-size:9pt;${avgGradeStyle};">${overallG.g}</span></div>
     </div>
-    <div class="rscmt">
-      <div class="rscb"><div class="rscbl"><i class="fas fa-chalkboard-teacher"></i> Class Teacher's Comment</div><div class="rsline"></div><div class="rsline"></div><div class="rsline"></div></div>
-      <div class="rscb"><div class="rscbl"><i class="fas fa-user-tie"></i> Principal's Comment</div><div class="rsline"></div><div class="rsline"></div><div class="rsline"></div></div>
+  </div>
+  <!-- COMMENTS -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:5px;">
+    <div style="border:1px solid #dde;border-radius:3px;padding:5px;">
+      <div style="font-size:6.5pt;font-weight:800;color:#0d1b2a;margin-bottom:3px;">Class Teacher's Comment</div>
+      <div style="border-bottom:1px solid #ccd;height:13px;margin-bottom:2px;"></div>
+      <div style="border-bottom:1px solid #ccd;height:13px;margin-bottom:2px;"></div>
+      <div style="border-bottom:1px solid #ccd;height:13px;"></div>
     </div>
-    <div class="rssigs">
-      <div class="rssig"><div class="rssig-l">Class Teacher's Signature</div></div>
-      <div class="rssig"><div class="rssig-l">${principal ? principal + '<br>' : ''}Principal's Signature &amp; Stamp</div></div>
-      <div class="rssig"><div class="rssig-l">Date</div></div>
+    <div style="border:1px solid #dde;border-radius:3px;padding:5px;">
+      <div style="font-size:6.5pt;font-weight:800;color:#0d1b2a;margin-bottom:3px;">Principal's Comment</div>
+      <div style="border-bottom:1px solid #ccd;height:13px;margin-bottom:2px;"></div>
+      <div style="border-bottom:1px solid #ccd;height:13px;margin-bottom:2px;"></div>
+      <div style="border-bottom:1px solid #ccd;height:13px;"></div>
     </div>
-    <div class="rsfoot">&copy; 2026 ACADEX &mdash; Designed by Zekpo Destiny &nbsp;&bull;&nbsp; ${schoolName}</div>`;
+  </div>
+  <!-- SIGNATURES -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:5px;">
+    <div style="text-align:center;font-size:6.5pt;">
+      <div style="border-top:1px solid #333;padding-top:3px;margin-top:16px;">Class Teacher's Signature</div>
+    </div>
+    <div style="text-align:center;font-size:6.5pt;">
+      <div style="border-top:1px solid #333;padding-top:3px;margin-top:16px;">${principal ? principal + '<br>' : ''}Principal's Signature &amp; Stamp</div>
+    </div>
+    <div style="text-align:center;font-size:6.5pt;">
+      <div style="border-top:1px solid #333;padding-top:3px;margin-top:16px;">Date</div>
+    </div>
+  </div>
+  <!-- FOOTER -->
+  <div style="text-align:center;font-size:5.5pt;color:#aaa;margin-top:5px;border-top:1px solid #eee;padding-top:4px;">
+    &copy; 2026 ACADEX &mdash; Designed by Zekpo Destiny &nbsp;&bull;&nbsp; ${schoolName} &nbsp;&bull;&nbsp; Computer-generated result sheet
+  </div>
+</div>`;
   document.getElementById('reportModal').classList.add('open');
 }
 function closeReport() { document.getElementById('reportModal').classList.remove('open'); }
-
 // ════════════════════════════════════════════════
 // EXAM CARD & SCRATCH CARD PRINTING
 // ════════════════════════════════════════════════
@@ -1340,7 +1474,6 @@ async function showCardPrint(type) {
     buildCardPrint(students, type, schoolName, schoolCode, cls);
   } catch (e) { toast('Error: ' + e.message, 'err'); }
 }
-
 // Print card for single student — fetches PIN from backend
 async function printStudentCard(studentId, studentName, cls, type) {
   const schoolCode = S.admin.code;
@@ -1355,7 +1488,6 @@ async function printStudentCard(studentId, studentName, cls, type) {
     buildCardPrint([{ student_id: studentId, full_name: studentName, class: cls, exam_pin: '?????' }], type, schoolName, schoolCode, cls);
   }
 }
-
 function buildCardPrint(students, type, schoolName, schoolCode, cls) {
   const isScratch = type === 'scratch';
   const term    = S.settings.term    || S.admin?.settings?.term    || 'Current Term';
@@ -1393,7 +1525,6 @@ function buildCardPrint(students, type, schoolName, schoolCode, cls) {
      <div class="card-grid">${cards}</div>`;
   document.getElementById('cardModal').classList.add('open');
 }
-
 // Print scratch cards for a class from RIDs tab
 async function genClassRids() {
   const cls = prompt('Class to generate Result IDs for (e.g. JSS1A):');
@@ -1417,7 +1548,6 @@ async function genClassRids() {
     loadRids();
   } catch (e) { toast('Error: ' + e.message, 'err'); }
 }
-
 // ════════════════════════════════════════════════
 // ADMIN LOGIN
 // ════════════════════════════════════════════════
@@ -1452,19 +1582,18 @@ async function adminLogin() {
   } catch (e) { msg('aLMsg', 'Network error: ' + e.message); }
   finally { btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login'; btn.disabled = false; }
 }
-
 function aLogout() { S.admin = null; S.settings = {}; setHeaderSchool(''); updateNav('home'); go('home'); toast('Logged out.', 'info'); }
-
 function refreshAdmin() {
-  loadDash(); loadStudents(); loadStaff(); loadSubjTable();
+  loadDash(); loadStudents(); loadStaff(); loadClasses(); loadSubjTable();
   loadQuestions(); loadResults(); loadRids(); loadSettings();
 }
-
 function aTab(i) {
   document.querySelectorAll('#adminTabs .tab').forEach((t, j) => t.classList.toggle('active', i === j));
-  document.querySelectorAll('[id^="at"]').forEach((t, j) => t.classList.toggle('active', i === j));
+  ['at0','at1','at2','at3','at4','at5','at6','at7','at8'].forEach((id, j) => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('active', j === i);
+  });
 }
-
 // ════════════════════════════════════════════════
 // DASHBOARD
 // ════════════════════════════════════════════════
@@ -1485,7 +1614,6 @@ async function loadDash() {
     document.getElementById('dashInfo').innerHTML = `<div class="card card-sm" style="background:var(--off);"><div style="display:flex;gap:20px;flex-wrap:wrap;font-size:.85rem;"><div><strong>Classes:</strong> ${(d.classes || []).join(', ') || 'None'}</div><div><strong>Result IDs Issued:</strong> ${d.result_ids_issued}</div><div><strong>Active Students:</strong> ${d.active_students}</div></div></div>`;
   } catch (e) { w.innerHTML = `<div class="alert a-err">Failed: ${e.message}</div>`; }
 }
-
 // ════════════════════════════════════════════════
 // STUDENTS — Full CRUD with Edit + Card Print
 // ════════════════════════════════════════════════
@@ -1497,10 +1625,24 @@ async function loadStudents(cls = '') {
     if (cls) p.class = cls;
     const r = await api(p);
     const st = r.students || [];
+    // Always populate class filter from registered classes
+    try {
+      const cr = await api({ action: 'getClasses', school_code: S.admin.code });
+      const regClasses = (cr.classes || []).map(c => c.class_name);
+      // Also include any class from students that may not be registered
+      const stuClasses = [...new Set(st.map(s => s.class))].filter(Boolean);
+      const allClasses = [...new Set([...regClasses, ...stuClasses])];
+      const cf = document.getElementById('stuClassFilter');
+      cf.innerHTML = '<option value="">All Classes</option>' + allClasses.map(c => `<option value="${c}" ${c === cls ? 'selected' : ''}>${c}</option>`).join('');
+      // Populate Add Student class dropdown
+      const fSClass = document.getElementById('fSClass');
+      if (fSClass) fSClass.innerHTML = '<option value="">-- Select Class --</option>' + allClasses.map(c => `<option value="${c}">${c}</option>`).join('');
+    } catch(e) {
+      const cf = document.getElementById('stuClassFilter');
+      const classes = [...new Set(st.map(s => s.class))].filter(Boolean);
+      cf.innerHTML = '<option value="">All Classes</option>' + classes.map(c => `<option value="${c}" ${c === cls ? 'selected' : ''}>${c}</option>`).join('');
+    }
     if (!st.length) { w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-users"></i></span><h4>No students yet</h4><p>Add or import students to begin.</p></div>'; return; }
-    const cf = document.getElementById('stuClassFilter');
-    const classes = [...new Set(st.map(s => s.class))].filter(Boolean);
-    cf.innerHTML = '<option value="">All Classes</option>' + classes.map(c => `<option value="${c}" ${c === cls ? 'selected' : ''}>${c}</option>`).join('');
     w.innerHTML = `<table><thead><tr><th>Student ID</th><th>Full Name</th><th>Class</th><th>Gender</th><th>Status</th><th style="min-width:160px;">Actions</th></tr></thead><tbody>${st.map(s => `
       <tr>
         <td class="td-mono">${s.student_id}</td>
@@ -1518,10 +1660,9 @@ async function loadStudents(cls = '') {
       </tr>`).join('')}</tbody></table>`;
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
 }
-
 async function saveStudent() {
   const name = document.getElementById('fSName').value.trim();
-  const cls = document.getElementById('fSClass').value.trim();
+  const cls = (document.getElementById('fSClass').value || '').trim();
   const gender = document.getElementById('fSGender').value;
   const dob = document.getElementById('fSDob').value;
   const phone = document.getElementById('fSPhone').value.trim();
@@ -1550,13 +1691,12 @@ async function saveStudent() {
       toast(`Student added! ID: ${r.student_id} · PIN: ${r.exam_pin}`, 'ok', 6000);
       toggleForm('stuForm', true);
       ['fSName', 'fSPhone'].forEach(i => document.getElementById(i).value = '');
-      document.getElementById('fSClass').value = ''; document.getElementById('fSGender').value = ''; document.getElementById('fSDob').value = '';
+      const fsc=document.getElementById('fSClass'); if(fsc) fsc.selectedIndex=0; document.getElementById('fSGender').value = ''; document.getElementById('fSDob').value = '';
       loadStudents();
     } else { toast(r.message || 'Failed to save.', 'err'); }
   } catch (e) { toast('Error: ' + e.message, 'err'); }
   finally { btn.innerHTML = '<i class="fas fa-save"></i> Save Student'; btn.disabled = false; }
 }
-
 // EDIT STUDENT MODAL
 function openEdit(id, name, cls, gender, dob, phone, status) {
   document.getElementById('eSId').value = id;
@@ -1570,9 +1710,7 @@ function openEdit(id, name, cls, gender, dob, phone, status) {
   msg('editMsg', '');
   document.getElementById('editModal').classList.add('open');
 }
-
 function closeEdit() { document.getElementById('editModal').classList.remove('open'); }
-
 async function saveEdit() {
   const id = document.getElementById('eSId').value;
   const name = document.getElementById('eSName').value.trim();
@@ -1594,7 +1732,6 @@ async function saveEdit() {
   } catch (e) { msg('editMsg', 'Error: ' + e.message); }
   finally { btn.innerHTML = '<i class="fas fa-save"></i> Save Changes'; btn.disabled = false; }
 }
-
 async function deleteStu(id) {
   if (!confirm('Delete student ' + id + '? This cannot be undone.')) return;
   try {
@@ -1603,7 +1740,6 @@ async function deleteStu(id) {
     else toast(r.message, 'err');
   } catch (e) { toast(e.message, 'err'); }
 }
-
 // CSV IMPORT — two-pass (generate all IDs first, then upload)
 function handleStudentCsv(file) {
   const reader = new FileReader();
@@ -1620,13 +1756,11 @@ function handleStudentCsv(file) {
       rows.push(row);
     }
     if (!rows.length) { toast('No valid rows found.', 'err'); return; }
-
     const prog = document.getElementById('stuUpProg');
     const bar = document.getElementById('stuUpProgBar');
     const lbl = document.getElementById('stuUpLbl');
     prog.classList.remove('hidden');
     toast(`Processing ${rows.length} student(s)...`, 'info');
-
     // PASS 1: Pre-generate all IDs sequentially
     const prepared = [];
     for (let i = 0; i < rows.length; i++) {
@@ -1646,7 +1780,6 @@ function handleStudentCsv(file) {
       // Small delay to avoid hammering API
       await new Promise(r => setTimeout(r, 150));
     }
-
     // PASS 2: Upload all
     let ok = 0, fail = 0, failMsgs = [];
     for (let i = 0; i < prepared.length; i++) {
@@ -1671,7 +1804,6 @@ function handleStudentCsv(file) {
       } catch (err) { fail++; failMsgs.push(`${row.full_name}: Network error`); }
       await new Promise(r => setTimeout(r, 100));
     }
-
     bar.style.width = '100%';
     if (fail > 0) {
       toast(`Done: ${ok} added, ${fail} failed.`, 'warn');
@@ -1683,7 +1815,201 @@ function handleStudentCsv(file) {
   };
   reader.readAsText(file);
 }
-
+// ════════════════════════════════════════════════
+// CLASSES MANAGEMENT
+// ════════════════════════════════════════════════
+async function loadClasses() {
+  const w = document.getElementById('classTable');
+  if (!w) return;
+  w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({ action: 'getClasses', school_code: S.admin.code });
+    const classes = r.classes || [];
+    if (!classes.length) {
+      w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-school"></i></span><h4>No classes yet</h4><p>Add classes to organise students and subjects.</p></div>';
+      return;
+    }
+    w.innerHTML = `<table><thead><tr><th>Class Name</th><th>Level</th><th>Arm</th><th>Capacity</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+      ${classes.map(c => `<tr>
+        <td><strong>${c.class_name}</strong></td>
+        <td>${c.class_level||'—'}</td>
+        <td>${c.arm||'—'}</td>
+        <td>${c.capacity||'—'}</td>
+        <td><span class="badge ${c.status==='active'?'b-ok':'b-err'}">${c.status||'active'}</span></td>
+        <td>
+          <div style="display:flex;gap:4px;">
+            <button class="btn btn-info btn-sm" onclick="openEditClass('${c.class_name}','${c.class_level||''}','${c.arm||''}','${c.capacity||''}','${c.status||'active'}')" title="Edit"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-err btn-sm" onclick="deleteClass('${c.class_name}')" title="Delete"><i class="fas fa-trash"></i></button>
+          </div>
+        </td>
+      </tr>`).join('')}
+    </tbody></table>`;
+  } catch(e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+async function saveClass() {
+  const name    = document.getElementById('fClsName').value.trim();
+  const level   = document.getElementById('fClsLevel').value.trim();
+  const arm     = document.getElementById('fClsArm').value.trim();
+  const cap     = document.getElementById('fClsCap').value.trim();
+  if (!name) { toast('Class name is required.','err'); return; }
+  const btn = document.getElementById('btnSaveCls');
+  btn.innerHTML = '<span class="loader"></span>'; btn.disabled = true;
+  try {
+    const r = await api({ action:'addClass', school_code:S.admin.code, class_name:name, class_level:level, arm:arm, capacity:cap });
+    if (r.success) {
+      toast('Class added: '+name,'ok');
+      toggleForm('classForm',true);
+      ['fClsName','fClsLevel','fClsArm','fClsCap'].forEach(id=>document.getElementById(id).value='');
+      loadClasses();
+    } else toast(r.message,'err');
+  } catch(e) { toast(e.message,'err'); }
+  finally { btn.innerHTML = '<i class="fas fa-save"></i> Save Class'; btn.disabled = false; }
+}
+function openEditClass(name, level, arm, cap, status) {
+  document.getElementById('fClsName').value  = name;
+  document.getElementById('fClsLevel').value = level;
+  document.getElementById('fClsArm').value   = arm;
+  document.getElementById('fClsCap').value   = cap;
+  toggleForm('classForm', false);
+  // Change button temporarily to update
+  const btn = document.getElementById('btnSaveCls');
+  btn.innerHTML = '<i class="fas fa-save"></i> Update Class';
+  btn.onclick = async () => {
+    const newName = document.getElementById('fClsName').value.trim();
+    btn.innerHTML = '<span class="loader"></span>'; btn.disabled = true;
+    try {
+      const r = await api({action:'updateClass',school_code:S.admin.code,class_name:name,class_level:document.getElementById('fClsLevel').value.trim(),arm:document.getElementById('fClsArm').value.trim(),capacity:document.getElementById('fClsCap').value.trim(),status:'active'});
+      if (r.success) { toast('Class updated','ok'); toggleForm('classForm',true); loadClasses(); }
+      else toast(r.message,'err');
+    } catch(e){ toast(e.message,'err'); }
+    finally { btn.innerHTML='<i class="fas fa-save"></i> Save Class'; btn.disabled=false; btn.onclick=saveClass; }
+  };
+}
+async function deleteClass(name) {
+  if (!confirm('Delete class "'+name+'"? Students and subjects in this class will not be deleted.')) return;
+  try {
+    const r = await api({ action:'deleteClass', school_code:S.admin.code, class_name:name });
+    if (r.success) { toast('Class deleted.','ok'); loadClasses(); }
+    else toast(r.message,'err');
+  } catch(e) { toast(e.message,'err'); }
+}
+// ════════════════════════════════════════════════
+// STAFF EDIT & SUBJECT ASSIGNMENT
+// ════════════════════════════════════════════════
+function openStaffEdit(id, name, role, subj, cls, status) {
+  document.getElementById('seStId').value     = id;
+  document.getElementById('seStName').value   = name;
+  document.getElementById('seStRole').value   = role;
+  document.getElementById('seStSubj').value   = subj;
+  document.getElementById('seStClass').value  = cls;
+  document.getElementById('seStStatus').value = status||'active';
+  document.getElementById('seStPass').value   = '';
+  msg('staffEditMsg','');
+  document.getElementById('staffEditModal').classList.add('open');
+}
+function closeStaffEdit() { document.getElementById('staffEditModal').classList.remove('open'); }
+async function saveStaffEdit() {
+  const id     = document.getElementById('seStId').value;
+  const name   = document.getElementById('seStName').value.trim();
+  const role   = document.getElementById('seStRole').value;
+  const subj   = document.getElementById('seStSubj').value.trim();
+  const cls    = document.getElementById('seStClass').value.trim();
+  const status = document.getElementById('seStStatus').value;
+  const pass   = document.getElementById('seStPass').value.trim();
+  if (!name) { msg('staffEditMsg','Name is required.'); return; }
+  const btn = document.getElementById('btnSeStSave');
+  btn.innerHTML = '<span class="loader"></span>'; btn.disabled = true;
+  try {
+    const params = {action:'updateStaff',school_code:S.admin.code,staff_id:id,full_name:name,role,subject_code:subj,class:cls,status};
+    if (pass) params.password = pass;
+    const r = await api(params);
+    if (r.success) { toast('Staff updated!','ok'); closeStaffEdit(); loadStaff(); }
+    else msg('staffEditMsg', r.message||'Update failed.');
+  } catch(e) { msg('staffEditMsg', e.message); }
+  finally { btn.innerHTML='<i class="fas fa-save"></i> Save Changes'; btn.disabled=false; }
+}
+async function openAssignSubjects(staffId, staffName) {
+  document.getElementById('assignStaffId').value = staffId;
+  document.getElementById('assignStaffName').textContent = staffName;
+  document.getElementById('assignModal').classList.add('open');
+  // Load subjects and classes into dropdowns
+  try {
+    const [sr, cr] = await Promise.all([
+      api({action:'getSubjects',school_code:S.admin.code}),
+      api({action:'getClasses', school_code:S.admin.code})
+    ]);
+    const subjects = sr.subjects||[];
+    const classes  = cr.classes ||[];
+    const uniqueSubjects = [...new Map(subjects.map(s=>[s.subject_code,s])).values()];
+    document.getElementById('assignSubjSel').innerHTML =
+      '<option value="">-- Select Subject --</option>' +
+      uniqueSubjects.map(s=>`<option value="${s.subject_code}">${s.subject_name} (${s.subject_code})</option>`).join('');
+    document.getElementById('assignClassSel').innerHTML =
+      '<option value="">-- Select Class --</option>' +
+      classes.map(c=>`<option value="${c.class_name}">${c.class_name}</option>`).join('');
+  } catch(e) {}
+  await loadAssignedList(staffId);
+}
+function closeAssign() { document.getElementById('assignModal').classList.remove('open'); }
+async function loadAssignedList(staffId) {
+  const w = document.getElementById('assignedList');
+  w.innerHTML = '<div class="ls" style="padding:20px 0;"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({action:'getStaffSubjects',school_code:S.admin.code,staff_id:staffId});
+    const assignments = r.assignments||[];
+    if (!assignments.length) {
+      w.innerHTML = '<div class="alert a-info"><i class="fas fa-info-circle"></i> No subjects assigned yet.</div>'; return;
+    }
+    w.innerHTML = '<div style="font-weight:700;font-size:.82rem;color:var(--tmid);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px;">Assigned Subjects</div>' +
+      assignments.map(a=>`
+        <div class="assign-item">
+          <div><div class="assign-item-info">${a.subject_code}</div><div class="assign-item-sub">Class: ${a.class}</div></div>
+          <button class="btn btn-err btn-sm" onclick="doRemoveSubject('${a.subject_code}','${a.class}')"><i class="fas fa-times"></i> Remove</button>
+        </div>`).join('');
+  } catch(e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+async function doAssignSubject() {
+  const staffId = document.getElementById('assignStaffId').value;
+  const subj    = document.getElementById('assignSubjSel').value;
+  const cls     = document.getElementById('assignClassSel').value;
+  if (!subj||!cls) { toast('Select both subject and class.','err'); return; }
+  try {
+    const r = await api({action:'assignStaffSubject',school_code:S.admin.code,staff_id:staffId,subject_code:subj,class:cls});
+    if (r.success) { toast('Subject assigned!','ok'); await loadAssignedList(staffId); }
+    else toast(r.message,'err');
+  } catch(e) { toast(e.message,'err'); }
+}
+async function doRemoveSubject(subj, cls) {
+  const staffId = document.getElementById('assignStaffId').value;
+  try {
+    const r = await api({action:'removeStaffSubject',school_code:S.admin.code,staff_id:staffId,subject_code:subj,class:cls});
+    if (r.success) { toast('Assignment removed.','ok'); await loadAssignedList(staffId); }
+    else toast(r.message,'err');
+  } catch(e) { toast(e.message,'err'); }
+}
+// ════════════════════════════════════════════════
+// RID DELETE
+// ════════════════════════════════════════════════
+async function deleteRid(resultId) {
+  if (!confirm('Delete Result ID '+resultId+'? This cannot be undone.')) return;
+  try {
+    const r = await api({action:'deleteResultId',school_code:S.admin.code,result_id:resultId});
+    if (r.success) { toast('Result ID deleted.','ok'); loadRids(); }
+    else toast(r.message,'err');
+  } catch(e) { toast(e.message,'err'); }
+}
+// ════════════════════════════════════════════════
+// DEDUPLICATION
+// ════════════════════════════════════════════════
+async function runDedup() {
+  if (!confirm('This will remove duplicate result rows, keeping the one with the highest total for each student/subject. Continue?')) return;
+  toast('Running deduplication...','info');
+  try {
+    const r = await api({action:'deduplicateResults',school_code:S.admin.code});
+    if (r.success) { toast(r.message,'ok'); loadResults(); }
+    else toast(r.message,'err');
+  } catch(e) { toast(e.message,'err'); }
+}
 // ════════════════════════════════════════════════
 // STAFF
 // ════════════════════════════════════════════════
@@ -1697,10 +2023,15 @@ async function loadStaff() {
     w.innerHTML = `<table><thead><tr><th>Staff ID</th><th>Name</th><th>Role</th><th>Subject</th><th>Class</th><th>Status</th><th>Actions</th></tr></thead><tbody>${st.map(s => `
       <tr><td class="td-mono">${s.staff_id}</td><td><strong>${s.full_name}</strong></td><td>${s.role}</td><td>${s.subject_code || '—'}</td><td>${s.class || '—'}</td>
       <td><span class="badge ${s.status === 'active' ? 'b-ok' : 'b-err'}">${s.status}</span></td>
-      <td><button class="btn btn-err btn-sm" onclick="deleteSt('${s.staff_id}')"><i class="fas fa-trash"></i></button></td></tr>`).join('')}</tbody></table>`;
+      <td>
+        <div style="display:flex;gap:4px;">
+          <button class="btn btn-info btn-sm" onclick="openStaffEdit('${s.staff_id}','${(s.full_name||'').replace(/'/g,"\\'")}','${s.role}','${s.subject_code||''}','${s.class||''}','${s.status}')" title="Edit"><i class="fas fa-edit"></i></button>
+          <button class="btn btn-warn btn-sm" onclick="openAssignSubjects('${s.staff_id}','${(s.full_name||'').replace(/'/g,"\\'")}')" title="Assign Subjects"><i class="fas fa-book"></i></button>
+          <button class="btn btn-err btn-sm" onclick="deleteSt('${s.staff_id}')"><i class="fas fa-trash"></i></button>
+        </div>
+      </td></tr>`).join('')}</tbody></table>`;
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
 }
-
 async function saveStaff() {
   const name = document.getElementById('fStName').value.trim();
   if (!name) { toast('Staff name is required.', 'err'); return; }
@@ -1725,7 +2056,6 @@ async function saveStaff() {
   } catch (e) { toast(e.message, 'err'); }
   finally { btn.innerHTML = '<i class="fas fa-save"></i> Save Staff'; btn.disabled = false; }
 }
-
 async function deleteSt(id) {
   if (!confirm('Delete staff ' + id + '?')) return;
   try {
@@ -1733,7 +2063,6 @@ async function deleteSt(id) {
     if (r.success) { toast('Staff deleted.', 'ok'); loadStaff(); } else toast(r.message, 'err');
   } catch (e) { toast(e.message, 'err'); }
 }
-
 // ════════════════════════════════════════════════
 // SUBJECTS
 // ════════════════════════════════════════════════
@@ -1747,12 +2076,28 @@ async function loadSubjTable() {
     const qsf = document.getElementById('qSubjFilter');
     const caSubj = document.getElementById('caSubj');
     const resSubjFilter = document.getElementById('resSubjFilter');
-    const subOpts = subjects.map(s => `<option value="${s.subject_code}">${s.subject_name} (${s.class})</option>`).join('');
+    const subOpts = subjects.map(s => `<option value="${s.subject_code}">${s.subject_name} — ${s.class}</option>`).join('');
     if (qsf) qsf.innerHTML = '<option value="">All Subjects</option>' + subOpts;
     if (caSubj) caSubj.innerHTML = '<option value="">-- Select Subject --</option>' + subOpts;
     if (resSubjFilter) resSubjFilter.innerHTML = '<option value="">All Subjects</option>' + subOpts;
     const fqSubj = document.getElementById('fQSubj');
     if (fqSubj) fqSubj.innerHTML = '<option value="">-- Select Subject --</option>' + subOpts;
+    // Populate class dropdowns from classes API
+    try {
+      const cr = await api({ action:'getClasses', school_code:S.admin.code });
+      const classes = cr.classes || [];
+      const classOpts = classes.map(c=>`<option value="${c.class_name}">${c.class_name}</option>`).join('');
+      const fSubClass = document.getElementById('fSubClass');
+      if (fSubClass) fSubClass.innerHTML = '<option value="">-- Select Class --</option>' + classOpts;
+      // Also update student class filter
+      const stuCF = document.getElementById('stuClassFilter');
+      if (stuCF && stuCF.options.length <= 1) {
+        stuCF.innerHTML = '<option value="">All Classes</option>' + classOpts;
+      }
+      // Populate CA class dropdown in admin Results tab
+      const caClassEl = document.getElementById('caClass');
+      if (caClassEl) caClassEl.innerHTML = '<option value="">-- Select Class --</option>' + classOpts;
+    } catch(e) {}
     if (!subjects.length) { w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-book"></i></span><h4>No subjects</h4></div>'; return; }
     w.innerHTML = `<table><thead><tr><th>Code</th><th>Name</th><th>Class</th><th>Duration</th><th>Term</th><th>CBT</th><th>Actions</th></tr></thead><tbody>${subjects.map(s => `
       <tr><td class="td-mono">${s.subject_code}</td><td><strong>${s.subject_name}</strong></td><td>${s.class}</td><td>${s.duration_minutes} min</td><td>${s.term}</td>
@@ -1760,7 +2105,6 @@ async function loadSubjTable() {
       <td><button class="btn btn-err btn-sm" onclick="deleteSubj('${s.subject_code}')"><i class="fas fa-trash"></i></button></td></tr>`).join('')}</tbody></table>`;
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
 }
-
 async function saveSubject() {
   const code = document.getElementById('fSubCode').value.trim().toUpperCase();
   const name = document.getElementById('fSubName').value.trim();
@@ -1785,7 +2129,6 @@ async function saveSubject() {
   } catch (e) { toast(e.message, 'err'); }
   finally { btn.innerHTML = '<i class="fas fa-save"></i> Save Subject'; btn.disabled = false; }
 }
-
 async function deleteSubj(code) {
   if (!confirm('Delete subject ' + code + '?')) return;
   try {
@@ -1793,7 +2136,6 @@ async function deleteSubj(code) {
     if (r.success) { toast('Subject deleted.', 'ok'); loadSubjTable(); } else toast(r.message, 'err');
   } catch (e) { toast(e.message, 'err'); }
 }
-
 // ════════════════════════════════════════════════
 // QUESTIONS
 // ════════════════════════════════════════════════
@@ -1808,7 +2150,6 @@ async function loadQuestions(subjCode = '') {
     w.innerHTML = `<div style="padding:8px 14px;font-size:.82rem;color:var(--tmid);border-bottom:1px solid var(--border);"><strong>${qs.length}</strong> question(s)</div><table><thead><tr><th style="width:44%">Question</th><th>A</th><th>B</th><th>C</th><th>D</th><th>Correct</th><th>Difficulty</th><th>Del</th></tr></thead><tbody>${qs.map((q, i) => `<tr><td><strong>${i + 1}.</strong> ${q.question}</td><td>${q.option_a}</td><td>${q.option_b}</td><td>${q.option_c}</td><td>${q.option_d}</td><td><span class="badge b-ok">${q.correct}</span></td><td><span class="badge b-info">${q.difficulty}</span></td><td><button class="btn btn-err btn-sm" onclick="deleteQ('${subjCode}','${(q.question||'').replace(/'/g,"\\'").replace(/\n/g,' ')}')"><i class="fas fa-trash"></i></button></td></tr>`).join('')}</tbody></table>`;
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
 }
-
 async function saveQuestion() {
   const subj = document.getElementById('fQSubj').value;
   const q = document.getElementById('fQQ').value.trim();
@@ -1830,7 +2171,6 @@ async function saveQuestion() {
   } catch (e) { toast(e.message, 'err'); }
   finally { btn.innerHTML = '<i class="fas fa-save"></i> Save Question'; btn.disabled = false; }
 }
-
 async function deleteQ(subjCode, question) {
   if (!confirm('Delete this question?')) return;
   try {
@@ -1838,7 +2178,6 @@ async function deleteQ(subjCode, question) {
     if (r.success) { toast('Question deleted.', 'ok'); loadQuestions(subjCode); } else toast(r.message, 'err');
   } catch (e) { toast(e.message, 'err'); }
 }
-
 function handleQCsv(file) {
   const reader = new FileReader();
   reader.onload = async e => {
@@ -1859,7 +2198,6 @@ function handleQCsv(file) {
   };
   reader.readAsText(file);
 }
-
 // ════════════════════════════════════════════════
 // RESULTS (ADMIN VIEW)
 // ════════════════════════════════════════════════
@@ -1881,7 +2219,6 @@ async function loadResults() {
     }).join('')}</tbody></table>`;
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
 }
-
 async function loadCaStudents() {
   const cls = document.getElementById('caClass').value.trim();
   const subj = document.getElementById('caSubj').value;
@@ -1916,7 +2253,6 @@ async function loadCaStudents() {
     document.getElementById('caActions').classList.remove('hidden');
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
 }
-
 async function saveCaScores() {
   const students = window._caStudents || [];
   const subj = window._caSubj;
@@ -1938,7 +2274,6 @@ async function saveCaScores() {
   toast(`Saved: ${ok}, Failed: ${fail}.`, fail > 0 ? 'warn' : 'ok');
   if (ok > 0) loadResults();
 }
-
 // ════════════════════════════════════════════════
 // RESULT IDs
 // ════════════════════════════════════════════════
@@ -1955,11 +2290,13 @@ async function loadRids() {
         <td class="td-mono">${r.student_id}</td><td>${r.term}</td>
         <td>${r.attempts_used || 0}/${r.max_attempts || 5}</td>
         <td><span class="badge ${r.status === 'active' ? 'b-ok' : 'b-err'}">${r.status}</span></td>
-        <td><button class="btn btn-info btn-sm" onclick="printSingleScratch('${r.result_id}','${r.student_id}')"><i class="fas fa-print"></i></button></td>
+        <td style="display:flex;gap:4px;">
+          <button class="btn btn-info btn-sm" onclick="printSingleScratch('${r.result_id}','${r.student_id}')"><i class="fas fa-print"></i></button>
+          <button class="btn btn-err btn-sm" onclick="deleteRid('${r.result_id}')" title="Delete RID"><i class="fas fa-trash"></i></button>
+        </td>
       </tr>`).join('')}</tbody></table>`;
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
 }
-
 async function generateRid() {
   const stuId = document.getElementById('ridStuId').value.trim();
   if (!stuId) { toast('Enter a student ID.', 'err'); return; }
@@ -1975,7 +2312,6 @@ async function generateRid() {
   } catch (e) { toast(e.message, 'err'); }
   finally { btn.innerHTML = '<i class="fas fa-key"></i> Generate Result ID'; btn.disabled = false; }
 }
-
 async function printSingleScratch(rid, stuId) {
   const schoolName = S.admin.name;
   const schoolCode = S.admin.code;
@@ -2003,7 +2339,6 @@ async function printSingleScratch(rid, stuId) {
   document.getElementById('cardPrintArea').innerHTML = `<div class="card-grid">${card}</div>`;
   document.getElementById('cardModal').classList.add('open');
 }
-
 // ════════════════════════════════════════════════
 // SETTINGS
 // ════════════════════════════════════════════════
@@ -2031,7 +2366,6 @@ async function loadSettings() {
     S.settings = s;
   } catch (e) {}
 }
-
 async function saveSettings() {
   const apiVal = document.getElementById('setApi').value.trim();
   if (apiVal) localStorage.setItem('acadex_api', apiVal);
@@ -2058,7 +2392,6 @@ async function saveSettings() {
     else { toast(r.message, 'err'); }
   } catch (e) { toast(e.message, 'err'); }
 }
-
 // ════════════════════════════════════════════════
 // STAFF PANEL
 // ════════════════════════════════════════════════
@@ -2072,6 +2405,7 @@ async function staffLogin() {
     const r = await api({ action: 'staffLogin', school_code: code, staff_id: id, password: pass });
     if (r.success) {
       S.staff = { code, schoolName: r.school_name || code, ...r.staff }; S.settings = r.settings || {};
+      S.staff.assignedSubjects = r.assignedSubjects || [];
       setHeaderSchool(r.school_name || code);
       document.getElementById('staffIcon').textContent = (id || 'TC').substring(0, 2).toUpperCase();
       document.getElementById('staffName').textContent = r.staff.full_name || id;
@@ -2082,25 +2416,47 @@ async function staffLogin() {
   } catch (e) { msg('stLMsg', 'Network error: ' + e.message); }
   finally { btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login'; btn.disabled = false; }
 }
-
 function stLogout() { S.staff = null; S.settings = {}; setHeaderSchool(''); updateNav('home'); go('home'); toast('Logged out.', 'info'); }
-
 function stTab(i) {
   document.querySelectorAll('#s-staff .tab').forEach((t, j) => t.classList.toggle('active', i === j));
   ['st0','st1'].forEach((id, j) => { const el = document.getElementById(id); if (el) el.classList.toggle('active', j === i); });
 }
-
 async function loadStaffSubjects() {
   try {
-    const r = await api({ action: 'getSubjects', school_code: S.staff.code });
-    const subjects = r.subjects || [];
-    const opts = subjects.map(s => `<option value="${s.subject_code}">${s.subject_name} (${s.class})</option>`).join('');
+    // Use assigned subjects if available, otherwise fetch all
+    let subjects = S.staff.assignedSubjects || [];
+    if (subjects.length === 0) {
+      const r = await api({ action: 'getSubjects', school_code: S.staff.code, staff_id: S.staff.staff_id });
+      subjects = r.subjects || [];
+    }
+    const opts = subjects.map(s => `<option value="${s.subject_code}" data-class="${s.class}">${s.subject_name} — ${s.class}</option>`).join('');
     const common = '<option value="">-- Select Subject --</option>' + opts;
     document.getElementById('stCaSubj').innerHTML = common;
     document.getElementById('stResSubj').innerHTML = '<option value="">All Subjects</option>' + opts;
+    // Auto-fill class when subject is selected
+    document.getElementById('stCaSubj').onchange = function() {
+      const sel = this.options[this.selectedIndex];
+      if (sel && sel.dataset.class) {
+        // Set class dropdown to match selected subject's class
+        const classSel = document.getElementById('stCaClass');
+        if (classSel) {
+          for (let i=0;i<classSel.options.length;i++){
+            if (classSel.options[i].value === sel.dataset.class){ classSel.selectedIndex=i; break; }
+          }
+        }
+      }
+    };
+    // Populate class dropdowns for staff
+    try {
+      const cr = await api({ action:'getClasses', school_code:S.staff.code });
+      const clsOpts = (cr.classes||[]).map(c=>`<option value="${c.class_name}">${c.class_name}</option>`).join('');
+      const stCaCls = document.getElementById('stCaClass');
+      const stReCls = document.getElementById('stResClass');
+      if (stCaCls) stCaCls.innerHTML = '<option value="">-- Select Class --</option>' + clsOpts;
+      if (stReCls) stReCls.innerHTML = '<option value="">All Classes</option>' + clsOpts;
+    } catch(e) {}
   } catch (e) {}
 }
-
 async function stLoadStudents() {
   const cls = document.getElementById('stCaClass').value.trim();
   const subj = document.getElementById('stCaSubj').value;
@@ -2125,7 +2481,6 @@ async function stLoadStudents() {
     document.getElementById('stCaActions').classList.remove('hidden');
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
 }
-
 async function stSaveScores() {
   const students = window._stStudents || [];
   const subj = window._stSubj;
@@ -2141,7 +2496,6 @@ async function stSaveScores() {
   }
   toast(`Saved: ${ok}, Failed: ${fail}.`, fail > 0 ? 'warn' : 'ok');
 }
-
 async function stLoadResults() {
   const cls = document.getElementById('stResClass').value.trim();
   const subj = document.getElementById('stResSubj').value;
@@ -2161,7 +2515,6 @@ async function stLoadResults() {
     w.innerHTML = `<table><thead><tr><th>Student ID</th><th>Name</th><th>Subject</th><th>1st</th><th>2nd</th><th>Exam</th><th>Total</th><th>Grade</th></tr></thead><tbody>${rs.map(r => { const g = gradeOf(r.total); return `<tr><td class="td-mono">${r.student_id}</td><td>${r.full_name || '—'}</td><td>${r.subject_name || r.subject_code}</td><td>${r.first_test||0}</td><td>${r.second_test||0}</td><td>${r.exam||0}</td><td><strong>${r.total||0}</strong></td><td><span class="grade ${g.cls}">${g.g}</span></td></tr>`; }).join('')}</tbody></table>`;
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
 }
-
 // ════════════════════════════════════════════════
 // SUPER ADMIN
 // ════════════════════════════════════════════════
@@ -2180,13 +2533,11 @@ async function saLogin() {
   } catch (e) { msg('saLMsg', 'Error: ' + e.message); }
   finally { btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login'; btn.disabled = false; }
 }
-
 function saLogout() { S._sa = false; updateNav('home'); go('home'); toast('Logged out.', 'info'); }
 function saTab(i) {
   document.querySelectorAll('#s-sa .tab').forEach((t, j) => t.classList.toggle('active', i === j));
   ['sa0','sa1'].forEach((id, j) => { const el = document.getElementById(id); if (el) el.classList.toggle('active', j === i); });
 }
-
 async function loadSchools() {
   const w = document.getElementById('saSchoolTable');
   w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
@@ -2197,7 +2548,6 @@ async function loadSchools() {
     w.innerHTML = `<table><thead><tr><th>Code</th><th>School Name</th><th>Town</th><th>State</th><th>Admin User</th><th>Status</th></tr></thead><tbody>${schools.map(s => `<tr><td class="td-mono"><strong>${s.school_code}</strong></td><td>${s.school_name}</td><td>${s.town||'—'}</td><td>${s.state||'—'}</td><td>${s.admin_username}</td><td><span class="badge ${s.status==='active'?'b-ok':'b-err'}">${s.status}</span></td></tr>`).join('')}</tbody></table>`;
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
 }
-
 async function saRegister() {
   const code = document.getElementById('saCode').value.trim().toUpperCase();
   const name = document.getElementById('saSchName').value.trim();
@@ -2222,14 +2572,12 @@ async function saRegister() {
   } catch (e) { msg('saRegMsg', e.message, 'err'); }
   finally { btn.innerHTML = '<i class="fas fa-plus-circle"></i> Register School'; btn.disabled = false; }
 }
-
 // ════════════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
   loadHomeStats();
   updateNav('home');
-
   // Event listeners
   document.getElementById('stuCsvFile').addEventListener('change', e => {
     if (e.target.files[0]) handleStudentCsv(e.target.files[0]);
@@ -2239,19 +2587,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.target.files[0]) handleQCsv(e.target.files[0]);
     e.target.value = '';
   });
-
   // Enter key on login forms
   ['sLPin'].forEach(id => document.getElementById(id)?.addEventListener('keydown', e => { if (e.key === 'Enter') studentLogin(); }));
   ['aLPass'].forEach(id => document.getElementById(id)?.addEventListener('keydown', e => { if (e.key === 'Enter') adminLogin(); }));
   ['stLPass'].forEach(id => document.getElementById(id)?.addEventListener('keydown', e => { if (e.key === 'Enter') staffLogin(); }));
   ['saLPass'].forEach(id => document.getElementById(id)?.addEventListener('keydown', e => { if (e.key === 'Enter') saLogin(); }));
   ['rChkId'].forEach(id => document.getElementById(id)?.addEventListener('keydown', e => { if (e.key === 'Enter') checkResult(); }));
-
   // Close modals on backdrop click
   document.getElementById('reportModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeReport(); });
   document.getElementById('cardModal').addEventListener('click', e => { if (e.target === e.currentTarget) document.getElementById('cardModal').classList.remove('open'); });
   document.getElementById('editModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeEdit(); });
-
+  document.getElementById('staffEditModal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeStaffEdit(); });
+  document.getElementById('assignModal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeAssign(); });
   // Check for saved exam state on load
   const savedExam = localStorage.getItem(EXAM_SAVE_KEY);
   if (savedExam) {
