@@ -166,7 +166,7 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
 .ec-name{font-size:8.5pt;font-weight:700;color:#0d1b2a;margin-bottom:1mm;}.ec-class{font-size:7pt;color:#555;margin-bottom:2mm;}
 .ec-row{display:flex;align-items:center;gap:2mm;margin-bottom:1.5mm;}.ec-label{font-size:6.5pt;color:#777;font-weight:700;min-width:14mm;}.ec-val{font-size:8pt;font-weight:800;color:#0d1b2a;font-family:'JetBrains Mono',monospace;letter-spacing:.5px;}
 .ec-pin-box{background:#0d1b2a;color:#e8b84b;font-family:'JetBrains Mono',monospace;font-size:11pt;font-weight:900;padding:2mm 4mm;border-radius:3px;letter-spacing:3px;text-align:center;margin-top:1.5mm;}
-.ec-scratch{background:repeating-linear-gradient(45deg,#ddd,#ddd 2px,#eee 2px,#eee 8px);border-radius:3px;padding:1.5mm;margin-top:1.5mm;}.ec-scratch-lbl{font-size:5.5pt;color:#888;text-align:center;margin-bottom:1mm;}
+.ec-scratch{background:#f7f7f7;border:1px dashed #cfd8dc;border-radius:4px;padding:10px;margin-top:1.5mm;}.ec-scratch-lbl{font-size:5.5pt;color:#666;text-align:center;margin-bottom:1mm;font-weight:700;}
 .ec-hidden{background:#aaa;border-radius:2px;height:6mm;display:flex;align-items:center;justify-content:center;font-size:5.5pt;color:#666;}
 .ec-footer{font-size:5.5pt;color:#aaa;text-align:center;margin-top:2mm;border-top:1px dotted #ddd;padding-top:1.5mm;}
 .atb{background:#fff;border-radius:var(--rl);border:1px solid var(--border);padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;box-shadow:var(--sh);}
@@ -1017,6 +1017,15 @@ function parseCsv(line) {
     else cur += c;
   }
   r.push(cur.trim()); return r;
+}
+function scoreEntryNext(e) {
+  if (e.key !== 'Enter') return;
+  e.preventDefault();
+  const inputs = Array.from(document.querySelectorAll('input.ca-score-input, input.ca-score-field'));
+  const idx = inputs.indexOf(e.target);
+  if (idx >= 0 && idx < inputs.length - 1) {
+    inputs[idx + 1].focus();
+  }
 }
 function setHeaderSchool(name) {
   const el = document.getElementById('hSchool');
@@ -2297,12 +2306,14 @@ function caSortTable() {
   if (!tbody) return;
   const rows = Array.from(tbody.querySelectorAll('tr'));
   rows.sort((a, b) => {
-    const aT1 = parseFloat(a.querySelector('input[id^="ca1_"]')?.value) || 0;
-    const aT2 = parseFloat(a.querySelector('input[id^="ca2_"]')?.value) || 0;
-    const bT1 = parseFloat(b.querySelector('input[id^="ca1_"]')?.value) || 0;
-    const bT2 = parseFloat(b.querySelector('input[id^="ca2_"]')?.value) || 0;
-    const aBlank = (aT1 === 0 && aT2 === 0) ? 0 : 1;
-    const bBlank = (bT1 === 0 && bT2 === 0) ? 0 : 1;
+    const aT1 = a.querySelector('input[id^="ca1_"]')?.value.trim() || '';
+    const aT2 = a.querySelector('input[id^="ca2_"]')?.value.trim() || '';
+    const aEx = a.querySelector('input[id^="caex_"]')?.value.trim() || '';
+    const bT1 = b.querySelector('input[id^="ca1_"]')?.value.trim() || '';
+    const bT2 = b.querySelector('input[id^="ca2_"]')?.value.trim() || '';
+    const bEx = b.querySelector('input[id^="caex_"]')?.value.trim() || '';
+    const aBlank = (aT1 === '' && aT2 === '' && aEx === '') ? 0 : 1;
+    const bBlank = (bT1 === '' && bT2 === '' && bEx === '') ? 0 : 1;
     return aBlank - bBlank;
   });
   rows.forEach(r => tbody.appendChild(r));
@@ -2314,10 +2325,10 @@ function updateCaProgress() {
   const isCbt = window._caIsCbt;
   let filled = 0, total = students.length;
   students.forEach(s => {
-    const t1 = parseFloat(document.getElementById('ca1_' + s.student_id)?.value) || 0;
-    const t2 = parseFloat(document.getElementById('ca2_' + s.student_id)?.value) || 0;
-    const ex = isCbt ? 1 : (parseFloat(document.getElementById('caex_' + s.student_id)?.value) || 0);
-    if (t1 > 0 || t2 > 0 || (!isCbt && ex > 0)) filled++;
+    const t1 = (document.getElementById('ca1_' + s.student_id)?.value || '').trim();
+    const t2 = (document.getElementById('ca2_' + s.student_id)?.value || '').trim();
+    const ex = isCbt ? '' : (document.getElementById('caex_' + s.student_id)?.value || '').trim();
+    if (t1 !== '' || t2 !== '' || (!isCbt && ex !== '')) filled++;
   });
   const pct = Math.round((filled / total) * 100);
   document.getElementById('caProgressBar').style.width = pct + '%';
@@ -2325,7 +2336,7 @@ function updateCaProgress() {
   document.getElementById('caPendingBadge').textContent = `${total - filled} pending`;
   document.getElementById('caDoneBadge').textContent = `${filled} done`;
   document.getElementById('caProgress').classList.remove('hidden');
-  // Re-sort: move rows with data to bottom
+  // Re-sort: move rows with blank score entries to top
   caSortTable();
 }
 
@@ -2364,15 +2375,15 @@ async function loadCaStudents() {
       const ex = existingMap[s.student_id] || {};
       const hasScore = !!existingMap[s.student_id];
       const rowStyle = hasScore ? 'opacity:.75;' : 'background:#fffbf0;';
-      const exInput = !isCbt ? `<td><input type="number" class="fc ca-score-input" style="width:70px;padding:5px 7px;" min="0" max="${ms.ex}" step="0.5" id="caex_${s.student_id}" value="${ex.exam || ''}" oninput="updateCaProgress()"></td>` : '';
+      const exInput = !isCbt ? `<td><input type="number" class="fc ca-score-input" style="width:70px;padding:5px 7px;" min="0" max="${ms.ex}" step="0.5" id="caex_${s.student_id}" value="${ex.exam || ''}" oninput="updateCaProgress()" onkeydown="scoreEntryNext(event)"></td>` : '';
       return `<tr style="${rowStyle}" data-student="${s.student_id}">
         <td>
           <strong>${s.full_name}</strong>
           <div class="td-mono" style="font-size:.72rem;color:var(--tlt);">${s.student_id}</div>
           ${hasScore ? '<span class="badge b-ok" style="font-size:.65rem;margin-top:2px;">Scored</span>' : '<span class="badge b-warn" style="font-size:.65rem;margin-top:2px;">Pending</span>'}
         </td>
-        <td><input type="number" class="fc ca-score-input" style="width:70px;padding:5px 7px;" min="0" max="${ms.t1}" step="0.5" id="ca1_${s.student_id}" value="${ex.first_test || ''}" oninput="updateCaProgress()" onfocus="caHighlightRow(this)"></td>
-        <td><input type="number" class="fc ca-score-input" style="width:70px;padding:5px 7px;" min="0" max="${ms.t2}" step="0.5" id="ca2_${s.student_id}" value="${ex.second_test || ''}" oninput="updateCaProgress()" onfocus="caHighlightRow(this)"></td>
+        <td><input type="number" class="fc ca-score-input" style="width:70px;padding:5px 7px;" min="0" max="${ms.t1}" step="0.5" id="ca1_${s.student_id}" value="${ex.first_test || ''}" oninput="updateCaProgress()" onkeydown="scoreEntryNext(event)" onfocus="caHighlightRow(this)"></td>
+        <td><input type="number" class="fc ca-score-input" style="width:70px;padding:5px 7px;" min="0" max="${ms.t2}" step="0.5" id="ca2_${s.student_id}" value="${ex.second_test || ''}" oninput="updateCaProgress()" onkeydown="scoreEntryNext(event)" onfocus="caHighlightRow(this)"></td>
         ${exInput}
       </tr>`;
     }).join('');
@@ -2644,11 +2655,13 @@ function stSortTable() {
   if (!tbody) return;
   const rows = Array.from(tbody.querySelectorAll('tr'));
   rows.sort((a, b) => {
-    const aT1 = parseFloat(a.querySelector('input[id^="st1_"]')?.value) || 0;
-    const aT2 = parseFloat(a.querySelector('input[id^="st2_"]')?.value) || 0;
-    const bT1 = parseFloat(b.querySelector('input[id^="st1_"]')?.value) || 0;
-    const bT2 = parseFloat(b.querySelector('input[id^="st2_"]')?.value) || 0;
-    return ((aT1===0&&aT2===0)?0:1) - ((bT1===0&&bT2===0)?0:1);
+    const aT1 = a.querySelector('input[id^="st1_"]')?.value.trim() || '';
+    const aT2 = a.querySelector('input[id^="st2_"]')?.value.trim() || '';
+    const bT1 = b.querySelector('input[id^="st1_"]')?.value.trim() || '';
+    const bT2 = b.querySelector('input[id^="st2_"]')?.value.trim() || '';
+    const aBlank = (aT1 === '' && aT2 === '') ? 0 : 1;
+    const bBlank = (bT1 === '' && bT2 === '') ? 0 : 1;
+    return aBlank - bBlank;
   });
   rows.forEach(r => tbody.appendChild(r));
 }
@@ -2658,9 +2671,9 @@ function updateStCaProgress() {
   if (!students.length) return;
   let filled = 0;
   students.forEach(s => {
-    const t1 = parseFloat(document.getElementById('st1_' + s.student_id)?.value) || 0;
-    const t2 = parseFloat(document.getElementById('st2_' + s.student_id)?.value) || 0;
-    if (t1 > 0 || t2 > 0) filled++;
+    const t1 = (document.getElementById('st1_' + s.student_id)?.value || '').trim();
+    const t2 = (document.getElementById('st2_' + s.student_id)?.value || '').trim();
+    if (t1 !== '' || t2 !== '') filled++;
   });
   const pct = Math.round((filled / students.length) * 100);
   document.getElementById('stCaProgressBar').style.width = pct + '%';
@@ -2706,8 +2719,8 @@ async function stLoadStudents() {
             <div class="td-mono" style="font-size:.72rem;color:var(--tlt);">${s.student_id}</div>
             ${hasScore ? '<span class="badge b-ok" style="font-size:.65rem;margin-top:2px;">Scored</span>' : '<span class="badge b-warn" style="font-size:.65rem;margin-top:2px;">Pending</span>'}
           </td>
-          <td><input type="number" class="fc" style="width:70px;padding:5px 7px;" min="0" max="${ms.t1}" step="0.5" id="st1_${s.student_id}" value="${ex.first_test || ''}" oninput="updateStCaProgress()"></td>
-          <td><input type="number" class="fc" style="width:70px;padding:5px 7px;" min="0" max="${ms.t2}" step="0.5" id="st2_${s.student_id}" value="${ex.second_test || ''}" oninput="updateStCaProgress()"></td>
+          <td><input type="number" class="fc ca-score-field" style="width:70px;padding:5px 7px;" min="0" max="${ms.t1}" step="0.5" id="st1_${s.student_id}" value="${ex.first_test || ''}" oninput="updateStCaProgress()" onkeydown="scoreEntryNext(event)"></td>
+          <td><input type="number" class="fc ca-score-field" style="width:70px;padding:5px 7px;" min="0" max="${ms.t2}" step="0.5" id="st2_${s.student_id}" value="${ex.second_test || ''}" oninput="updateStCaProgress()" onkeydown="scoreEntryNext(event)"></td>
         </tr>`;
       }).join('')}</tbody>
     </table></div>`;
