@@ -589,17 +589,32 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       </div>
       <div id="caForm" class="hidden" style="background:var(--off);border-radius:var(--rl);padding:20px;margin-bottom:16px;">
         <div style="font-weight:800;color:var(--navy);margin-bottom:14px;"><i class="fas fa-keyboard"></i> Enter Continuous Assessment Scores</div>
-        <div class="fr3">
-          <div class="fg"><label class="fl">Class</label>
-            <select id="caClass" class="fc"><option value="">-- Select Class --</option></select>
+        <div class="fr2" style="margin-bottom:0;">
+          <div class="fg">
+            <label class="fl">Class</label>
+            <select id="caClass" class="fc" onchange="caOnClassChange()"><option value="">-- Select Class --</option></select>
           </div>
-          <div class="fg"><label class="fl">Subject</label>
-            <select id="caSubj" class="fc"><option value="">-- Select --</option></select>
+          <div class="fg">
+            <label class="fl">Subject</label>
+            <select id="caSubj" class="fc" onchange="caOnSubjectChange()"><option value="">-- Select Subject --</option></select>
           </div>
-          <div class="fg" style="display:flex;align-items:flex-end;"><button class="btn btn-prim btn-sm" onclick="loadCaStudents()"><i class="fas fa-search"></i> Load Students</button></div>
+        </div>
+        <div id="caProgress" class="hidden" style="margin-bottom:10px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <span id="caProgressLabel" style="font-size:.82rem;font-weight:700;color:var(--navy);"></span>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <span id="caPendingBadge" class="badge b-warn" style="font-size:.72rem;"></span>
+              <span id="caDoneBadge" class="badge b-ok" style="font-size:.72rem;"></span>
+            </div>
+          </div>
+          <div class="upbar"><div class="upbari" id="caProgressBar" style="width:0%;background:linear-gradient(90deg,var(--gold),var(--ok));"></div></div>
         </div>
         <div id="caList"></div>
-        <div id="caActions" class="hidden fa"><button class="btn btn-ok" onclick="saveCaScores()"><i class="fas fa-save"></i> Save All Scores</button><button class="btn btn-ghost" onclick="document.getElementById('caList').innerHTML='';document.getElementById('caActions').classList.add('hidden');">Clear</button></div>
+        <div id="caActions" class="hidden fa">
+          <button class="btn btn-ok" onclick="saveCaScores()"><i class="fas fa-save"></i> Save All Scores</button>
+          <button class="btn btn-ghost" onclick="clearCaForm()">Clear</button>
+          <button class="btn btn-info btn-sm" onclick="caSortTable()" title="Re-sort: blank scores to top"><i class="fas fa-sort"></i> Sort</button>
+        </div>
       </div>
       <div class="fa" style="margin-bottom:14px;">
         <input id="resStudFilter" class="fc" style="max-width:200px;" placeholder="Filter by Student ID">
@@ -707,16 +722,26 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       <div class="ch"><div class="ct">Enter CA Scores</div></div>
       <div class="fr2">
         <div class="fg"><label class="fl">Class</label>
-          <select id="stCaClass" class="fc"><option value="">-- Select Class --</option></select>
+          <select id="stCaClass" class="fc" onchange="stOnClassChange()"><option value="">-- Select Class --</option></select>
         </div>
         <div class="fg"><label class="fl">Subject</label>
-          <select id="stCaSubj" class="fc"><option value="">-- Select Subject --</option></select>
+          <select id="stCaSubj" class="fc" onchange="stOnSubjectChange()"><option value="">-- Select Subject --</option></select>
         </div>
       </div>
-      <div class="fa" style="margin-bottom:16px;"><button class="btn btn-prim" onclick="stLoadStudents()"><i class="fas fa-search"></i> Load Students</button></div>
+      <div id="stCaProgress" class="hidden" style="margin-bottom:10px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <span id="stCaProgressLabel" style="font-size:.82rem;font-weight:700;color:var(--navy);"></span>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span id="stCaPendingBadge" class="badge b-warn" style="font-size:.72rem;"></span>
+            <span id="stCaDoneBadge" class="badge b-ok" style="font-size:.72rem;"></span>
+          </div>
+        </div>
+        <div class="upbar"><div class="upbari" id="stCaProgressBar" style="width:0%;background:linear-gradient(90deg,var(--gold),var(--ok));"></div></div>
+      </div>
       <div id="stCaList"></div>
       <div id="stCaActions" class="hidden fa">
         <button class="btn btn-ok" onclick="stSaveScores()"><i class="fas fa-save"></i> Save All Scores</button>
+        <button class="btn btn-info btn-sm" onclick="stSortTable()" title="Sort: blank scores to top"><i class="fas fa-sort"></i> Sort</button>
       </div>
     </div>
   </div>
@@ -1468,9 +1493,22 @@ async function showCardPrint(type) {
   try {
     const p = { action: 'getStudentsWithPins', school_code: schoolCode };
     if (cls) p.class = cls;
-    const r = await api(p);
+    const [r, ridR] = await Promise.all([
+      api(p),
+      api({ action: 'getResultIds', school_code: schoolCode })
+    ]);
     const students = r.students || [];
     if (!students.length) { toast('No students found.', 'warn'); return; }
+    // Attach latest active RID to each student
+    const rids = ridR.result_ids || [];
+    const ridMap = {};
+    rids.forEach(rid => {
+      const sid = String(rid.student_id).trim();
+      if (rid.status === 'active') {
+        if (!ridMap[sid]) ridMap[sid] = rid.result_id;
+      }
+    });
+    students.forEach(s => { s.result_id = ridMap[String(s.student_id).trim()] || ''; });
     buildCardPrint(students, type, schoolName, schoolCode, cls);
   } catch (e) { toast('Error: ' + e.message, 'err'); }
 }
@@ -1501,8 +1539,8 @@ function buildCardPrint(students, type, schoolName, schoolCode, cls) {
         <div class="ec-class">Class: ${s.class || '—'} &nbsp;·&nbsp; ${term} ${session}</div>
         <div class="ec-row"><span class="ec-label">Student ID:</span><span class="ec-val">${s.student_id}</span></div>
         <div class="ec-scratch">
-          <div class="ec-scratch-lbl">Scratch below to reveal Result ID</div>
-          <div class="ec-hidden">████████████████</div>
+          <div class="ec-scratch-lbl">Result ID</div>
+          <div style="background:#0d1b2a;color:#e8b84b;font-family:\'JetBrains Mono\',monospace;font-size:8pt;font-weight:900;padding:2mm 4mm;border-radius:3px;letter-spacing:2px;text-align:center;word-break:break-all;">${s.result_id || '—'}</div>
         </div>
         <div class="ec-footer">© 2026 ACADEX · ${schoolCode}</div>
       </div>`;
@@ -2219,6 +2257,78 @@ async function loadResults() {
     }).join('')}</tbody></table>`;
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
 }
+
+// ── Admin CA: Class → Subjects cascade ──
+async function caOnClassChange() {
+  const cls = document.getElementById('caClass').value;
+  const subjSel = document.getElementById('caSubj');
+  subjSel.innerHTML = '<option value="">-- Select Subject --</option>';
+  document.getElementById('caList').innerHTML = '';
+  document.getElementById('caActions').classList.add('hidden');
+  document.getElementById('caProgress').classList.add('hidden');
+  if (!cls) return;
+  try {
+    const r = await api({ action: 'getSubjects', school_code: S.admin.code, class: cls });
+    const subjects = r.subjects || [];
+    subjSel.innerHTML = '<option value="">-- Select Subject --</option>' +
+      subjects.map(s => `<option value="${s.subject_code}">${s.subject_name}</option>`).join('');
+  } catch(e) { toast('Failed to load subjects: ' + e.message, 'err'); }
+}
+
+async function caOnSubjectChange() {
+  const cls  = document.getElementById('caClass').value;
+  const subj = document.getElementById('caSubj').value;
+  if (!cls || !subj) return;
+  await loadCaStudents();
+}
+
+function clearCaForm() {
+  document.getElementById('caList').innerHTML = '';
+  document.getElementById('caActions').classList.add('hidden');
+  document.getElementById('caProgress').classList.add('hidden');
+  document.getElementById('caSubj').value = '';
+}
+
+// Sort CA table: rows with empty scores float to top
+function caSortTable() {
+  const students = window._caStudents || [];
+  if (!students.length) return;
+  const tbody = document.querySelector('#caList table tbody');
+  if (!tbody) return;
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  rows.sort((a, b) => {
+    const aT1 = parseFloat(a.querySelector('input[id^="ca1_"]')?.value) || 0;
+    const aT2 = parseFloat(a.querySelector('input[id^="ca2_"]')?.value) || 0;
+    const bT1 = parseFloat(b.querySelector('input[id^="ca1_"]')?.value) || 0;
+    const bT2 = parseFloat(b.querySelector('input[id^="ca2_"]')?.value) || 0;
+    const aBlank = (aT1 === 0 && aT2 === 0) ? 0 : 1;
+    const bBlank = (bT1 === 0 && bT2 === 0) ? 0 : 1;
+    return aBlank - bBlank;
+  });
+  rows.forEach(r => tbody.appendChild(r));
+}
+
+function updateCaProgress() {
+  const students = window._caStudents || [];
+  if (!students.length) return;
+  const isCbt = window._caIsCbt;
+  let filled = 0, total = students.length;
+  students.forEach(s => {
+    const t1 = parseFloat(document.getElementById('ca1_' + s.student_id)?.value) || 0;
+    const t2 = parseFloat(document.getElementById('ca2_' + s.student_id)?.value) || 0;
+    const ex = isCbt ? 1 : (parseFloat(document.getElementById('caex_' + s.student_id)?.value) || 0);
+    if (t1 > 0 || t2 > 0 || (!isCbt && ex > 0)) filled++;
+  });
+  const pct = Math.round((filled / total) * 100);
+  document.getElementById('caProgressBar').style.width = pct + '%';
+  document.getElementById('caProgressLabel').textContent = `${filled} of ${total} students scored`;
+  document.getElementById('caPendingBadge').textContent = `${total - filled} pending`;
+  document.getElementById('caDoneBadge').textContent = `${filled} done`;
+  document.getElementById('caProgress').classList.remove('hidden');
+  // Re-sort: move rows with data to bottom
+  caSortTable();
+}
+
 async function loadCaStudents() {
   const cls = document.getElementById('caClass').value.trim();
   const subj = document.getElementById('caSubj').value;
@@ -2229,7 +2339,6 @@ async function loadCaStudents() {
     const r = await api({ action: 'getStudents', school_code: S.admin.code, class: cls });
     const students = r.students || [];
     if (!students.length) { w.innerHTML = '<div class="alert a-warn">No students in this class.</div>'; return; }
-    // Load existing results for pre-fill
     let existingMap = {};
     try {
       const er = await api({ action: 'getResults', school_code: S.admin.code });
@@ -2238,25 +2347,64 @@ async function loadCaStudents() {
       });
     } catch (e) {}
     const ms = { t1: S.settings.first_test_max || 20, t2: S.settings.second_test_max || 20, ex: S.settings.exam_max || 60 };
-    // Check if subject is non-CBT
     let isCbt = true;
     try {
       const sr = await api({ action: 'getSubjects', school_code: S.admin.code });
       const sub = (sr.subjects || []).find(s => String(s.subject_code).toUpperCase() === String(subj).toUpperCase());
       if (sub) isCbt = sub.cbt_enabled !== 'no';
     } catch (e) {}
-    w.innerHTML = `<div class="tw" style="max-height:400px;"><table><thead><tr><th>Student</th><th>1st Test (max ${ms.t1})</th><th>2nd Test (max ${ms.t2})</th>${!isCbt ? `<th>Exam (max ${ms.ex})</th>` : ''}</tr></thead><tbody>${students.map(s => {
+    // Sort: students with no scores come first
+    const sorted = [...students].sort((a, b) => {
+      const aHas = !!existingMap[a.student_id];
+      const bHas = !!existingMap[b.student_id];
+      return aHas - bHas;
+    });
+    const exCol = !isCbt ? `<th>Exam (max ${ms.ex})</th>` : '';
+    const rows = sorted.map(s => {
       const ex = existingMap[s.student_id] || {};
-      return `<tr><td><strong>${s.full_name}</strong><div class="td-mono" style="font-size:.75rem;color:var(--tlt);">${s.student_id}</div></td><td><input type="number" class="fc" style="width:80px;padding:6px 8px;" min="0" max="${ms.t1}" step="0.5" id="ca1_${s.student_id}" value="${ex.first_test || ''}"></td><td><input type="number" class="fc" style="width:80px;padding:6px 8px;" min="0" max="${ms.t2}" step="0.5" id="ca2_${s.student_id}" value="${ex.second_test || ''}"></td>${!isCbt ? `<td><input type="number" class="fc" style="width:80px;padding:6px 8px;" min="0" max="${ms.ex}" step="0.5" id="caex_${s.student_id}" value="${ex.exam || ''}"></td>` : ''}</tr>`;
-    }).join('')}</tbody></table></div>`;
-    window._caStudents = students; window._caSubj = subj; window._caIsCbt = isCbt;
+      const hasScore = !!existingMap[s.student_id];
+      const rowStyle = hasScore ? 'opacity:.75;' : 'background:#fffbf0;';
+      const exInput = !isCbt ? `<td><input type="number" class="fc ca-score-input" style="width:70px;padding:5px 7px;" min="0" max="${ms.ex}" step="0.5" id="caex_${s.student_id}" value="${ex.exam || ''}" oninput="updateCaProgress()"></td>` : '';
+      return `<tr style="${rowStyle}" data-student="${s.student_id}">
+        <td>
+          <strong>${s.full_name}</strong>
+          <div class="td-mono" style="font-size:.72rem;color:var(--tlt);">${s.student_id}</div>
+          ${hasScore ? '<span class="badge b-ok" style="font-size:.65rem;margin-top:2px;">Scored</span>' : '<span class="badge b-warn" style="font-size:.65rem;margin-top:2px;">Pending</span>'}
+        </td>
+        <td><input type="number" class="fc ca-score-input" style="width:70px;padding:5px 7px;" min="0" max="${ms.t1}" step="0.5" id="ca1_${s.student_id}" value="${ex.first_test || ''}" oninput="updateCaProgress()" onfocus="caHighlightRow(this)"></td>
+        <td><input type="number" class="fc ca-score-input" style="width:70px;padding:5px 7px;" min="0" max="${ms.t2}" step="0.5" id="ca2_${s.student_id}" value="${ex.second_test || ''}" oninput="updateCaProgress()" onfocus="caHighlightRow(this)"></td>
+        ${exInput}
+      </tr>`;
+    }).join('');
+    w.innerHTML = `<div class="tw" style="max-height:500px;">
+      <table>
+        <thead><tr>
+          <th>Student</th>
+          <th>1st Test<br><small style="font-weight:400;opacity:.7;">(max ${ms.t1})</small></th>
+          <th>2nd Test<br><small style="font-weight:400;opacity:.7;">(max ${ms.t2})</small></th>
+          ${exCol}
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+    window._caStudents = sorted; window._caSubj = subj; window._caIsCbt = isCbt;
     document.getElementById('caActions').classList.remove('hidden');
+    updateCaProgress();
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
 }
+
+function caHighlightRow(input) {
+  // Remove highlight from all rows
+  document.querySelectorAll('#caList tr').forEach(r => r.style.background = '');
+  input.closest('tr').style.background = '#f0f7ff';
+}
+
 async function saveCaScores() {
   const students = window._caStudents || [];
   const subj = window._caSubj;
   if (!students.length || !subj) { toast('Load students first.', 'err'); return; }
+  const btn = document.querySelector('#caActions .btn-ok');
+  if (btn) { btn.innerHTML = '<span class="loader"></span> Saving...'; btn.disabled = true; }
   let ok = 0, fail = 0;
   for (const s of students) {
     const t1 = parseFloat(document.getElementById('ca1_' + s.student_id)?.value) || 0;
@@ -2268,12 +2416,23 @@ async function saveCaScores() {
     }
     try {
       const r = await api(params);
-      if (r.success) ok++; else fail++;
+      if (r.success) {
+        ok++;
+        // Mark row as scored visually
+        const row = document.querySelector(`tr[data-student="${s.student_id}"]`);
+        if (row) {
+          row.style.opacity = '.75';
+          const badge = row.querySelector('.badge');
+          if (badge) { badge.textContent = 'Saved ✓'; badge.className = 'badge b-ok'; badge.style.fontSize = '.65rem'; }
+        }
+      } else fail++;
     } catch (e) { fail++; }
   }
+  if (btn) { btn.innerHTML = '<i class="fas fa-save"></i> Save All Scores'; btn.disabled = false; }
   toast(`Saved: ${ok}, Failed: ${fail}.`, fail > 0 ? 'warn' : 'ok');
-  if (ok > 0) loadResults();
+  if (ok > 0) { loadResults(); updateCaProgress(); }
 }
+
 // ════════════════════════════════════════════════
 // RESULT IDs
 // ════════════════════════════════════════════════
@@ -2434,18 +2593,7 @@ async function loadStaffSubjects() {
     document.getElementById('stCaSubj').innerHTML = common;
     document.getElementById('stResSubj').innerHTML = '<option value="">All Subjects</option>' + opts;
     // Auto-fill class when subject is selected
-    document.getElementById('stCaSubj').onchange = function() {
-      const sel = this.options[this.selectedIndex];
-      if (sel && sel.dataset.class) {
-        // Set class dropdown to match selected subject's class
-        const classSel = document.getElementById('stCaClass');
-        if (classSel) {
-          for (let i=0;i<classSel.options.length;i++){
-            if (classSel.options[i].value === sel.dataset.class){ classSel.selectedIndex=i; break; }
-          }
-        }
-      }
-    };
+    // Subject onchange handled by stOnSubjectChange() in HTML
     // Populate class dropdowns for staff
     try {
       const cr = await api({ action:'getClasses', school_code:S.staff.code });
@@ -2457,6 +2605,72 @@ async function loadStaffSubjects() {
     } catch(e) {}
   } catch (e) {}
 }
+// ── Staff CA: Class → Subjects cascade ──
+async function stOnClassChange() {
+  const cls = document.getElementById('stCaClass').value;
+  const subjSel = document.getElementById('stCaSubj');
+  subjSel.innerHTML = '<option value="">-- Select Subject --</option>';
+  document.getElementById('stCaList').innerHTML = '';
+  document.getElementById('stCaActions').classList.add('hidden');
+  document.getElementById('stCaProgress').classList.add('hidden');
+  if (!cls) return;
+  // Filter assigned subjects by selected class
+  const subjects = (S.staff.assignedSubjects || []).filter(s =>
+    String(s.class).trim().toLowerCase() === cls.toLowerCase()
+  );
+  if (subjects.length) {
+    subjSel.innerHTML = '<option value="">-- Select Subject --</option>' +
+      subjects.map(s => `<option value="${s.subject_code}" data-class="${s.class}">${s.subject_name}</option>`).join('');
+  } else {
+    // Fallback: fetch all subjects for class
+    try {
+      const r = await api({ action: 'getSubjects', school_code: S.staff.code, class: cls });
+      const subs = r.subjects || [];
+      subjSel.innerHTML = '<option value="">-- Select Subject --</option>' +
+        subs.map(s => `<option value="${s.subject_code}">${s.subject_name}</option>`).join('');
+    } catch(e) {}
+  }
+}
+
+async function stOnSubjectChange() {
+  const cls  = document.getElementById('stCaClass').value;
+  const subj = document.getElementById('stCaSubj').value;
+  if (!cls || !subj) return;
+  await stLoadStudents();
+}
+
+function stSortTable() {
+  const tbody = document.querySelector('#stCaList table tbody');
+  if (!tbody) return;
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  rows.sort((a, b) => {
+    const aT1 = parseFloat(a.querySelector('input[id^="st1_"]')?.value) || 0;
+    const aT2 = parseFloat(a.querySelector('input[id^="st2_"]')?.value) || 0;
+    const bT1 = parseFloat(b.querySelector('input[id^="st1_"]')?.value) || 0;
+    const bT2 = parseFloat(b.querySelector('input[id^="st2_"]')?.value) || 0;
+    return ((aT1===0&&aT2===0)?0:1) - ((bT1===0&&bT2===0)?0:1);
+  });
+  rows.forEach(r => tbody.appendChild(r));
+}
+
+function updateStCaProgress() {
+  const students = window._stStudents || [];
+  if (!students.length) return;
+  let filled = 0;
+  students.forEach(s => {
+    const t1 = parseFloat(document.getElementById('st1_' + s.student_id)?.value) || 0;
+    const t2 = parseFloat(document.getElementById('st2_' + s.student_id)?.value) || 0;
+    if (t1 > 0 || t2 > 0) filled++;
+  });
+  const pct = Math.round((filled / students.length) * 100);
+  document.getElementById('stCaProgressBar').style.width = pct + '%';
+  document.getElementById('stCaProgressLabel').textContent = `${filled} of ${students.length} students scored`;
+  document.getElementById('stCaPendingBadge').textContent = `${students.length - filled} pending`;
+  document.getElementById('stCaDoneBadge').textContent = `${filled} done`;
+  document.getElementById('stCaProgress').classList.remove('hidden');
+  stSortTable();
+}
+
 async function stLoadStudents() {
   const cls = document.getElementById('stCaClass').value.trim();
   const subj = document.getElementById('stCaSubj').value;
@@ -2470,32 +2684,63 @@ async function stLoadStudents() {
     let existingMap = {};
     try {
       const er = await api({ action: 'getResults', school_code: S.staff.code });
-      (er.results || []).filter(res => String(res.subject_code).toUpperCase() === String(subj).toUpperCase()).forEach(res => { existingMap[String(res.student_id)] = res; });
+      (er.results || []).filter(res => String(res.subject_code).toUpperCase() === String(subj).toUpperCase()).forEach(res => {
+        existingMap[String(res.student_id)] = res;
+      });
     } catch (e) {}
     const ms = { t1: S.settings.first_test_max || 20, t2: S.settings.second_test_max || 20 };
-    w.innerHTML = `<div class="tw" style="max-height:400px;"><table><thead><tr><th>Student</th><th>1st Test (max ${ms.t1})</th><th>2nd Test (max ${ms.t2})</th></tr></thead><tbody>${students.map(s => {
-      const ex = existingMap[s.student_id] || {};
-      return `<tr><td><strong>${s.full_name}</strong><div class="td-mono" style="font-size:.75rem;color:var(--tlt);">${s.student_id}</div></td><td><input type="number" class="fc" style="width:80px;padding:6px 8px;" min="0" max="${ms.t1}" step="0.5" id="st1_${s.student_id}" value="${ex.first_test || ''}"></td><td><input type="number" class="fc" style="width:80px;padding:6px 8px;" min="0" max="${ms.t2}" step="0.5" id="st2_${s.student_id}" value="${ex.second_test || ''}"></td></tr>`;
-    }).join('')}</tbody></table></div>`;
-    window._stStudents = students; window._stSubj = subj;
+    // Sort: no scores first
+    const sorted = [...students].sort((a, b) => (!!existingMap[a.student_id]) - (!!existingMap[b.student_id]));
+    w.innerHTML = `<div class="tw" style="max-height:500px;"><table>
+      <thead><tr>
+        <th>Student</th>
+        <th>1st Test<br><small style="font-weight:400;opacity:.7;">(max ${ms.t1})</small></th>
+        <th>2nd Test<br><small style="font-weight:400;opacity:.7;">(max ${ms.t2})</small></th>
+      </tr></thead>
+      <tbody>${sorted.map(s => {
+        const ex = existingMap[s.student_id] || {};
+        const hasScore = !!existingMap[s.student_id];
+        return `<tr style="${hasScore ? 'opacity:.75;' : 'background:#fffbf0;'}" data-student="${s.student_id}">
+          <td>
+            <strong>${s.full_name}</strong>
+            <div class="td-mono" style="font-size:.72rem;color:var(--tlt);">${s.student_id}</div>
+            ${hasScore ? '<span class="badge b-ok" style="font-size:.65rem;margin-top:2px;">Scored</span>' : '<span class="badge b-warn" style="font-size:.65rem;margin-top:2px;">Pending</span>'}
+          </td>
+          <td><input type="number" class="fc" style="width:70px;padding:5px 7px;" min="0" max="${ms.t1}" step="0.5" id="st1_${s.student_id}" value="${ex.first_test || ''}" oninput="updateStCaProgress()"></td>
+          <td><input type="number" class="fc" style="width:70px;padding:5px 7px;" min="0" max="${ms.t2}" step="0.5" id="st2_${s.student_id}" value="${ex.second_test || ''}" oninput="updateStCaProgress()"></td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table></div>`;
+    window._stStudents = sorted; window._stSubj = subj;
     document.getElementById('stCaActions').classList.remove('hidden');
+    updateStCaProgress();
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
 }
+
 async function stSaveScores() {
   const students = window._stStudents || [];
   const subj = window._stSubj;
   if (!students.length) return;
+  const btn = document.querySelector('#stCaActions .btn-ok');
+  if (btn) { btn.innerHTML = '<span class="loader"></span>'; btn.disabled = true; }
   let ok = 0, fail = 0;
   for (const s of students) {
     const t1 = parseFloat(document.getElementById('st1_' + s.student_id)?.value) || 0;
     const t2 = parseFloat(document.getElementById('st2_' + s.student_id)?.value) || 0;
     try {
       const r = await api({ action: 'saveManualResult', school_code: S.staff.code, student_id: s.student_id, subject_code: subj, first_test: t1, second_test: t2, submitted_by: S.staff.staff_id || S.staff.code });
-      if (r.success) ok++; else fail++;
+      if (r.success) {
+        ok++;
+        const row = document.querySelector(`#stCaList tr[data-student="${s.student_id}"]`);
+        if (row) { const badge = row.querySelector('.badge'); if (badge) { badge.textContent = 'Saved ✓'; badge.className = 'badge b-ok'; } }
+      } else fail++;
     } catch (e) { fail++; }
   }
+  if (btn) { btn.innerHTML = '<i class="fas fa-save"></i> Save All Scores'; btn.disabled = false; }
   toast(`Saved: ${ok}, Failed: ${fail}.`, fail > 0 ? 'warn' : 'ok');
+  updateStCaProgress();
 }
+
 async function stLoadResults() {
   const cls = document.getElementById('stResClass').value.trim();
   const subj = document.getElementById('stResSubj').value;
