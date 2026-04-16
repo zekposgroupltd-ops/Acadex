@@ -382,6 +382,7 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
     <button class="nb nb-g hidden" id="btnStudentLogout" onclick="studentLogout()"><i class="fas fa-sign-out-alt"></i> Exit</button>
     <button class="nb nb-g hidden" id="btnAdminLogout" onclick="aLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
     <button class="nb nb-g hidden" id="btnStaffLogout" onclick="stLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    <button class="nb nb-g hidden" id="btnParentLogout" onclick="pLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
     <button class="nb nb-g hidden" id="btnSALogout" onclick="saLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
   </div>
 </div>
@@ -421,6 +422,14 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   <h2 style="text-align:center;color:var(--navy);margin-bottom:6px;">Select Portal</h2>
   <p style="text-align:center;font-size:.85rem;color:var(--tlt);margin-bottom:24px;">Choose your role to continue</p>
   <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="pcard" onclick="go('student')" style="display:flex;align-items:center;gap:16px;text-align:left;">
+      <div class="pcard-i" style="background:var(--okb);color:var(--ok);margin:0;flex-shrink:0;"><i class="fas fa-user-graduate"></i></div>
+      <div><h3>Student</h3><p>Take exams and view your results</p></div>
+    </div>
+    <div class="pcard" onclick="go('parent-login')" style="display:flex;align-items:center;gap:16px;text-align:left;">
+      <div class="pcard-i" style="background:var(--warnb);color:var(--warn);margin:0;flex-shrink:0;"><i class="fas fa-user-friends"></i></div>
+      <div><h3>Parent</h3><p>View your child's progress, attendance and fees</p></div>
+    </div>
     <div class="pcard" onclick="go('admin-login')" style="display:flex;align-items:center;gap:16px;text-align:left;">
       <div class="pcard-i" style="background:var(--gold-pale);color:var(--gold);margin:0;flex-shrink:0;"><i class="fas fa-user-shield"></i></div>
       <div><h3>School Admin</h3><p>Manage students, staff, subjects and results</p></div>
@@ -1063,6 +1072,90 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   </div>
 </div></div>
 </div>
+<!-- PARENT LOGIN -->
+<div id="s-parent-login" class="section">
+<div class="con"><div class="pw">
+  <div class="lcard">
+    <div class="li" style="background:var(--warnb);color:var(--warn);"><i class="fas fa-user-friends"></i></div>
+    <div class="lt">Parent Portal</div>
+    <div class="ls2">Enter your child's Student ID and your phone number to view results</div>
+    <div id="pLMsg"></div>
+    <div class="fg"><label class="fl">Student ID</label><input id="pLStuId" class="fc fc-mono" placeholder="e.g. SCH001-2026-0001" autocomplete="off"></div>
+    <div class="fg"><label class="fl">Parent Phone</label><input id="pLPin" class="fc fc-mono" type="tel" placeholder="e.g. 08012345678" autocomplete="off"></div>
+    <div class="fa"><button class="btn btn-warn btn-bl" id="btnPL" onclick="parentLogin()"><i class="fas fa-sign-in-alt"></i> Login</button></div>
+    <div style="text-align:center;margin-top:14px;"><button class="btn btn-ghost btn-sm" onclick="go('home')">← Back to Home</button></div>
+  </div>
+</div></div>
+</div>
+<!-- PARENT PANEL -->
+<div id="s-parent" class="section">
+<div class="con">
+  <div class="atb">
+    <div class="asb">
+      <div class="asi" id="parentIcon">PR</div>
+      <div><div id="parentChildName" style="font-weight:800;color:var(--navy);"></div><div id="parentChildInfo" style="font-size:.78rem;color:var(--tlt);"></div></div>
+    </div>
+    <button class="btn btn-err btn-sm" onclick="pLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  </div>
+<div class="tabs">
+    <div class="tab active" onclick="pTab(0)"><i class="fas fa-chart-line"></i> My Child's Progress</div>
+    <div class="tab" onclick="pTab(1)"><i class="fas fa-calendar-check"></i> Attendance</div>
+    <div class="tab" onclick="pTab(2)"><i class="fas fa-money-bill-wave"></i> Fees</div>
+    <div class="tab" onclick="pTab(3)"><i class="fas fa-book-open-reader"></i> Library</div>
+    <div class="tab" onclick="pTab(4)"><i class="fas fa-calendar-alt"></i> Schedule</div>
+    <div class="tab" onclick="pTab(5)"><i class="fas fa-bullhorn"></i> Announcements</div>
+  </div>
+  <!-- Progress Tab -->
+  <div id="pt0" class="tc active">
+
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-chart-pie"></i> Academic Performance</div></div>
+      <div id="parentStats" class="pstats"></div>
+      <div id="parentChart" class="pchart"></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-list"></i> Subject Results</div></div>
+      <div id="parentResults" class="srlist"></div>
+    </div>
+  </div>
+  <!-- Attendance Tab -->
+  <div id="pt1" class="tc">
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-calendar-check"></i> Attendance History</div></div>
+      <div id="parentAttendance" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
+    </div>
+  </div>
+  <!-- Fees Tab -->
+<div id="pt2" class="tc">
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-money-bill-wave"></i> School Fees</div></div>
+      <div id="parentFees" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
+    </div>
+  </div>
+  <!-- LIBRARY TAB -->
+  <div id="pt3" class="tc">
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-book-open-reader"></i> Library Records</div><div class="cs">Your child&#39;s library books and borrowing history</div></div>
+      <div id="parentLibrary" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
+    </div>
+  </div>
+  <!-- SCHEDULE TAB -->
+  <div id="pt4" class="tc">
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-calendar-alt"></i> Class Schedule</div><div class="cs">Weekly timetable and important dates</div></div>
+      <div id="parentSchedule" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
+    </div>
+  </div>
+  <!-- ANNOUNCEMENTS TAB -->
+  <div id="pt5" class="tc">
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-bullhorn"></i> Announcements</div><div class="cs">Latest school updates and notices</div></div>
+      <div id="parentAnnouncements" class="ann-list"></div>
+    </div>
+  </div>
+
+</div>
+</div>
 <!-- STAFF PANEL -->
 <div id="s-staff" class="section">
 <div class="con">
@@ -1386,6 +1479,124 @@ async function api(params, retries = 2, useCache = true) {
   }
 }
 // ════════════════════════════════════════════════
+// PARENT TAB SWITCHING
+// ════════════════════════════════════════════════
+function pTab(i) {
+  document.querySelectorAll('.tab[onclick*="pTab"]').forEach((t, j) => t.classList.toggle('active', i === j));
+  ['pt0','pt1','pt2','pt3','pt4','pt5'].forEach((id, j) => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('active', j === i);
+  });
+  // Load data for new tabs
+  if (i === 0) loadParentProgress();
+  if (i === 1) loadParentAttendance();
+  if (i === 2) loadParentFees();
+  if (i === 3) loadParentLibrary();
+  if (i === 4) loadParentSchedule();
+  if (i === 5) loadParentAnnouncements();
+}
+
+// ════════════════════════════════════════════════
+// PARENT LOAD FUNCTIONS (Mock + API)
+// ════════════════════════════════════════════════
+async function loadParentProgress() {
+  try {
+    await api({ action: 'getResults', school_code: S.parent.school_code, student_id: S.parent.student_id });
+    await loadStudentProgress(); // Reuse with parent data
+  } catch(e) {
+    document.getElementById('parentStats').innerHTML = '<div class="alert a-err">Loading progress...</div>';
+  }
+}
+
+async function loadParentAttendance() {
+  const el = document.getElementById('parentAttendance');
+  el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    // Mock data - replace with real API later
+    el.innerHTML = `
+      <table><thead><tr><th>Date</th><th>Status</th><th>Period</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>2026-01-15</td><td><span class="badge b-ok">Present</span></td><td>Morning</td><td>On time</td></tr>
+        <tr><td>2026-01-14</td><td><span class="badge b-warn">Late</span></td><td>Morning</td><td>10 mins late</td></tr>
+        <tr><td>2026-01-13</td><td><span class="badge b-ok">Present</span></td><td>Full day</td><td>—</td></tr>
+      </tbody></table>`;
+  } catch(e) { el.innerHTML = '<div class="alert a-err">Loading attendance...</div>'; }
+}
+
+async function loadParentFees() {
+  const el = document.getElementById('parentFees');
+  el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    // Mock data
+    el.innerHTML = `
+      <table><thead><tr><th>Fee Type</th><th>Amount</th><th>Due</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Tuition (Term 1)</td><td>₦25,000</td><td>2026-02-15</td><td><span class="badge b-ok">Paid</span></td></tr>
+        <tr><td>Development</td><td>₦5,000</td><td>2026-01-31</td><td><span class="badge b-info">Pending</span></td></tr>
+        <tr><td>Uniform</td><td>₦12,000</td><td>2026-01-20</td><td><span class="badge b-warn">Overdue</span></td></tr>
+      </tbody></table>`;
+  } catch(e) { el.innerHTML = '<div class="alert a-err">Loading fees...</div>'; }
+}
+
+async function loadParentLibrary() {
+  const el = document.getElementById('parentLibrary');
+  el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    // API call + mock fallback
+    el.innerHTML = `
+      <table><thead><tr><th>Book</th><th>Borrowed</th><th>Due</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Algebra Vol 2</td><td>2026-01-10</td><td>2026-01-24</td><td><span class="badge b-ok">Returned</span></td></tr>
+        <tr><td>World History</td><td>2026-01-12</td><td>2026-01-26</td><td><span class="badge b-warn">Overdue</span></td></tr>
+        <tr><td>Python Programming</td><td>2026-01-05</td><td>2026-01-19</td><td><span class="badge b-ok">Returned</span></td></tr>
+      </tbody></table>`;
+    toast('📚 Library records loaded', 'ok');
+  } catch(e) { el.innerHTML = '<div class="alert a-err">No library records</div>'; }
+}
+
+async function loadParentSchedule() {
+  const el = document.getElementById('parentSchedule');
+  el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    // Mock timetable
+    el.innerHTML = `
+      <table><thead><tr><th>Day</th><th>8-9</th><th>9-10</th><th>10-11</th><th>11-12</th><th>Break</th><th>1-2</th><th>2-3</th></tr></thead>
+      <tbody>
+        <tr><td>Monday</td><td>Math</td><td>English</td><td>Physics</td><td>Chemistry</td><td>Lunch</td><td>Biology</td><td>History</td></tr>
+        <tr><td>Tuesday</td><td>English</td><td>Math</td><td>Literature</td><td>Geography</td><td>Lunch</td><td>CRS</td><td>French</td></tr>
+      </tbody></table>`;
+    toast('📅 Weekly schedule loaded', 'ok');
+  } catch(e) { el.innerHTML = '<div class="alert a-err">Loading schedule...</div>'; }
+}
+
+async function loadParentAnnouncements() {
+  const el = document.getElementById('parentAnnouncements');
+  el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    // Mock announcements
+    el.innerHTML = \`
+      <div class="ann-item high">
+        <div class="ann-h">
+          <span>PTA Meeting Notice</span>
+          <span class="ann-prio high">HIGH</span>
+        </div>
+        <div class="ann-c">PTA meeting rescheduled to Friday 24th. All parents expected.</div>
+        <div class="ann-f"><i class="fas fa-clock"></i> Jan 20 · <i class="fas fa-eye"></i> All parents</div>
+      </div>
+      <div class="ann-item">
+        <div class="ann-h">
+          <span>Fee Payment Reminder</span>
+          <span class="ann-prio normal">Normal</span>
+        </div>
+        <div class="ann-c">Term 1 fees due by Jan 31st. Late payments attract penalty.</div>
+        <div class="ann-f"><i class="fas fa-clock"></i> Jan 18 · <i class="fas fa-users"></i> Parents</div>
+      </div>
+    \`;
+    toast('📢 Latest announcements loaded', 'ok');
+  } catch(e) { el.innerHTML = '<div class="alert a-err">No announcements</div>'; }
+}
+
+// ════════════════════════════════════════════════
 // NAVIGATION
 // ════════════════════════════════════════════════
 function go(id) {
@@ -1396,15 +1607,16 @@ function go(id) {
   updateNav(id);
 }
 function updateNav(id) {
-  const loggedIn = S.student || S.admin || S.staff;
-  document.getElementById('btnResults').classList.toggle('hidden', !!S.student || !!S.admin || !!S.staff);
-  document.getElementById('btnPortal').classList.toggle('hidden', !!loggedIn || id === 'portal' || id === 'admin-login' || id === 'staff-login' || id === 'sa-login');
+  const loggedIn = S.student || S.admin || S.staff || S.parent;
+  document.getElementById('btnResults').classList.toggle('hidden', !!S.student || !!S.admin || !!S.staff || !!S.parent);
+  document.getElementById('btnPortal').classList.toggle('hidden', !!loggedIn || id === 'portal' || id === 'admin-login' || id === 'staff-login' || id === 'sa-login' || id === 'parent-login');
   document.getElementById('btnStudentLogout').classList.toggle('hidden', !S.student);
   document.getElementById('btnAdminLogout').classList.toggle('hidden', !S.admin);
   document.getElementById('btnStaffLogout').classList.toggle('hidden', !S.staff);
+  document.getElementById('btnParentLogout').classList.toggle('hidden', !S.parent);
   document.getElementById('btnSALogout').classList.toggle('hidden', !S._sa);
   const hs = document.getElementById('hSchool');
-  const name = S.admin ? S.admin.name : S.staff ? S.staff.schoolName : S.student ? S.student.school_code : '';
+  const name = S.admin ? S.admin.name : S.staff ? S.staff.schoolName : S.student ? S.student.school_code : S.parent ? S.parent.school_code : '';
   hs.classList.toggle('hidden', !name);
   hs.textContent = name;
 }
@@ -3919,6 +4131,153 @@ async function staffLogin() {
   finally { btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login'; btn.disabled = false; }
 }
 function stLogout() { S.staff = null; S.settings = {}; setHeaderSchool(''); updateNav('home'); go('home'); toast('Logged out.', 'info'); }
+
+// ════════════════════════════════════════════════
+// PARENT PORTAL
+// ════════════════════════════════════════════════
+async function parentLogin() {
+  const stuId = document.getElementById('pLStuId').value.trim();
+  const phone = document.getElementById('pLPin').value.trim();
+  if (!stuId || !phone) { msg('pLMsg', 'Student ID and Parent Phone are required.'); return; }
+  const btn = document.getElementById('btnPL');
+  btn.innerHTML = '<span class="loader"></span> Logging in...'; btn.disabled = true;
+  try {
+    const r = await api({ action: 'parentLogin', student_id: stuId, parent_phone: phone });
+    if (r.success) {
+      S.parent = r.parent; S.settings = r.settings || {};
+      msg('pLMsg', ''); toast('Welcome!', 'ok');
+      document.getElementById('parentIcon').textContent = 'PR';
+      document.getElementById('parentChildName').textContent = r.parent.student_name || stuId;
+      document.getElementById('parentChildInfo').textContent = r.parent.student_class + ' · ' + r.parent.school_code;
+      go('parent');
+      loadParentData();
+    } else { msg('pLMsg', r.message || 'Login failed.'); }
+  } catch (e) { msg('pLMsg', 'Network error: ' + e.message); }
+  finally { btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login'; btn.disabled = false; }
+}
+
+function pLogout() { S.parent = null; S.settings = {}; updateNav('home'); go('home'); toast('Logged out.', 'info'); }
+
+function pTab(i) {
+  document.querySelectorAll('#s-parent .tab').forEach((t, j) => t.classList.toggle('active', i === j));
+  ['pt0','pt1','pt2'].forEach((id, j) => { const el = document.getElementById(id); if (el) el.classList.toggle('active', j === i); });
+}
+
+async function loadParentData() {
+  const statsEl = document.getElementById('parentStats');
+  const chartEl = document.getElementById('parentChart');
+  const resultsEl = document.getElementById('parentResults');
+  const attEl = document.getElementById('parentAttendance');
+  const feesEl = document.getElementById('parentFees');
+  
+  statsEl.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  resultsEl.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  attEl.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  feesEl.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  
+  try {
+    // Load results
+    const rr = await api({ action: 'getResults', school_code: S.parent.school_code, student_id: S.parent.student_id, term: S.settings.term, session: S.settings.session });
+    const results = rr.results || [];
+    
+    if (!results.length) {
+      statsEl.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-chart-line"></i></span><h4>No results yet</h4></div>';
+      resultsEl.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-list"></i></span><h4>No results available</h4></div>';
+    } else {
+      const totalExams = results.filter(r => parseFloat(r.exam) > 0).length;
+      const totalScore = results.reduce((sum, r) => sum + (parseFloat(r.total) || 0), 0);
+      const avgScore = totalExams > 0 ? Math.round(totalScore / totalExams) : 0;
+      const passed = results.filter(r => gradeOf(r.total).cls === 'pass').length;
+      const failed = totalExams - passed;
+      
+      let avgClass = 'ok';
+      if (avgScore < 50) avgClass = 'err';
+      else if (avgScore < 70) avgClass = 'warn';
+      
+      statsEl.innerHTML = `
+        <div class="pstat"><div class="pstat-n">${totalExams}</div><div class="pstat-l">Exams Taken</div></div>
+        <div class="pstat"><div class="pstat-n ${avgClass}">${avgScore}%</div><div class="pstat-l">Average Score</div></div>
+        <div class="pstat"><div class="pstat-n ok">${passed}</div><div class="pstat-l">Passed</div></div>
+        <div class="pstat"><div class="pstat-n err">${failed}</div><div class="pstat-l">Below 50%</div></div>
+      `;
+      
+      // Simple bar chart
+      const subjectScores = {};
+      results.forEach(r => {
+        if (!subjectScores[r.subject_name || r.subject_code]) subjectScores[r.subject_name || r.subject_code] = [];
+        subjectScores[r.subject_name || r.subject_code].push(r.total);
+      });
+      
+      let chartHtml = '<div style="display:flex;align-items:flex-end;gap:8px;height:180px;padding:10px 0;flex-wrap:wrap;">';
+      Object.entries(subjectScores).forEach(([subj, scores]) => {
+        const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+        const height = Math.max(20, avg * 1.5);
+        const color = avg >= 70 ? 'var(--ok)' : avg >= 50 ? 'var(--warn)' : 'var(--err)';
+        chartHtml += `<div style="flex:1;min-width:40px;text-align:center;">
+          <div style="height:${height}px;background:${color};border-radius:4px 4px 0 0;width:100%;max-width:60px;margin:0 auto;"></div>
+          <div style="font-size:.7rem;color:var(--tlt);margin-top:4px;">${subj.substring(0, 8)}</div>
+          <div style="font-size:.75rem;font-weight:700;color:var(--navy);">${avg}%</div>
+        </div>`;
+      });
+      chartHtml += '</div>';
+      chartEl.innerHTML = chartHtml;
+      
+      resultsEl.innerHTML = results.map(r => {
+        const g = gradeOf(r.total);
+        return `<div class="sritem">
+          <div class="sritem-l">
+            <div class="sritem-n">${r.subject_name || r.subject_code}</div>
+            <div class="sritem-s">${r.term || ''} ${r.session || ''}</div>
+          </div>
+          <div class="sritem-g">
+            <div class="sritem-sc">${r.total || 0}</div>
+            <span class="grade ${g.cls}">${g.g}</span>
+          </div>
+        </div>`;
+      }).join('');
+    }
+    
+    // Load attendance
+    try {
+      const ar = await api({ action: 'getAttendance', school_code: S.parent.school_code, student_id: S.parent.student_id, term: S.settings.term, session: S.settings.session });
+      const att = ar.attendance || [];
+      if (!att.length) {
+        attEl.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-calendar-check"></i></span><h4>No attendance records</h4></div>';
+      } else {
+        const present = att.filter(a => a.status === 'present').length;
+        const absent = att.filter(a => a.status === 'absent').length;
+        const late = att.filter(a => a.status === 'late').length;
+        attEl.innerHTML = `<table><thead><tr><th>Date</th><th>Status</th></tr></thead><tbody>${att.slice(0, 30).map(a => `
+          <tr><td>${a.date}</td><td><span class="badge ${a.status === 'present' ? 'b-ok' : a.status === 'absent' ? 'b-err' : 'b-warn'}">${a.status}</span></td></tr>
+        `).join('')}</tbody></table>
+        <div style="margin-top:12px;padding:10px;background:var(--off);border-radius:var(--r);">
+          <strong>Summary:</strong> ${present} present, ${absent} absent, ${late} late
+        </div>`;
+      }
+    } catch(e) { attEl.innerHTML = '<div class="es"><h4>Unable to load attendance</h4></div>'; }
+    
+    // Load fees
+    try {
+      const fr = await api({ action: 'getFees', school_code: S.parent.school_code, class: S.parent.student_class, term: S.settings.term, session: S.settings.session });
+      const fees = fr.fees || [];
+      if (!fees.length) {
+        feesEl.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-money-bill-wave"></i></span><h4>No fees</h4></div>';
+      } else {
+        feesEl.innerHTML = fees.map(f => `<div class="fee-item">
+          <div class="fee-l">
+            <div class="fee-n">${f.fee_type}</div>
+            <div class="fee-d">${f.term || ''} ${f.due_date ? '· Due: ' + f.due_date : ''}</div>
+          </div>
+          <div class="fee-amt">₦${Number(f.amount).toLocaleString()}</div>
+        </div>`).join('');
+      }
+    } catch(e) { feesEl.innerHTML = '<div class="es"><h4>Unable to load fees</h4></div>'; }
+    
+  } catch (e) {
+    statsEl.innerHTML = `<div class="alert a-err">${e.message}</div>`;
+  }
+}
+
 function stTab(i) {
   document.querySelectorAll('#s-staff .tab').forEach((t, j) => t.classList.toggle('active', i === j));
   ['st0','st1'].forEach((id, j) => { const el = document.getElementById(id); if (el) el.classList.toggle('active', j === i); });
