@@ -1903,11 +1903,6 @@ async function loadParentSchedule() {
     el.innerHTML = html;
   } catch(e) { el.innerHTML = '<div class="alert a-err">Unable to load timetable</div>'; }
 }
-      </tbody></table>`;
-    toast('📅 Weekly schedule loaded', 'ok');
-  } catch(e) { el.innerHTML = '<div class="alert a-err">Loading schedule...</div>'; }
-}
-
 async function loadParentAnnouncements() {
   const el = document.getElementById('parentAnnouncements');
   el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
@@ -4992,7 +4987,7 @@ async function loadParentData() {
       }).join('');
     }
     
-    // Load attendance
+    // Load attendance 
     try {
       const ar = await api({ action: 'getAttendance', school_code: S.parent.school_code, student_id: S.parent.student_id, term: S.settings.term, session: S.settings.session });
       const att = ar.attendance || [];
