@@ -1675,7 +1675,7 @@ const EXAM_SAVE_KEY = 'acadex_exam_state';
 const CACHE_PREFIX = 'acadex_cache_';
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
 const S = {
-  student: null, admin: null, staff: null,
+  student: null, admin: null, staff: null, parent: null, _sa: false,
   subjects: [], questions: [], answers: {},
   qIndex: 0, timer: null, currentSubj: null,
   settings: {}, timerRemaining: 0,
@@ -1923,7 +1923,6 @@ async function loadParentAnnouncements() {
       <div class="ann-f"><span><i class="fas fa-calendar"></i> ${a.start_date || 'Ongoing'}</span></div>
     </div>`).join('');
   } catch(e) { el.innerHTML = '<div class="alert a-err">Unable to load announcements</div>'; }
-}
 }
 
 // ════════════════════════════════════════════════
@@ -2906,7 +2905,10 @@ function refreshAdmin() {
 }
 function aTab(i) {
   document.querySelectorAll('#adminTabs .tab').forEach((t, j) => t.classList.toggle('active', i === j));
-  document.querySelectorAll('#adminSidebarNav .admin-sidebar-item').forEach((t, j) => t.classList.toggle('active', j === i));
+  // Map tab index to sidebar position (sidebar order: 0-12, 14, 15, 16, 13)
+  const sidebarOrder = [0,1,2,3,4,5,6,7,8,9,10,11,12,14,15,16,13];
+  const sidebarPos = sidebarOrder.indexOf(i);
+  document.querySelectorAll('#adminSidebarNav .admin-sidebar-item').forEach((t, j) => t.classList.toggle('active', j === sidebarPos));
   ['at0','at1','at2','at3','at4','at5','at6','at7','at8','at9','at10','at11','at12','at14','at15','at16','at13'].forEach((id, j) => {
     const el = document.getElementById(id);
     if (el) el.classList.toggle('active', j === i);
@@ -5461,4 +5463,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 </body>
-</html>
+  </html>
