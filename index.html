@@ -232,6 +232,13 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
 .export-icon{width:56px;height:56px;border-radius:50%;background:var(--infob);color:var(--info);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 12px;}
 .export-title{font-weight:800;color:var(--navy);font-size:1.1rem;margin-bottom:4px;}
 .export-desc{font-size:.8rem;color:var(--tlt);}
+/* Timetable */
+.timetable-wrap{overflow-x:auto;margin-top:16px;}
+.timetable{width:100%;border-collapse:collapse;font-size:.9rem;}
+.timetable th,.timetable td{border:1px solid var(--border);padding:12px 8px;text-align:center;}
+.timetable th{background:var(--navy);color:#fff;font-weight:700;}
+.timetable td{background:#fff;}
+.timetable tr:nth-child(even) td{background:var(--off);}
 .etb{background:var(--navy);border-radius:var(--rl);padding:16px 20px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;color:#fff;}
 .esn{font-weight:800;font-size:1rem;}.est{font-size:.8rem;opacity:.7;margin-top:2px;}
 .etimer{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;background:rgba(255,255,255,.08);padding:6px 18px;border-radius:8px;letter-spacing:2px;min-width:110px;text-align:center;border:1px solid rgba(201,146,42,.3);}
@@ -289,7 +296,7 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
 .rsfoot{text-align:center;font-size:6pt;color:#aaa;margin-top:6px;border-top:1px solid #eee;padding-top:4px;}
 #cardPrintArea{background:#fff;width:210mm;padding:8mm;border-radius:4px;box-shadow:0 12px 60px rgba(0,0,0,.4);margin-top:60px;}
 .card-grid{display:grid;grid-template-columns:1fr 1fr;gap:5mm;}
-.exam-card{border:1.5px solid #0d1b2a;border-radius:4px;padding:5mm 6mm;page-break-inside:avoid;background:#fff;position:relative;overflow:hidden;}
+.exam-card{border:1.5px solid #0d1b2a;border-radius:4px;padding:5mm 6mm;page-break-inside:avoid;page-break-after:always;background:#fff;position:relative;overflow:hidden;}
 .exam-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#0d1b2a,#c9922a);}
 .ec-school{font-size:7pt;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:#0d1b2a;margin-bottom:2mm;}
 .ec-type{font-size:6pt;color:#666;text-transform:uppercase;letter-spacing:.5px;margin-bottom:1.5mm;border-bottom:1px dashed #ddd;padding-bottom:1.5mm;}
@@ -327,6 +334,36 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   /* Prevent double-tap zoom on interactive elements */
   a,button,input,select{touch-action:manipulation;}
 }
+/* Admin Sidebar */
+#adminSidebar{position:fixed;left:0;top:0;bottom:0;width:260px;background:linear-gradient(180deg,#0d1b2a 0%,#1a2f45 100%);z-index:1000;transform:translateX(-100%);transition:transform .3s ease;display:flex;flex-direction:column;}
+#adminSidebar.open{transform:translateX(0);}
+#adminSidebarOverlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;display:none;}
+#adminSidebarOverlay.open{display:block;}
+#adminSidebarToggle{position:fixed;left:12px;top:70px;z-index:1001;background:var(--navy);color:var(--gold-lt);border:none;border-radius:8px;width:40px;height:40px;cursor:pointer;box-shadow:var(--sh);display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+#adminSidebarToggle:hover{background:#1a2f45;}
+#adminSidebarToggle.shifted{left:272px;}
+.admin-sidebar-header{padding:20px 16px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:12px;}
+.admin-sidebar-logo{width:36px;height:36px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--navy);font-size:.9rem;}
+.admin-sidebar-title{color:#fff;font-weight:800;font-size:.95rem;}
+.admin-sidebar-sub{color:rgba(255,255,255,.5);font-size:.7rem;}
+.admin-sidebar-nav{flex:1;overflow-y:auto;padding:12px 0;}
+.admin-sidebar-item{display:flex;align-items:center;gap:12px;padding:12px 16px;color:rgba(255,255,255,.7);cursor:pointer;transition:all .2s;border-left:3px solid transparent;font-size:.88rem;}
+.admin-sidebar-item:hover{background:rgba(255,255,255,.05);color:#fff;}
+.admin-sidebar-item.active{background:rgba(201,146,42,.15);color:var(--gold-lt);border-left-color:var(--gold);}
+.admin-sidebar-item i{width:20px;text-align:center;font-size:.95rem;}
+.admin-sidebar-footer{padding:16px;border-top:1px solid rgba(255,255,255,.1);}
+.admin-sidebar-user{display:flex;align-items:center;gap:10px;color:#fff;}
+.admin-sidebar-avatar{width:32px;height:32px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--navy);font-weight:800;font-size:.8rem;}
+.admin-sidebar-user-info{flex:1;}
+.admin-sidebar-user-name{font-size:.85rem;font-weight:700;}
+.admin-sidebar-user-role{font-size:.7rem;color:rgba(255,255,255,.5);}
+#adminMain{margin-left:0;transition:margin-left .3s ease;}
+#adminMain.sidebar-open{margin-left:260px;}
+@media(max-width:768px){
+  #adminSidebar{width:240px;}
+  #adminSidebarToggle.shifted{left:252px;}
+  #adminMain.sidebar-open{margin-left:240px;}
+}
 #staffEditModal,#assignModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:8500;align-items:center;justify-content:center;padding:16px;}
 #staffEditModal.open,#assignModal.open{display:flex;}
 .assign-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:var(--r);border:1px solid var(--border);margin-bottom:6px;background:#fff;}
@@ -351,11 +388,12 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   }
   #cardPrintArea{
     position:fixed!important;left:0!important;top:0!important;
-    width:210mm!important;padding:6mm!important;margin:0!important;
+    width:210mm!important;min-height:297mm!important;padding:6mm!important;margin:0!important;
     box-shadow:none!important;border-radius:0!important;
     -webkit-print-color-adjust:exact!important;
     print-color-adjust:exact!important;
     color-adjust:exact!important;
+    overflow:visible!important;
   }
   .ptb{display:none!important;}
   .exam-card{page-break-inside:avoid!important;}
@@ -472,6 +510,8 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   <div class="stabs">
     <button class="stab active" onclick="showStuTab('progress')" id="tabProgress"><i class="fas fa-chart-line"></i> My Progress</button>
     <button class="stab" onclick="showStuTab('subjects')" id="tabSubjects"><i class="fas fa-book-open"></i> Subjects</button>
+    <button class="stab" onclick="showStuTab('timetable')" id="tabTimetable"><i class="fas fa-calendar-alt"></i> Timetable</button>
+    <button class="stab" onclick="showStuTab('profile')" id="tabProfile"><i class="fas fa-user-circle"></i> My Profile</button>
   </div>
   <!-- Progress Tab -->
   <div id="stuProgress" class="stu-tab">
@@ -491,6 +531,22 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       <div class="ch"><div><div class="ct"><i class="fas fa-book-open"></i> Select Subject</div><div class="cs">Choose a subject to begin your exam. ✓ = already taken.</div></div></div>
       <div id="subjMsg"></div>
       <div id="subjectGrid" class="subg"></div>
+    </div>
+  </div>
+  <!-- Timetable Tab -->
+  <div id="stuTimetable" class="stu-tab hidden">
+    <div class="card">
+      <div class="ch"><div><div class="ct"><i class="fas fa-calendar-alt"></i> My Timetable</div><div class="cs">Class schedule for ${S.settings.term} ${S.settings.session}</div></div></div>
+      <div id="studentTimetable" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
+    </div>
+  </div>
+  <!-- Profile Tab -->
+  <div id="stuProfile" class="stu-tab hidden">
+    <div class="card">
+      <div class="ch"><div><div class="ct"><i class="fas fa-user-circle"></i> My Profile</div><div class="cs">View and update your personal information</div></div></div>
+      <div id="studentProfileContent">
+        <div class="ls"><div class="loader loader-dk"></div></div>
+      </div>
     </div>
   </div>
 </div>
@@ -560,6 +616,50 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
 <!-- ADMIN PANEL -->
 <div id="s-admin" class="section">
 <div class="con">
+  <!-- Sidebar Toggle Button -->
+  <button id="adminSidebarToggle" onclick="toggleAdminSidebar()"><i class="fas fa-bars"></i></button>
+  <!-- Sidebar Overlay -->
+  <div id="adminSidebarOverlay" onclick="toggleAdminSidebar()"></div>
+  <!-- Sidebar -->
+  <div id="adminSidebar">
+    <div class="admin-sidebar-header">
+      <div class="admin-sidebar-logo">A</div>
+      <div>
+        <div class="admin-sidebar-title">ACADEX</div>
+        <div class="admin-sidebar-sub">School Admin</div>
+      </div>
+    </div>
+    <div class="admin-sidebar-nav" id="adminSidebarNav">
+      <div class="admin-sidebar-item active" onclick="aTab(0);toggleAdminSidebar()"><i class="fas fa-tachometer-alt"></i> Dashboard</div>
+      <div class="admin-sidebar-item" onclick="aTab(1);toggleAdminSidebar()"><i class="fas fa-users"></i> Students</div>
+      <div class="admin-sidebar-item" onclick="aTab(2);toggleAdminSidebar()"><i class="fas fa-chalkboard-teacher"></i> Staff</div>
+      <div class="admin-sidebar-item" onclick="aTab(3);toggleAdminSidebar()"><i class="fas fa-school"></i> Classes</div>
+      <div class="admin-sidebar-item" onclick="aTab(4);toggleAdminSidebar()"><i class="fas fa-book"></i> Subjects</div>
+      <div class="admin-sidebar-item" onclick="aTab(5);toggleAdminSidebar()"><i class="fas fa-question-circle"></i> Questions</div>
+      <div class="admin-sidebar-item" onclick="aTab(6);toggleAdminSidebar()"><i class="fas fa-chart-bar"></i> Results</div>
+      <div class="admin-sidebar-item" onclick="aTab(7);toggleAdminSidebar()"><i class="fas fa-id-card"></i> Result IDs</div>
+      <div class="admin-sidebar-item" onclick="aTab(8);toggleAdminSidebar()"><i class="fas fa-calendar-check"></i> Attendance</div>
+      <div class="admin-sidebar-item" onclick="aTab(9);toggleAdminSidebar()"><i class="fas fa-bullhorn"></i> Announcements</div>
+      <div class="admin-sidebar-item" onclick="aTab(10);toggleAdminSidebar()"><i class="fas fa-money-bill-wave"></i> Fees</div>
+      <div class="admin-sidebar-item" onclick="aTab(11);toggleAdminSidebar()"><i class="fas fa-file-alt"></i> Report Cards</div>
+      <div class="admin-sidebar-item" onclick="aTab(12);toggleAdminSidebar()"><i class="fas fa-download"></i> Export Data</div>
+      <div class="admin-sidebar-item" onclick="aTab(14);toggleAdminSidebar()"><i class="fas fa-book-open"></i> Library</div>
+      <div class="admin-sidebar-item" onclick="aTab(15);toggleAdminSidebar()"><i class="fas fa-calendar-alt"></i> Timetable</div>
+      <div class="admin-sidebar-item" onclick="aTab(16);toggleAdminSidebar()"><i class="fas fa-calendar-day"></i> Events</div>
+      <div class="admin-sidebar-item" onclick="aTab(13);toggleAdminSidebar()"><i class="fas fa-cog"></i> Settings</div>
+    </div>
+    <div class="admin-sidebar-footer">
+      <div class="admin-sidebar-user">
+        <div class="admin-sidebar-avatar" id="adminSidebarAvatar">AD</div>
+        <div class="admin-sidebar-user-info">
+          <div class="admin-sidebar-user-name" id="adminSidebarName">Admin</div>
+          <div class="admin-sidebar-user-role">School Admin</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Main Content -->
+  <div id="adminMain">
   <div class="atb">
     <div class="asb">
       <div class="asi" id="adminIcon">AD</div>
@@ -571,7 +671,8 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       <button class="btn btn-err btn-sm" onclick="aLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
   </div>
-  <div class="tabs" id="adminTabs">
+  <!-- Hidden horizontal tabs - using sidebar instead -->
+  <div class="tabs" id="adminTabs" style="display:none;">
     <div class="tab active" onclick="aTab(0)"><i class="fas fa-tachometer-alt"></i> Dashboard</div>
     <div class="tab" onclick="aTab(1)"><i class="fas fa-users"></i> Students</div>
     <div class="tab" onclick="aTab(2)"><i class="fas fa-chalkboard-teacher"></i> Staff</div>
@@ -683,6 +784,26 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
         <div class="fa"><button class="btn btn-ok" id="btnSaveCls" onclick="saveClass()"><i class="fas fa-save"></i> Save Class</button><button class="btn btn-ghost" onclick="toggleForm('classForm',true)">Cancel</button></div>
       </div>
       <div id="classTable" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
+      <!-- Class Arms Section -->
+      <div style="margin-top:20px;">
+        <div class="ch" style="margin-top:20px;border-top:1px solid var(--border);padding-top:20px;">
+          <div><div class="ct"><i class="fas fa-layer-group"></i> Class Arms / Streams</div><div class="cs">Manage streams like Science, Commercial, Arts for senior classes</div></div>
+          <div><button class="btn btn-info btn-sm" onclick="toggleForm('armForm')"><i class="fas fa-plus"></i> Add Arm</button></div>
+        </div>
+        <div id="armForm" class="hidden" style="background:var(--off);border-radius:var(--rl);padding:20px;margin-bottom:16px;">
+          <div style="font-weight:800;color:var(--navy);margin-bottom:14px;"><i class="fas fa-layer-group"></i> Add Class Arm</div>
+          <div class="fr2">
+            <div class="fg"><label class="fl">Class Name <span style="color:red">*</span></label><input id="armClassName" class="fc" placeholder="e.g. SS2"></div>
+            <div class="fg"><label class="fl">Arm / Stream <span style="color:red">*</span></label><input id="armName" class="fc" placeholder="e.g. Science, Commercial, Arts"></div>
+          </div>
+          <div class="fr2">
+            <div class="fg"><label class="fl">Level</label><input id="armLevel" class="fc" placeholder="e.g. Senior"></div>
+            <div class="fg"><label class="fl">Capacity</label><input id="armCap" class="fc" type="number" placeholder="Max students"></div>
+          </div>
+          <div class="fa"><button class="btn btn-info" onclick="saveClassArm()"><i class="fas fa-save"></i> Save Arm</button> <button class="btn btn-ghost" onclick="toggleForm('armForm',true)">Cancel</button></div>
+        </div>
+        <div id="classArmsList"></div>
+      </div>
     </div>
   </div>
   <!-- SUBJECTS TAB -->
@@ -921,14 +1042,26 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
         </div>
         <div class="fr2">
           <div class="fg"><label class="fl">Amount <span style="color:red">*</span></label><input id="feeAmount" class="fc" type="number" placeholder="0.00"></div>
-          <div class="fg"><label class="fl">Due Date</label><input id="feeDue" class="fc" type="date"></div>
+          <div class="fg"><label class="fl">Priority</label>
+            <select id="feePriority" class="fc">
+              <option value="1">1 - Highest</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5" selected>5 - Normal</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8 - Lowest</option>
+            </select>
+          </div>
         </div>
         <div class="fr2">
+          <div class="fg"><label class="fl">Due Date</label><input id="feeDue" class="fc" type="date"></div>
           <div class="fg"><label class="fl">Term</label>
             <select id="feeTerm" class="fc"><option value="">Select term</option><option>First Term</option><option>Second Term</option><option>Third Term</option></select>
           </div>
-          <div class="fg"><label class="fl">Session</label><input id="feeSession" class="fc" placeholder="2025/2026"></div>
         </div>
+        <div class="fg"><label class="fl">Session</label><input id="feeSession" class="fc" placeholder="2025/2026"></div>
         <div class="fg"><label class="fl">Description</label><textarea id="feeDesc" class="fc" rows="2" placeholder="Additional details..."></textarea></div>
         <div class="fa"><button class="btn btn-ok" id="btnSaveFee" onclick="saveFee()"><i class="fas fa-save"></i> Save Fee</button><button class="btn btn-ghost" onclick="toggleForm('feeForm',true)">Cancel</button></div>
       </div>
@@ -1055,6 +1188,150 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       <div class="fa"><button class="btn btn-gold" onclick="saveSettings()"><i class="fas fa-save"></i> Save Settings</button></div>
     </div>
   </div>
+  <!-- LIBRARY TAB -->
+  <div id="at14" class="tc">
+    <div class="card">
+      <div class="ch">
+        <div><div class="ct"><i class="fas fa-book-open"></i> Library Management</div><div class="cs">Manage school library books and loans</div></div>
+        <div><button class="btn btn-info" onclick="showAddBookForm()"><i class="fas fa-plus"></i> Add Book</button></div>
+      </div>
+      <div id="addBookForm" style="display:none;background:var(--bg);padding:15px;border-radius:8px;margin-bottom:15px;">
+        <div class="fr2">
+          <div class="fg"><label class="fl">Title</label><input id="bookTitle" class="fc" placeholder="Book title"></div>
+          <div class="fg"><label class="fl">Author</label><input id="bookAuthor" class="fc" placeholder="Author name"></div>
+        </div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">ISBN</label><input id="bookIsbn" class="fc" placeholder="ISBN number"></div>
+          <div class="fg"><label class="fl">Category</label><input id="bookCategory" class="fc" placeholder="e.g. Fiction, Science"></div>
+        </div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Quantity</label><input id="bookQty" class="fc" type="number" placeholder="Number of copies"></div>
+          <div class="fg"><label class="fl">Shelf Location</label><input id="bookShelf" class="fc" placeholder="e.g. Shelf A-1"></div>
+        </div>
+        <div class="fa"><button class="btn btn-success" onclick="addBook()"><i class="fas fa-save"></i> Save Book</button> <button class="btn btn-ghost" onclick="hideAddBookForm()">Cancel</button></div>
+      </div>
+      <div id="libraryBooksList"></div>
+    </div>
+    <div class="card" style="margin-top:15px;">
+      <div class="ch"><div class="ct"><i class="fas fa-hand-holding"></i> Active Loans</div></div>
+      <div id="libraryLoansList"></div>
+    </div>
+  </div>
+  <!-- TIMETABLE TAB -->
+  <div id="at15" class="tc">
+    <div class="card">
+      <div class="ch">
+        <div><div class="ct"><i class="fas fa-calendar-alt"></i> Timetable Management</div><div class="cs">Manage class schedules and periods</div></div>
+        <div><button class="btn btn-info" onclick="showAddTimetableForm()"><i class="fas fa-plus"></i> Add Schedule</button></div>
+      </div>
+      <div id="addTimetableForm" style="display:none;background:var(--bg);padding:15px;border-radius:8px;margin-bottom:15px;">
+        <div class="fr2">
+          <div class="fg"><label class="fl">Class</label>
+            <select id="timetableClass" class="fc"></select>
+          </div>
+          <div class="fg"><label class="fl">Day</label>
+            <select id="timetableDay" class="fc">
+              <option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option>
+            </select>
+          </div>
+        </div>
+        <div class="fr3">
+          <div class="fg"><label class="fl">Period</label><input id="timetablePeriod" class="fc" type="number" placeholder="Period number"></div>
+          <div class="fg"><label class="fl">Subject</label><input id="timetableSubject" class="fc" placeholder="Subject name"></div>
+          <div class="fg"><label class="fl">Teacher</label><input id="timetableTeacher" class="fc" placeholder="Teacher name"></div>
+        </div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Start Time</label><input id="timetableStart" class="fc" type="time"></div>
+          <div class="fg"><label class="fl">End Time</label><input id="timetableEnd" class="fc" type="time"></div>
+        </div>
+        <div class="fa"><button class="btn btn-success" onclick="addTimetableEntry()"><i class="fas fa-save"></i> Save Schedule</button> <button class="btn btn-ghost" onclick="hideAddTimetableForm()">Cancel</button></div>
+      </div>
+      <div class="fr2" style="margin-bottom:15px;">
+        <div class="fg"><label class="fl">Filter by Class</label>
+          <select id="filterTimetableClass" class="fc" onchange="loadTimetableAdmin()">
+            <option value="">All Classes</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Filter by Day</label>
+          <select id="filterTimetableDay" class="fc" onchange="loadTimetableAdmin()">
+            <option value="">All Days</option>
+            <option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option>
+          </select>
+        </div>
+      </div>
+      <div id="timetableAdminList"></div>
+    </div>
+  </div>
+  <!-- EVENTS TAB -->
+  <div id="at16" class="tc">
+    <div class="card">
+      <div class="ch">
+        <div><div class="ct"><i class="fas fa-calendar-day"></i> Event Calendar</div><div class="cs">Manage school events, holidays, and activities</div></div>
+        <div><button class="btn btn-info" onclick="toggleEventForm()"><i class="fas fa-plus"></i> Add Event</button></div>
+      </div>
+      <div id="eventForm" style="display:none;background:var(--off);padding:20px;border-radius:var(--rl);margin-bottom:16px;">
+        <div style="font-weight:800;color:var(--navy);margin-bottom:14px;"><i class="fas fa-calendar-plus"></i> Add New Event</div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Event Title <span style="color:red">*</span></label><input id="evtTitle" class="fc" placeholder="Event title"></div>
+          <div class="fg"><label class="fl">Event Type</label>
+            <select id="evtType" class="fc">
+              <option value="general">General</option>
+              <option value="holiday">Holiday</option>
+              <option value="exam">Exam</option>
+              <option value="meeting">Meeting</option>
+              <option value="activity">Activity</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg"><label class="fl">Description</label><textarea id="evtDesc" class="fc" rows="2" placeholder="Event description"></textarea></div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Start Date <span style="color:red">*</span></label><input id="evtStart" class="fc" type="date"></div>
+          <div class="fg"><label class="fl">End Date</label><input id="evtEnd" class="fc" type="date"></div>
+        </div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">All Day</label>
+            <select id="evtAllDay" class="fc">
+              <option value="yes">Yes</option>
+              <option value="no">No (has time)</option>
+            </select>
+          </div>
+          <div class="fg"><label class="fl">Location</label><input id="evtLocation" class="fc" placeholder="Event location"></div>
+        </div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Target Role</label>
+            <select id="evtTargetRole" class="fc">
+              <option value="all">All</option>
+              <option value="student">Students</option>
+              <option value="staff">Staff</option>
+              <option value="parent">Parents</option>
+            </select>
+          </div>
+          <div class="fg"><label class="fl">Target Class</label>
+            <select id="evtTargetClass" class="fc">
+              <option value="all">All Classes</option>
+            </select>
+          </div>
+        </div>
+        <div class="fa"><button class="btn btn-success" onclick="saveEvent()"><i class="fas fa-save"></i> Save Event</button> <button class="btn btn-ghost" onclick="toggleEventForm()">Cancel</button></div>
+      </div>
+      <div class="fr2" style="margin-bottom:15px;">
+        <div class="fg"><label class="fl">Filter by Type</label>
+          <select id="filterEventType" class="fc" onchange="loadEventsAdmin()">
+            <option value="">All Types</option>
+            <option value="general">General</option>
+            <option value="holiday">Holiday</option>
+            <option value="exam">Exam</option>
+            <option value="meeting">Meeting</option>
+            <option value="activity">Activity</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Filter by Month</label>
+          <input id="filterEventMonth" class="fc" type="month" onchange="loadEventsAdmin()">
+        </div>
+      </div>
+      <div id="eventsAdminList"></div>
+    </div>
+  </div>
 </div>
 </div>
 <!-- STAFF LOGIN -->
@@ -1169,6 +1446,9 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   <div class="tabs">
     <div class="tab active" onclick="stTab(0)"><i class="fas fa-keyboard"></i> Enter Scores</div>
     <div class="tab" onclick="stTab(1)"><i class="fas fa-chart-bar"></i> View Results</div>
+    <div class="tab" onclick="stTab(2)"><i class="fas fa-book-open"></i> Library</div>
+    <div class="tab" onclick="stTab(3)"><i class="fas fa-calendar-alt"></i> Timetable</div>
+    <div class="tab" onclick="stTab(4)"><i class="fas fa-user-circle"></i> My Profile</div>
   </div>
   <div id="st0" class="tc active">
     <div class="card">
@@ -1213,6 +1493,35 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       <div id="stResTable" class="tw"></div>
     </div>
   </div>
+  <!-- Staff Library Tab -->
+  <div id="st2" class="tc">
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-book-open"></i> Library Management</div><div class="cs">Borrow books to students</div></div>
+      <div class="fr2">
+        <div class="fg"><label class="fl">Student ID</label><input id="staffLibStudentId" class="fc fc-mono" placeholder="e.g. SCH001-2026-0001"></div>
+        <div class="fg"><label class="fl">Book Title</label><input id="staffLibBookTitle" class="fc" placeholder="Book title to borrow"></div>
+      </div>
+      <div class="fa" style="margin-bottom:15px;"><button class="btn btn-success" onclick="staffBorrowBook()"><i class="fas fa-hand-holding"></i> Borrow Book</button></div>
+      <div id="staffLibLoans"></div>
+    </div>
+  </div>
+  <!-- Staff Timetable Tab -->
+  <div id="st3" class="tc">
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-calendar-alt"></i> My Timetable</div><div class="cs">View your teaching schedule</div></div>
+      <div id="staffTimetable"></div>
+    </div>
+  </div>
+  <!-- Staff Profile Tab -->
+  <div id="st4" class="tc">
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-user-circle"></i> My Profile</div><div class="cs">View and update your profile</div></div>
+      <div id="staffProfileContent">
+        <div class="ls"><div class="loader loader-dk"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 </div>
 <!-- SUPER ADMIN LOGIN -->
@@ -1542,28 +1851,58 @@ async function loadParentLibrary() {
   const el = document.getElementById('parentLibrary');
   el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
   try {
-    // API call + mock fallback
-    el.innerHTML = `
-      <table><thead><tr><th>Book</th><th>Borrowed</th><th>Due</th><th>Status</th></tr></thead>
-      <tbody>
-        <tr><td>Algebra Vol 2</td><td>2026-01-10</td><td>2026-01-24</td><td><span class="badge b-ok">Returned</span></td></tr>
-        <tr><td>World History</td><td>2026-01-12</td><td>2026-01-26</td><td><span class="badge b-warn">Overdue</span></td></tr>
-        <tr><td>Python Programming</td><td>2026-01-05</td><td>2026-01-19</td><td><span class="badge b-ok">Returned</span></td></tr>
-      </tbody></table>`;
-    toast('📚 Library records loaded', 'ok');
-  } catch(e) { el.innerHTML = '<div class="alert a-err">No library records</div>'; }
+    const r = await api({ action: 'getLibraryLoans', school_code: S.parent.school_code, student_id: S.parent.student_id });
+    const loans = r.loans || [];
+    if (!loans.length) {
+      el.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-book-open"></i></span><h4>No library records</h4><p>Your child has no borrowed books</p></div>';
+      return;
+    }
+    // Get book details
+    const br = await api({ action: 'getLibraryBooks', school_code: S.parent.school_code });
+    const books = br.books || [];
+    const bookMap = {};
+    books.forEach(b => { bookMap[b.book_id] = b; });
+    el.innerHTML = `<table><thead><tr><th>Book</th><th>Borrowed</th><th>Due</th><th>Status</th></tr></thead><tbody>${loans.map(l => {
+      const book = bookMap[l.book_id] || {};
+      const isOverdue = l.status === 'borrowed' && new Date(l.due_date) < new Date();
+      return `<tr><td>${book.title || l.book_id}</td><td>${l.borrow_date || '-'}</td><td>${l.due_date || '-'}</td><td><span class="badge ${l.status === 'returned' ? 'b-ok' : isOverdue ? 'b-err' : 'b-warn'}">${l.status === 'returned' ? 'Returned' : isOverdue ? 'Overdue' : 'Borrowed'}</span></td></tr>`;
+    }).join('')}</tbody></table>`;
+  } catch(e) { el.innerHTML = '<div class="alert a-err">Unable to load library records</div>'; }
 }
 
 async function loadParentSchedule() {
   const el = document.getElementById('parentSchedule');
   el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
   try {
-    // Mock timetable
-    el.innerHTML = `
-      <table><thead><tr><th>Day</th><th>8-9</th><th>9-10</th><th>10-11</th><th>11-12</th><th>Break</th><th>1-2</th><th>2-3</th></tr></thead>
-      <tbody>
-        <tr><td>Monday</td><td>Math</td><td>English</td><td>Physics</td><td>Chemistry</td><td>Lunch</td><td>Biology</td><td>History</td></tr>
-        <tr><td>Tuesday</td><td>English</td><td>Math</td><td>Literature</td><td>Geography</td><td>Lunch</td><td>CRS</td><td>French</td></tr>
+    const r = await api({ action: 'getTimetable', school_code: S.parent.school_code, class: S.parent.student_class, term: S.settings.term, session: S.settings.session });
+    const timetable = r.timetable || [];
+    if (!timetable.length) {
+      el.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-calendar-alt"></i></span><h4>No timetable</h4><p>No schedule available for this class</p></div>';
+      return;
+    }
+    // Get subjects
+    const sr = await api({ action: 'getSubjects', school_code: S.parent.school_code });
+    const subjects = sr.subjects || [];
+    const subjMap = {};
+    subjects.forEach(s => { subjMap[s.subject_code] = s.subject_name; });
+    // Group by day
+    const days = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
+    let html = '<div class="timetable-wrap"><table class="timetable"><thead><tr><th>Period</th>';
+    days.forEach(d => html += `<th>${d}</th>`);
+    html += '</tr></thead><tbody>';
+    const periods = ['1','2','3','4','Break','5','6','7'];
+    periods.forEach(p => {
+      html += `<tr><td>${p === 'Break' ? 'Break' : p + ':00'}</td>`;
+      days.forEach(d => {
+        const entry = timetable.find(t => t.day.toLowerCase() === d.toLowerCase() && String(t.period) === p);
+        html += `<td>${entry ? (subjMap[entry.subject_code] || entry.subject_code) + (entry.room ? '<br><small>' + entry.room + '</small>' : '') : '-'}</td>`;
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    el.innerHTML = html;
+  } catch(e) { el.innerHTML = '<div class="alert a-err">Unable to load timetable</div>'; }
+}
       </tbody></table>`;
     toast('📅 Weekly schedule loaded', 'ok');
   } catch(e) { el.innerHTML = '<div class="alert a-err">Loading schedule...</div>'; }
@@ -1573,27 +1912,23 @@ async function loadParentAnnouncements() {
   const el = document.getElementById('parentAnnouncements');
   el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
   try {
-    // Mock announcements
-    el.innerHTML = \`
-      <div class="ann-item high">
-        <div class="ann-h">
-          <span>PTA Meeting Notice</span>
-          <span class="ann-prio high">HIGH</span>
-        </div>
-        <div class="ann-c">PTA meeting rescheduled to Friday 24th. All parents expected.</div>
-        <div class="ann-f"><i class="fas fa-clock"></i> Jan 20 · <i class="fas fa-eye"></i> All parents</div>
-      </div>
-      <div class="ann-item">
-        <div class="ann-h">
-          <span>Fee Payment Reminder</span>
-          <span class="ann-prio normal">Normal</span>
-        </div>
-        <div class="ann-c">Term 1 fees due by Jan 31st. Late payments attract penalty.</div>
-        <div class="ann-f"><i class="fas fa-clock"></i> Jan 18 · <i class="fas fa-users"></i> Parents</div>
-      </div>
-    \`;
-    toast('📢 Latest announcements loaded', 'ok');
-  } catch(e) { el.innerHTML = '<div class="alert a-err">No announcements</div>'; }
+    const r = await api({ action: 'getAnnouncements', school_code: S.parent.school_code });
+    const ann = r.announcements || [];
+    // Filter for parents (target_role = 'all' or 'parent')
+    const parentAnn = ann.filter(a => 
+      !a.target_role || a.target_role === 'all' || a.target_role === 'parent'
+    );
+    if (!parentAnn.length) {
+      el.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-bullhorn"></i></span><h4>No announcements</h4><p>No announcements for parents at this time</p></div>';
+      return;
+    }
+    el.innerHTML = parentAnn.map(a => `<div class="ann-item ${a.priority}">
+      <div class="ann-h">${a.title}<span class="ann-prio ${a.priority}">${a.priority}</span></div>
+      <div class="ann-c">${a.content}</div>
+      <div class="ann-f"><span><i class="fas fa-calendar"></i> ${a.start_date || 'Ongoing'}</span></div>
+    </div>`).join('');
+  } catch(e) { el.innerHTML = '<div class="alert a-err">Unable to load announcements</div>'; }
+}
 }
 
 // ════════════════════════════════════════════════
@@ -1818,6 +2153,113 @@ async function loadSubjects() {
   loadStudentProgress();
 }
 
+async function loadStudentTimetable() {
+  const el = document.getElementById('studentTimetable');
+  el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({ action: 'getTimetable', school_code: S.student.school_code, class: S.student.class, term: S.settings.term, session: S.settings.session });
+    const timetable = r.timetable || [];
+    if (!timetable.length) {
+      el.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-calendar-alt"></i></span><h4>No timetable</h4><p>No schedule available for your class</p></div>';
+      return;
+    }
+    // Get subjects
+    const sr = await api({ action: 'getSubjects', school_code: S.student.school_code, class: S.student.class });
+    const subjects = sr.subjects || [];
+    const subjMap = {};
+    subjects.forEach(s => { subjMap[s.subject_code] = s.subject_name; });
+    // Group by day
+    const days = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
+    let html = '<div class="timetable-wrap"><table class="timetable"><thead><tr><th>Period</th>';
+    days.forEach(d => html += `<th>${d}</th>`);
+    html += '</tr></thead><tbody>';
+    const periods = ['1','2','3','4','Break','5','6','7'];
+    periods.forEach(p => {
+      html += `<tr><td>${p === 'Break' ? 'Break' : p + ':00'}</td>`;
+      days.forEach(d => {
+        const entry = timetable.find(t => t.day.toLowerCase() === d.toLowerCase() && String(t.period) === p);
+        html += `<td>${entry ? (subjMap[entry.subject_code] || entry.subject_code) + (entry.room ? '<br><small>' + entry.room + '</small>' : '') : '-'}</td>`;
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    el.innerHTML = html;
+  } catch(e) { el.innerHTML = '<div class="alert a-err">Unable to load timetable</div>'; }
+}
+
+async function loadStudentProfile() {
+  const el = document.getElementById('studentProfileContent');
+  el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({ action: 'getStudentProfile', student_id: S.student.student_id, school_code: S.student.school_code });
+    if (!r.success) { el.innerHTML = '<div class="alert a-err">' + r.message + '</div>'; return; }
+    const s = r.student;
+    el.innerHTML = `
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px;">
+        <div style="flex:1;min-width:250px;">
+          <div style="background:var(--off);padding:20px;border-radius:var(--rl);text-align:center;">
+            <div style="width:80px;height:80px;background:var(--navy);border-radius:50%;margin:0 auto 15px;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#fff;font-weight:800;">${s.full_name ? s.full_name.charAt(0).toUpperCase() : 'S'}</div>
+            <div style="font-weight:800;font-size:1.1rem;color:var(--navy);">${s.full_name || 'N/A'}</div>
+            <div style="color:var(--tlt);font-size:.9rem;">${s.student_id || ''}</div>
+          </div>
+        </div>
+        <div style="flex:2;min-width:300px;">
+          <div style="background:var(--off);padding:20px;border-radius:var(--rl);">
+            <div class="ct" style="margin-bottom:15px;"><i class="fas fa-info-circle"></i> Personal Information</div>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+              <div><div style="font-size:.75rem;color:var(--tlt);">Class</div><div style="font-weight:600;">${s.class || 'N/A'}</div></div>
+              <div><div style="font-size:.75rem;color:var(--tlt);">Gender</div><div style="font-weight:600;">${s.gender || 'Not set'}</div></div>
+              <div><div style="font-size:.75rem;color:var(--tlt);">Date of Birth</div><div style="font-weight:600;">${s.date_of_birth || 'Not set'}</div></div>
+              <div><div style="font-size:.75rem;color:var(--tlt);">Parent Phone</div><div style="font-weight:600;">${s.parent_phone || 'Not set'}</div></div>
+              <div><div style="font-size:.75rem;color:var(--tlt);">Status</div><div style="font-weight:600;"><span class="badge b-ok">${s.status || 'active'}</span></div></div>
+              <div><div style="font-size:.75rem;color:var(--tlt);">School</div><div style="font-weight:600;">${s.school_code || ''}</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card card-sm">
+        <div class="ch"><div class="ct"><i class="fas fa-edit"></i> Update Profile</div></div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Full Name</label><input id="spFullName" class="fc" value="${s.full_name || ''}"></div>
+          <div class="fg"><label class="fl">Gender</label>
+            <select id="spGender" class="fc">
+              <option value="">Select</option>
+              <option value="male" ${s.gender === 'male' ? 'selected' : ''}>Male</option>
+              <option value="female" ${s.gender === 'female' ? 'selected' : ''}>Female</option>
+            </select>
+          </div>
+        </div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Date of Birth</label><input id="spDob" class="fc" type="date" value="${s.date_of_birth || ''}"></div>
+          <div class="fg"><label class="fl">Parent Phone</label><input id="spPhone" class="fc" value="${s.parent_phone || ''}"></div>
+        </div>
+        <div class="fg"><label class="fl">Photo URL</label><input id="spPhoto" class="fc" value="${s.photo_url || ''}" placeholder="https://..."></div>
+        <div class="fa"><button class="btn btn-success" onclick="updateStudentProfile()"><i class="fas fa-save"></i> Save Changes</button></div>
+      </div>
+    `;
+  } catch(e) { el.innerHTML = '<div class="alert a-err">' + e.message + '</div>'; }
+}
+
+async function updateStudentProfile() {
+  const btn = document.querySelector('#stuProfile .btn-success');
+  btn.innerHTML = '<span class="loader"></span>'; btn.disabled = true;
+  try {
+    const r = await api({
+      action: 'updateStudentProfile',
+      student_id: S.student.student_id,
+      school_code: S.student.school_code,
+      full_name: document.getElementById('spFullName').value.trim(),
+      gender: document.getElementById('spGender').value,
+      date_of_birth: document.getElementById('spDob').value,
+      parent_phone: document.getElementById('spPhone').value.trim(),
+      photo_url: document.getElementById('spPhoto').value.trim()
+    });
+    if (r.success) { toast('Profile updated!', 'ok'); loadStudentProfile(); }
+    else { toast(r.message, 'err'); }
+  } catch(e) { toast(e.message, 'err'); }
+  finally { btn.innerHTML = '<i class="fas fa-save"></i> Save Changes'; btn.disabled = false; }
+}
+
 // ════════════════════════════════════════════════
 // STUDENT TABS & PROGRESS
 // ════════════════════════════════════════════════
@@ -1826,6 +2268,9 @@ function showStuTab(tab) {
   document.querySelectorAll('.stu-tab').forEach(t => t.classList.add('hidden'));
   document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
   document.getElementById('stu' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.remove('hidden');
+  // Load data for new tabs
+  if (tab === 'timetable') loadStudentTimetable();
+  if (tab === 'profile') loadStudentProfile();
 }
 
 async function loadStudentProgress() {
@@ -2427,6 +2872,8 @@ async function adminLogin() {
       document.getElementById('adminIcon').textContent = (code || 'AD').substring(0, 2);
       document.getElementById('adminName').textContent = r.school_name || code;
       document.getElementById('adminCode').textContent = 'Code: ' + code;
+      document.getElementById('adminSidebarAvatar').textContent = (code || 'AD').substring(0, 2);
+      document.getElementById('adminSidebarName').textContent = r.school_name || code;
       // Save API URL from settings if provided
       if (r.settings && r.settings.api_url) localStorage.setItem('acadex_api', r.settings.api_url);
       go('admin'); msg('aLMsg', ''); toast('Welcome, Admin!', 'ok');
@@ -2464,7 +2911,8 @@ function refreshAdmin() {
 }
 function aTab(i) {
   document.querySelectorAll('#adminTabs .tab').forEach((t, j) => t.classList.toggle('active', i === j));
-  ['at0','at1','at2','at3','at4','at5','at6','at7','at8','at9','at10','at11','at12','at13'].forEach((id, j) => {
+  document.querySelectorAll('#adminSidebarNav .admin-sidebar-item').forEach((t, j) => t.classList.toggle('active', j === i));
+  ['at0','at1','at2','at3','at4','at5','at6','at7','at8','at9','at10','at11','at12','at14','at15','at16','at13'].forEach((id, j) => {
     const el = document.getElementById(id);
     if (el) el.classList.toggle('active', j === i);
   });
@@ -2473,6 +2921,16 @@ function aTab(i) {
   if (i === 9) loadAnnouncements();
   if (i === 10) loadFees();
   if (i === 11) loadReportCardsTab();
+  if (i === 14) loadLibraryAdmin();
+  if (i === 15) loadTimetableAdmin();
+  if (i === 16) loadEventsAdmin();
+  if (i === 3) { loadClasses(); loadClassArms(); }
+}
+function toggleAdminSidebar() {
+  document.getElementById('adminSidebar').classList.toggle('open');
+  document.getElementById('adminSidebarOverlay').classList.toggle('open');
+  document.getElementById('adminSidebarToggle').classList.toggle('shifted');
+  document.getElementById('adminMain').classList.toggle('sidebar-open');
 }
 // ════════════════════════════════════════════════
 // DASHBOARD
@@ -2875,6 +3333,64 @@ async function deleteClass(name) {
     else toast(r.message,'err');
   } catch(e) { toast(e.message,'err'); }
 }
+
+// ════════════════════════════════════════════════
+// CLASS ARMS MANAGEMENT
+// ════════════════════════════════════════════════
+async function loadClassArms() {
+  const w = document.getElementById('classArmsList');
+  if (!w) return;
+  w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({ action: 'getClassArms', school_code: S.admin.code });
+    const arms = r.arms || [];
+    if (!arms.length) {
+      w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-layer-group"></i></span><h4>No class arms</h4><p>Add arms like Science, Commercial, Arts for senior classes</p></div>';
+      return;
+    }
+    // Group by class
+    const byClass = {};
+    arms.forEach(a => {
+      if (!byClass[a.class_name]) byClass[a.class_name] = [];
+      byClass[a.class_name].push(a);
+    });
+    let html = '';
+    Object.keys(byClass).sort().forEach(cls => {
+      html += `<div class="card card-sm" style="margin-bottom:12px;"><div class="ct">${cls}</div><table><thead><tr><th>Arm</th><th>Level</th><th>Capacity</th><th>Actions</th></tr></thead><tbody>`;
+      html += byClass[cls].map(a => `<tr>
+        <td><strong>${a.arm || 'Default'}</strong></td>
+        <td>${a.class_level || '—'}</td>
+        <td>${a.capacity || '—'}</td>
+        <td><button class="btn btn-err btn-sm" onclick="deleteClassArm('${cls}','${a.arm || ''}')" title="Delete"><i class="fas fa-trash"></i></button></td>
+      </tr>`).join('');
+      html += '</tbody></table></div>';
+    });
+    w.innerHTML = html;
+  } catch(e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+async function saveClassArm() {
+  const className = document.getElementById('armClassName').value.trim();
+  const arm = document.getElementById('armName').value.trim();
+  const level = document.getElementById('armLevel').value.trim();
+  const cap = document.getElementById('armCap').value.trim();
+  if (!className || !arm) { toast('Class name and arm are required.', 'err'); return; }
+  try {
+    const r = await api({ action: 'addClassArm', school_code: S.admin.code, class_name: className, arm: arm, class_level: level, capacity: cap });
+    if (r.success) { toast('Arm added: ' + className + ' ' + arm, 'ok'); toggleForm('armForm', true); loadClassArms(); }
+    else { toast(r.message, 'err'); }
+  } catch(e) { toast(e.message, 'err'); }
+}
+
+async function deleteClassArm(className, arm) {
+  if (!confirm('Delete arm "' + arm + '" from ' + className + '?')) return;
+  try {
+    const r = await api({ action: 'deleteClassArm', school_code: S.admin.code, class_name: className, arm: arm });
+    if (r.success) { toast('Arm deleted.', 'ok'); loadClassArms(); }
+    else { toast(r.message, 'err'); }
+  } catch(e) { toast(e.message, 'err'); }
+}
+
 // ════════════════════════════════════════════════
 // STAFF EDIT & SUBJECT ASSIGNMENT
 // ════════════════════════════════════════════════
@@ -3821,6 +4337,237 @@ async function loadFees() {
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
 }
 
+// LIBRARY MANAGEMENT
+// ════════════════════════════════════════════════
+async function loadLibraryAdmin() {
+  const booksList = document.getElementById('libraryBooksList');
+  const loansList = document.getElementById('libraryLoansList');
+  booksList.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  loansList.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    // Load books
+    const r1 = await api({ action: 'getLibraryBooks', school_code: S.admin.code });
+    const books = r1.books || [];
+    if (!books.length) {
+      booksList.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-book"></i></span><h4>No books in library</h4></div>';
+    } else {
+      booksList.innerHTML = `<table class="stable"><thead><tr><th>Title</th><th>Author</th><th>ISBN</th><th>Category</th><th>Available</th><th>Total</th><th>Shelf</th></tr></thead><tbody>${books.map(b => `<tr>
+        <td>${b.title}</td><td>${b.author}</td><td>${b.isbn || '-'}</td><td>${b.category || '-'}</td><td>${b.available}</td><td>${b.quantity}</td><td>${b.shelf || '-'}</td>
+      </tr>`).join('')}</tbody></table>`;
+    }
+    // Load loans
+    const r2 = await api({ action: 'getLibraryLoans', school_code: S.admin.code });
+    const loans = r2.loans || [];
+    if (!loans.length) {
+      loansList.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-hand-holding"></i></span><h4>No active loans</h4></div>';
+    } else {
+      loansList.innerHTML = `<table class="stable"><thead><tr><th>Student</th><th>Book</th><th>Borrowed</th><th>Due</th><th>Status</th><th>Action</th></tr></thead><tbody>${loans.map(l => `<tr>
+        <td>${l.student_name}</td><td>${l.book_title}</td><td>${l.borrow_date}</td><td>${l.due_date}</td><td><span class="badge ${l.status === 'returned' ? 'badge-success' : 'badge-warn'}">${l.status}</span></td>
+        <td>${l.status !== 'returned' ? `<button class="btn btn-sm btn-success" onclick="returnBook('${l.id}')"><i class="fas fa-undo"></i> Return</button>` : '-'}</td>
+      </tr>`).join('')}</tbody></table>`;
+    }
+  } catch (e) { booksList.innerHTML = `<div class="alert a-err">${e.message}</div>`; loansList.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+function showAddBookForm() { document.getElementById('addBookForm').style.display = 'block'; }
+function hideAddBookForm() { document.getElementById('addBookForm').style.display = 'none'; }
+
+async function addBook() {
+  const title = document.getElementById('bookTitle').value.trim();
+  const author = document.getElementById('bookAuthor').value.trim();
+  const isbn = document.getElementById('bookIsbn').value.trim();
+  const category = document.getElementById('bookCategory').value.trim();
+  const quantity = document.getElementById('bookQty').value;
+  const shelf = document.getElementById('bookShelf').value.trim();
+  if (!title || !author || !quantity) { toast('Title, author, and quantity required.', 'warn'); return; }
+  try {
+    const r = await api({ action: 'addLibraryBook', school_code: S.admin.code, title, author, isbn, category, quantity, shelf });
+    if (r.success) { toast('Book added!', 'ok'); hideAddBookForm(); loadLibraryAdmin(); }
+    else { toast(r.message, 'err'); }
+  } catch (e) { toast(e.message, 'err'); }
+}
+
+async function returnBook(loanId) {
+  try {
+    const r = await api({ action: 'returnBook', school_code: S.admin.code, loan_id: loanId });
+    if (r.success) { toast('Book returned!', 'ok'); loadLibraryAdmin(); }
+    else { toast(r.message, 'err'); }
+  } catch (e) { toast(e.message, 'err'); }
+}
+
+// TIMETABLE MANAGEMENT
+// ════════════════════════════════════════════════
+async function loadTimetableAdmin() {
+  const w = document.getElementById('timetableAdminList');
+  w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const cls = document.getElementById('filterTimetableClass').value;
+    const day = document.getElementById('filterTimetableDay').value;
+    const r = await api({ action: 'getTimetable', school_code: S.admin.code, class: cls, day: day });
+    const schedule = r.timetable || [];
+    if (!schedule.length) {
+      w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-calendar-alt"></i></span><h4>No timetable entries</h4></div>';
+      return;
+    }
+    // Group by day
+    const days = {};
+    schedule.forEach(s => { if (!days[s.day]) days[s.day] = []; days[s.day].push(s); });
+    let html = '';
+    for (const day of ['Monday','Tuesday','Wednesday','Thursday','Friday']) {
+      if (!days[day]) continue;
+      html += `<div class="card card-sm" style="margin-bottom:15px;"><div class="ct">${day}</div><table class="stable"><thead><tr><th>Period</th><th>Subject</th><th>Teacher</th><th>Time</th></tr></thead><tbody>`;
+      html += days[day].sort((a,b) => a.period - b.period).map(s => `<tr><td>${s.period}</td><td>${s.subject}</td><td>${s.teacher}</td><td>${s.start_time} - ${s.end_time}</td></tr>`).join('');
+      html += '</tbody></table></div>';
+    }
+    w.innerHTML = html;
+  } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+function showAddTimetableForm() {
+  // Populate class dropdown
+  const clsSelect = document.getElementById('timetableClass');
+  const filterSelect = document.getElementById('filterTimetableClass');
+  if (clsSelect.options.length <= 1 && filterSelect.options.length > 1) {
+    clsSelect.innerHTML = '<option value="">-- Select Class --</option>';
+    filterSelect.innerHTML = '<option value="">All Classes</option>';
+    for (let i = 1; i < filterSelect.options.length; i++) {
+      const val = filterSelect.options[i].value;
+      clsSelect.innerHTML += `<option value="${val}">${val}</option>`;
+      filterSelect.innerHTML += `<option value="${val}">${val}</option>`;
+    }
+  }
+  document.getElementById('addTimetableForm').style.display = 'block';
+}
+function hideAddTimetableForm() { document.getElementById('addTimetableForm').style.display = 'none'; }
+
+async function addTimetableEntry() {
+  const className = document.getElementById('timetableClass').value;
+  const day = document.getElementById('timetableDay').value;
+  const period = document.getElementById('timetablePeriod').value;
+  const subject = document.getElementById('timetableSubject').value.trim();
+  const teacher = document.getElementById('timetableTeacher').value.trim();
+  const startTime = document.getElementById('timetableStart').value;
+  const endTime = document.getElementById('timetableEnd').value;
+  if (!className || !day || !period || !subject) { toast('Class, day, period, and subject required.', 'warn'); return; }
+  try {
+    const r = await api({ action: 'addTimetable', school_code: S.admin.code, class: className, day, period, subject, teacher, start_time: startTime, end_time: endTime });
+    if (r.success) { toast('Schedule added!', 'ok'); hideAddTimetableForm(); loadTimetableAdmin(); }
+    else { toast(r.message, 'err'); }
+  } catch (e) { toast(e.message, 'err'); }
+}
+
+// ════════════════════════════════════════════════
+// EVENT CALENDAR
+// ════════════════════════════════════════════════
+
+function toggleEventForm() {
+  const form = document.getElementById('eventForm');
+  if (form.style.display === 'none') {
+    // Populate target class dropdown
+    const clsSelect = document.getElementById('evtTargetClass');
+    const stuCF = document.getElementById('stuClassFilter');
+    if (clsSelect.options.length <= 1 && stuCF && stuCF.options.length > 1) {
+      clsSelect.innerHTML = '<option value="all">All Classes</option>';
+      for (let i = 1; i < stuCF.options.length; i++) {
+        clsSelect.innerHTML += `<option value="${stuCF.options[i].value}">${stuCF.options[i].value}</option>`;
+      }
+    }
+    // Set default dates
+    document.getElementById('evtStart').value = new Date().toISOString().split('T')[0];
+    form.style.display = 'block';
+  } else {
+    form.style.display = 'none';
+  }
+}
+
+async function loadEventsAdmin() {
+  const w = document.getElementById('eventsAdminList');
+  w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const typeFilter = document.getElementById('filterEventType').value;
+    const monthFilter = document.getElementById('filterEventMonth').value;
+    let startDate = '', endDate = '';
+    if (monthFilter) {
+      const [year, month] = monthFilter.split('-');
+      startDate = `${year}-${month}-01`;
+      const lastDay = new Date(year, month, 0).getDate();
+      endDate = `${year}-${month}-${lastDay}`;
+    }
+    const r = await api({ action: 'getEvents', school_code: S.admin.code, event_type: typeFilter, start_date: startDate, end_date: endDate });
+    const events = r.events || [];
+    if (!events.length) {
+      w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-calendar-day"></i></span><h4>No events found</h4><p>Add school events, holidays, and activities</p></div>';
+      return;
+    }
+    // Group by month
+    const months = {};
+    events.forEach(e => {
+      const d = e.start_date ? new Date(e.start_date) : null;
+      const key = d ? `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}` : 'undated';
+      if (!months[key]) months[key] = [];
+      months[key].push(e);
+    });
+    let html = '';
+    Object.keys(months).sort().forEach(m => {
+      const monthName = m === 'undated' ? 'Undated' : new Date(m + '-01').toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+      html += `<div class="card card-sm" style="margin-bottom:15px;"><div class="ct">${monthName}</div>`;
+      html += months[m].map(e => {
+        const typeClass = e.event_type === 'holiday' ? 'b-err' : e.event_type === 'exam' ? 'b-warn' : e.event_type === 'meeting' ? 'b-info' : 'b-ok';
+        const typeIcon = e.event_type === 'holiday' ? 'fa-holiday' : e.event_type === 'exam' ? 'fa-clipboard-list' : e.event_type === 'meeting' ? 'fa-users' : 'fa-star';
+        return `<div class="event-item" style="display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid var(--border);">
+          <div>
+            <div style="font-weight:700;color:var(--navy);">${e.title}</div>
+            <div style="font-size:.8rem;color:var(--tlt);">${e.start_date || ''} ${e.end_date && e.end_date !== e.start_date ? ' - ' + e.end_date : ''}</div>
+            <div style="font-size:.75rem;color:var(--tlt);">${e.location || 'No location'}</div>
+          </div>
+          <div class="fa">
+            <span class="badge ${typeClass}">${e.event_type}</span>
+            <button class="btn btn-err btn-sm" onclick="deleteEvent('${e.event_id}', ${e.id})" title="Delete"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>`;
+      }).join('');
+      html += '</div>';
+    });
+    w.innerHTML = html;
+  } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+async function saveEvent() {
+  const title = document.getElementById('evtTitle').value.trim();
+  const startDate = document.getElementById('evtStart').value;
+  if (!title || !startDate) { toast('Title and start date required.', 'warn'); return; }
+  const btn = document.querySelector('#eventForm .btn-success');
+  btn.innerHTML = '<span class="loader"></span>'; btn.disabled = true;
+  try {
+    const r = await api({
+      action: 'addEvent',
+      school_code: S.admin.code,
+      title: title,
+      description: document.getElementById('evtDesc').value.trim(),
+      event_type: document.getElementById('evtType').value,
+      start_date: startDate,
+      end_date: document.getElementById('evtEnd').value,
+      all_day: document.getElementById('evtAllDay').value,
+      location: document.getElementById('evtLocation').value.trim(),
+      target_role: document.getElementById('evtTargetRole').value,
+      target_class: document.getElementById('evtTargetClass').value,
+      created_by: S.admin.username
+    });
+    if (r.success) { toast('Event created!', 'ok'); toggleEventForm(); loadEventsAdmin(); }
+    else { toast(r.message, 'err'); }
+  } catch (e) { toast(e.message, 'err'); }
+  finally { btn.innerHTML = '<i class="fas fa-save"></i> Save Event'; btn.disabled = false; }
+}
+
+async function deleteEvent(eventId, rowNum) {
+  if (!confirm('Delete this event?')) return;
+  try {
+    const r = await api({ action: 'deleteEvent', school_code: S.admin.code, event_id: eventId, row_num: rowNum });
+    if (r.success) { toast('Event deleted', 'ok'); loadEventsAdmin(); }
+    else { toast(r.message, 'err'); }
+  } catch (e) { toast(e.message, 'err'); }
+}
+
 async function saveFee() {
   const className = document.getElementById('feeClass').value;
   const feeType = document.getElementById('feeType').value.trim();
@@ -3829,11 +4576,12 @@ async function saveFee() {
   const dueDate = document.getElementById('feeDue').value;
   const term = document.getElementById('feeTerm').value;
   const session = document.getElementById('feeSession').value.trim();
+  const priority = document.getElementById('feePriority').value;
   if (!className || !feeType || !amount) { toast('Class, fee type, and amount required.', 'warn'); return; }
   const btn = document.getElementById('btnSaveFee');
   btn.innerHTML = '<span class="loader"></span>'; btn.disabled = true;
   try {
-    const r = await api({ action: 'addFee', school_code: S.admin.code, class: className, fee_type: feeType, amount, description, term, session, due_date: dueDate });
+    const r = await api({ action: 'addFee', school_code: S.admin.code, class: className, fee_type: feeType, amount, description, term, session, due_date: dueDate, priority: priority });
     if (r.success) { toast('Fee added!', 'ok'); toggleForm('feeForm', true); loadFees(); }
     else { toast(r.message, 'err'); }
   } catch (e) { toast(e.message, 'err'); }
@@ -4143,7 +4891,7 @@ async function parentLogin() {
   btn.innerHTML = '<span class="loader"></span> Logging in...'; btn.disabled = true;
   try {
     const r = await api({ action: 'parentLogin', student_id: stuId, parent_phone: phone });
-    if (r.success) {
+    if (r.success) { 
       S.parent = r.parent; S.settings = r.settings || {};
       msg('pLMsg', ''); toast('Welcome!', 'ok');
       document.getElementById('parentIcon').textContent = 'PR';
@@ -4160,7 +4908,14 @@ function pLogout() { S.parent = null; S.settings = {}; updateNav('home'); go('ho
 
 function pTab(i) {
   document.querySelectorAll('#s-parent .tab').forEach((t, j) => t.classList.toggle('active', i === j));
-  ['pt0','pt1','pt2'].forEach((id, j) => { const el = document.getElementById(id); if (el) el.classList.toggle('active', j === i); });
+  ['pt0','pt1','pt2','pt3','pt4','pt5'].forEach((id, j) => { const el = document.getElementById(id); if (el) el.classList.toggle('active', j === i); });
+  // Load data for new tabs
+  if (i === 0) loadParentData();
+  if (i === 1) loadParentAttendance();
+  if (i === 2) loadParentFees();
+  if (i === 3) loadParentLibrary();
+  if (i === 4) loadParentSchedule();
+  if (i === 5) loadParentAnnouncements();
 }
 
 async function loadParentData() {
@@ -4280,7 +5035,10 @@ async function loadParentData() {
 
 function stTab(i) {
   document.querySelectorAll('#s-staff .tab').forEach((t, j) => t.classList.toggle('active', i === j));
-  ['st0','st1'].forEach((id, j) => { const el = document.getElementById(id); if (el) el.classList.toggle('active', j === i); });
+  ['st0','st1','st2','st3','st4'].forEach((id, j) => { const el = document.getElementById(id); if (el) el.classList.toggle('active', j === i); });
+  if (i === 2) loadStaffLibrary();
+  if (i === 3) loadStaffTimetable();
+  if (i === 4) loadStaffProfile();
 }
 async function loadStaffSubjects() {
   try {
@@ -4463,6 +5221,141 @@ async function stLoadResults() {
     if (!rs.length) { w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-chart-bar"></i></span><h4>No results</h4></div>'; return; }
     w.innerHTML = `<table><thead><tr><th>Student ID</th><th>Name</th><th>Subject</th><th>1st</th><th>2nd</th><th>Exam</th><th>Total</th><th>Grade</th></tr></thead><tbody>${rs.map(r => { const g = gradeOf(r.total); return `<tr><td class="td-mono">${r.student_id}</td><td>${r.full_name || '—'}</td><td>${r.subject_name || r.subject_code}</td><td>${r.first_test||0}</td><td>${r.second_test||0}</td><td>${r.exam||0}</td><td><strong>${r.total||0}</strong></td><td><span class="grade ${g.cls}">${g.g}</span></td></tr>`; }).join('')}</tbody></table>`;
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+// STAFF LIBRARY & TIMETABLE
+// ════════════════════════════════════════════════
+async function loadStaffLibrary() {
+  const w = document.getElementById('staffLibLoans');
+  w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({ action: 'getLibraryLoans', school_code: S.staff.code });
+    const loans = r.loans || [];
+    if (!loans.length) { w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-hand-holding"></i></span><h4>No active loans</h4></div>'; return; }
+    w.innerHTML = `<table class="stable"><thead><tr><th>Student</th><th>Book</th><th>Borrowed</th><th>Due</th><th>Status</th><th>Action</th></tr></thead><tbody>${loans.map(l => `<tr>
+      <td>${l.student_name}</td><td>${l.book_title}</td><td>${l.borrow_date}</td><td>${l.due_date}</td><td><span class="badge ${l.status === 'returned' ? 'badge-success' : 'badge-warn'}">${l.status}</span></td>
+      <td>${l.status !== 'returned' ? `<button class="btn btn-sm btn-success" onclick="staffReturnBook('${l.id}')"><i class="fas fa-undo"></i> Return</button>` : '-'}</td>
+    </tr>`).join('')}</tbody></table>`;
+  } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+async function staffBorrowBook() {
+  const studentId = document.getElementById('staffLibStudentId').value.trim();
+  const bookTitle = document.getElementById('staffLibBookTitle').value.trim();
+  if (!studentId || !bookTitle) { toast('Student ID and book title required.', 'warn'); return; }
+  try {
+    const r = await api({ action: 'borrowBook', school_code: S.staff.code, student_id: studentId, book_title: bookTitle });
+    if (r.success) { toast('Book borrowed!', 'ok'); loadStaffLibrary(); }
+    else { toast(r.message, 'err'); }
+  } catch (e) { toast(e.message, 'err'); }
+}
+
+async function staffReturnBook(loanId) {
+  try {
+    const r = await api({ action: 'returnBook', school_code: S.staff.code, loan_id: loanId });
+    if (r.success) { toast('Book returned!', 'ok'); loadStaffLibrary(); }
+    else { toast(r.message, 'err'); }
+  } catch (e) { toast(e.message, 'err'); }
+}
+
+async function loadStaffTimetable() {
+  const w = document.getElementById('staffTimetable');
+  w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({ action: 'getTimetable', school_code: S.staff.code });
+    let schedule = r.timetable || [];
+    // Filter by teacher name (match against teacher_id or teacher field)
+    const teacherName = S.staff.name.toLowerCase();
+    schedule = schedule.filter(s => {
+      const teacherId = String(s.teacher_id || '').toLowerCase();
+      return teacherId.includes(teacherName) || teacherId.includes(teacherName.split(' ')[0]);
+    });
+    if (!schedule.length) { w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-calendar-alt"></i></span><h4>No timetable assigned</h4></div>'; return; }
+    const days = {};
+    schedule.forEach(s => { if (!days[s.day]) days[s.day] = []; days[s.day].push(s); });
+    let html = '';
+    for (const day of ['Monday','Tuesday','Wednesday','Thursday','Friday']) {
+      if (!days[day]) continue;
+      html += `<div class="card card-sm" style="margin-bottom:15px;"><div class="ct">${day}</div><table class="stable"><thead><tr><th>Period</th><th>Class</th><th>Subject</th><th>Time</th></tr></thead><tbody>`;
+      html += days[day].sort((a,b) => a.period - b.period).map(s => `<tr><td>${s.period}</td><td>${s.class}</td><td>${s.subject_code}</td><td>${s.start_time || '-'} - ${s.end_time || '-'}</td></tr>`).join('');
+      html += '</tbody></table></div>';
+    }
+    w.innerHTML = html;
+  } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+async function loadStaffProfile() {
+  const el = document.getElementById('staffProfileContent');
+  el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({ action: 'getStaffProfile', staff_id: S.staff.staff_id, school_code: S.staff.code });
+    if (!r.success) { el.innerHTML = '<div class="alert a-err">' + r.message + '</div>'; return; }
+    const s = r.staff;
+    const subjects = r.assigned_subjects || [];
+    el.innerHTML = `
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px;">
+        <div style="flex:1;min-width:250px;">
+          <div style="background:var(--off);padding:20px;border-radius:var(--rl);text-align:center;">
+            <div style="width:80px;height:80px;background:var(--navy);border-radius:50%;margin:0 auto 15px;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#fff;font-weight:800;">${s.full_name ? s.full_name.charAt(0).toUpperCase() : 'S'}</div>
+            <div style="font-weight:800;font-size:1.1rem;color:var(--navy);">${s.full_name || 'N/A'}</div>
+            <div style="color:var(--tlt);font-size:.9rem;">${s.staff_id || ''}</div>
+          </div>
+        </div>
+        <div style="flex:2;min-width:300px;">
+          <div style="background:var(--off);padding:20px;border-radius:var(--rl);">
+            <div class="ct" style="margin-bottom:15px;"><i class="fas fa-info-circle"></i> Staff Information</div>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+              <div><div style="font-size:.75rem;color:var(--tlt);">Role</div><div style="font-weight:600;">${s.role || 'Teacher'}</div></div>
+              <div><div style="font-size:.75rem;color:var(--tlt);">Email</div><div style="font-weight:600;">${s.email || 'Not set'}</div></div>
+              <div><div style="font-size:.75rem;color:var(--tlt);">Phone</div><div style="font-weight:600;">${s.phone || 'Not set'}</div></div>
+              <div><div style="font-size:.75rem;color:var(--tlt);">Status</div><div style="font-weight:600;"><span class="badge b-ok">${s.status || 'active'}</span></div></div>
+            </div>
+            <div style="margin-top:15px;">
+              <div style="font-size:.75rem;color:var(--tlt);">Assigned Subjects</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+                ${subjects.length ? subjects.map(sub => `<span class="badge b-info">${sub.subject_name || sub.subject_code} - ${sub.class}</span>`).join('') : '<span style="color:var(--tlt);">No subjects assigned</span>'}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card card-sm">
+        <div class="ch"><div class="ct"><i class="fas fa-edit"></i> Update Profile</div></div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Full Name</label><input id="stfFullName" class="fc" value="${s.full_name || ''}"></div>
+          <div class="fg"><label class="fl">Email</label><input id="stfEmail" class="fc" type="email" value="${s.email || ''}"></div>
+        </div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Phone</label><input id="stfPhone" class="fc" value="${s.phone || ''}"></div>
+          <div class="fg"><label class="fl">Photo URL</label><input id="stfPhoto" class="fc" value="${s.photo_url || ''}" placeholder="https://..."></div>
+        </div>
+        <div class="fg"><label class="fl">Qualifications</label><textarea id="stfQual" class="fc" rows="2" placeholder="Your qualifications">${s.qualifications || ''}</textarea></div>
+        <div class="fg"><label class="fl">Bio</label><textarea id="stfBio" class="fc" rows="2" placeholder="Short bio">${s.bio || ''}</textarea></div>
+        <div class="fa"><button class="btn btn-success" onclick="updateStaffProfile()"><i class="fas fa-save"></i> Save Changes</button></div>
+      </div>
+    `;
+  } catch(e) { el.innerHTML = '<div class="alert a-err">' + e.message + '</div>'; }
+}
+
+async function updateStaffProfile() {
+  const btn = document.querySelector('#st4 .btn-success');
+  btn.innerHTML = '<span class="loader"></span>'; btn.disabled = true;
+  try {
+    const r = await api({
+      action: 'updateStaffProfile',
+      staff_id: S.staff.staff_id,
+      school_code: S.staff.code,
+      full_name: document.getElementById('stfFullName').value.trim(),
+      email: document.getElementById('stfEmail').value.trim(),
+      phone: document.getElementById('stfPhone').value.trim(),
+      photo_url: document.getElementById('stfPhoto').value.trim(),
+      qualifications: document.getElementById('stfQual').value.trim(),
+      bio: document.getElementById('stfBio').value.trim()
+    });
+    if (r.success) { toast('Profile updated!', 'ok'); loadStaffProfile(); }
+    else { toast(r.message, 'err'); }
+  } catch(e) { toast(e.message, 'err'); }
+  finally { btn.innerHTML = '<i class="fas fa-save"></i> Save Changes'; btn.disabled = false; }
 }
 // ════════════════════════════════════════════════
 // SUPER ADMIN
