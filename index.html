@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#0d1b2a">
 <meta name="description" content="ACADEX - Academic Data Exchange for school management and student results">
-<!-- manifest.json not included in single-file build -->
+<link rel="manifest" href="./manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
@@ -686,6 +686,9 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
     <div class="tab" onclick="aTab(10)"><i class="fas fa-money-bill-wave"></i> Fees</div>
     <div class="tab" onclick="aTab(11)"><i class="fas fa-file-alt"></i> Report Cards</div>
     <div class="tab" onclick="aTab(12)"><i class="fas fa-download"></i> Export Data</div>
+    <div class="tab" onclick="aTab(14)"><i class="fas fa-book-open"></i> Library</div>
+    <div class="tab" onclick="aTab(15)"><i class="fas fa-calendar-alt"></i> Timetable</div>
+    <div class="tab" onclick="aTab(16)"><i class="fas fa-calendar-day"></i> Events</div>
     <div class="tab" onclick="aTab(13)"><i class="fas fa-cog"></i> Settings</div>
   </div>
   <!-- DASHBOARD TAB -->
@@ -1763,7 +1766,7 @@ async function api(params, retries = 2, useCache = true) {
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
       const ctrl = new AbortController();
-      const tid = setTimeout(() => ctrl.abort(), 18000);
+      const tid = setTimeout(() => ctrl.abort(), 10000);
       const res = await fetch(`${url}?${qs}`, { signal: ctrl.signal });
       clearTimeout(tid);
       if (!res.ok) {
@@ -2073,15 +2076,24 @@ function setHeaderSchool(name) {
 // HOME STATS
 // ════════════════════════════════════════════════
 async function loadHomeStats() {
+  // Show static stats immediately so home page never looks blank
+  document.getElementById('homeStats').innerHTML = `
+    <div class=sc><div class=si>🏫</div><div class=sv>CBT</div><div class=sl>Platform</div></div>
+    <div class=sc><div class=si>👨‍🎓</div><div class=sv>Ready</div><div class=sl>Students</div></div>
+    <div class=sc><div class=si>📋</div><div class=sv>Auto</div><div class=sl>Results</div></div>
+    <div class=sc><div class=si>🔒</div><div class=sv>Secure</div><div class=sl>Platform</div></div>`;
+  // Try to load live school count in background - never block page render
   try {
-    const r = await api({ action: 'getSchools' });
+    const r = await api({ action: 'getSchools' }, 0, false);
     const schools = (r.schools || []).filter(s => String(s.super_admin || '').toLowerCase() !== 'yes');
-    document.getElementById('homeStats').innerHTML = `
-      <div class="sc"><div class="si">🏫</div><div class="sv">${schools.length}</div><div class="sl">Schools</div></div>
-      <div class="sc"><div class="si">👨‍🎓</div><div class="sv">CBT</div><div class="sl">Ready</div></div>
-      <div class="sc"><div class="si">📋</div><div class="sv">Auto</div><div class="sl">Results</div></div>
-      <div class="sc"><div class="si">🔒</div><div class="sv">Secure</div><div class="sl">Platform</div></div>`;
-  } catch (e) { document.getElementById('homeStats').innerHTML = ''; }
+    if (schools.length) {
+      document.getElementById('homeStats').innerHTML = `
+        <div class=sc><div class=si>🏫</div><div class=sv>${schools.length}</div><div class=sl>Schools</div></div>
+        <div class=sc><div class=si>👨‍🎓</div><div class=sv>CBT</div><div class=sl>Ready</div></div>
+        <div class=sc><div class=si>📋</div><div class=sv>Auto</div><div class=sl>Results</div></div>
+        <div class=sc><div class=si>🔒</div><div class=sv>Secure</div><div class=sl>Platform</div></div>`;
+    }
+  } catch (e) { /* silently keep static stats */ }
 }
 // ════════════════════════════════════════════════
 // STUDENT LOGIN
@@ -3018,27 +3030,26 @@ function refreshAdmin() {
   });
 }
 function aTab(i) {
-  // Sidebar HTML order: Dashboard(0), Students(1), Staff(2), Classes(3), Subjects(4),
-  // Questions(5), Results(6), ResultIDs(7), Attendance(8), Announcements(9),
-  // Fees(10), ReportCards(11), Export(12), Library(14), Timetable(15), Events(16), Settings(13)
-  const sidebarOrder = [0,1,2,3,4,5,6,7,8,9,10,11,12,14,15,16,13];
-  const sidebarPos = sidebarOrder.indexOf(i);
-  document.querySelectorAll('#adminTabs .tab').forEach((t, j) => t.classList.toggle('active', sidebarOrder[j] === i));
-  document.querySelectorAll('#adminSidebarNav .admin-sidebar-item').forEach((t, j) => t.classList.toggle('active', j === sidebarPos));
-  // Directly activate the correct content div by its real ID
-  const allTabs = ['at0','at1','at2','at3','at4','at5','at6','at7','at8','at9','at10','at11','at12','at13','at14','at15','at16'];
-  allTabs.forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('active'); });
+  // Tab order in both sidebar and top bar: 0-12, 14, 15, 16, 13
+  const tabOrder = [0,1,2,3,4,5,6,7,8,9,10,11,12,14,15,16,13];
+  const pos = tabOrder.indexOf(i);
+  document.querySelectorAll('#adminTabs .tab').forEach((t, j) => t.classList.toggle('active', j === pos));
+  document.querySelectorAll('#adminSidebarNav .admin-sidebar-item').forEach((t, j) => t.classList.toggle('active', j === pos));
+  // Activate correct content div by real ID
+  ['at0','at1','at2','at3','at4','at5','at6','at7','at8','at9','at10','at11','at12','at13','at14','at15','at16'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.classList.remove('active');
+  });
   const activeEl = document.getElementById('at' + i);
   if (activeEl) activeEl.classList.add('active');
-  // Load data when switching to tabs
-  if (i === 8) loadAttendance();
-  if (i === 9) loadAnnouncements();
+  // Load data when switching tabs
+  if (i === 8)  loadAttendance();
+  if (i === 9)  loadAnnouncements();
   if (i === 10) loadFees();
   if (i === 11) loadReportCardsTab();
   if (i === 14) loadLibraryAdmin();
   if (i === 15) loadTimetableAdmin();
   if (i === 16) loadEventsAdmin();
-  if (i === 3) { loadClasses(); loadClassArms(); }
+  if (i === 3)  { loadClasses(); loadClassArms(); }
 }
 function toggleAdminSidebar() {
   document.getElementById('adminSidebar').classList.toggle('open');
@@ -5554,7 +5565,12 @@ document.addEventListener('DOMContentLoaded', () => {
   loadHomeStats();
   updateNav('home');
   
-  // Service Worker registration skipped (single-file app)
+  // Register Service Worker for PWA
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(r => console.log('SW registered:', r.scope))
+      .catch(e => console.log('SW registration failed:', e));
+  }
   // Event listeners
   document.getElementById('stuCsvFile').addEventListener('change', e => {
     if (e.target.files[0]) handleStudentCsv(e.target.files[0]);
