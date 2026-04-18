@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#0d1b2a">
 <meta name="description" content="ACADEX - Academic Data Exchange for school management and student results">
-<link rel="manifest" href="./manifest.json">
+<!-- manifest.json not included in single-file build -->
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
@@ -5549,20 +5549,12 @@ async function saRegister() {
 // INIT
 // ════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
-  initTheme(); // Initialize theme from saved preference
+  try {
+  initTheme();
   loadHomeStats();
   updateNav('home');
   
-  // Register Service Worker for PWA
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js')
-      .then((registration) => {
-        console.log('ServiceWorker registered:', registration.scope);
-      })
-      .catch((error) => {
-        console.log('ServiceWorker registration failed:', error);
-      });
-  }
+  // Service Worker registration skipped (single-file app)
   // Event listeners
   document.getElementById('stuCsvFile').addEventListener('change', e => {
     if (e.target.files[0]) handleStudentCsv(e.target.files[0]);
@@ -5593,6 +5585,13 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('[ACADEX] Saved exam state found for:', state.student_id);
       }
     } catch (e) {}
+  }
+  } catch(initErr) {
+    console.error('[ACADEX] Init error:', initErr);
+    // Ensure home is always visible even if init partially fails
+    try { initTheme(); } catch(e) {}
+    try { updateNav('home'); } catch(e) {}
+    try { document.getElementById('s-home').classList.add('active'); } catch(e) {}
   }
 });
 </script>
