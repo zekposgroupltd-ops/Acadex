@@ -1334,6 +1334,7 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   </div>
 </div>
 </div>
+</div>
 <!-- STAFF LOGIN -->
 <div id="s-staff-login" class="section">
 <div class="con"><div class="pw">
@@ -1848,6 +1849,7 @@ async function loadParentFees() {
 }
 
 async function loadParentLibrary() {
+  if (!S.parent) return;
   const el = document.getElementById('parentLibrary');
   el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
   try {
@@ -1871,6 +1873,7 @@ async function loadParentLibrary() {
 }
 
 async function loadParentSchedule() {
+  if (!S.parent) return;
   const el = document.getElementById('parentSchedule');
   el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
   try {
@@ -1904,6 +1907,7 @@ async function loadParentSchedule() {
   } catch(e) { el.innerHTML = '<div class="alert a-err">Unable to load timetable</div>'; }
 }
 async function loadParentAnnouncements() {
+  if (!S.parent) return;
   const el = document.getElementById('parentAnnouncements');
   el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
   try {
@@ -2594,9 +2598,9 @@ function printReport() {
   const results = d.results || [];
   const sc = d.schoolSettings || {};
   const ms = {
-    t1: sc.first_test_max   || 20,
-    t2: sc.second_test_max  || 20,
-    ex: sc.exam_max         || 60
+    t1: sc.first_test_max  || 20,
+    t2: sc.second_test_max || 20,
+    ex: sc.exam_max        || 60
   };
   const schoolName = sc.school_name || meta.school_code || '';
   const address    = [sc.address, sc.town, sc.state].filter(Boolean).join(', ');
@@ -2606,55 +2610,88 @@ function printReport() {
   const term       = sc.term    || meta.term    || '';
   const session    = sc.session || meta.session || '';
   const subjectCount = results.length;
-  // Scale font size based on number of subjects — fewer = slightly larger
-  const tblFont = subjectCount > 14 ? '6pt' : subjectCount > 10 ? '6.5pt' : '7pt';
-  const rowPad  = subjectCount > 14 ? '2px 4px' : subjectCount > 10 ? '3px 5px' : '3.5px 6px';
-  const rows = results.map(r => {
-    const g = gradeOf(r.total);
-    const gradeColors = {
-      gA1:'background:#c8f0d8;color:#0a4a20',
-      gB2:'background:#d0e8ff;color:#0a3060',
-      gB3:'background:#dceeff;color:#0a3878',
-      gC4:'background:#fff4c8;color:#6a4400',
-      gC5:'background:#fff4c8;color:#6a4400',
-      gC6:'background:#fff4c8;color:#6a4400',
-      gD7:'background:#ffe8c0;color:#6a3000',
-      gE8:'background:#ffe8c0;color:#6a3000',
-      gF9:'background:#ffd0d0;color:#6a0000'
-    };
-    const gc = gradeColors[g.cls] || '';
-    return `<tr>
-      <td style="padding:${rowPad};border:1px solid #dde;text-align:left;font-weight:700;font-size:${tblFont};">${r.subject_name || r.subject_code}</td>
-      <td style="padding:${rowPad};border:1px solid #dde;text-align:center;font-size:${tblFont};">${r.first_test || 0}</td>
-      <td style="padding:${rowPad};border:1px solid #dde;text-align:center;font-size:${tblFont};">${r.second_test || 0}</td>
-      <td style="padding:${rowPad};border:1px solid #dde;text-align:center;font-size:${tblFont};">${r.exam || 0}</td>
-      <td style="padding:${rowPad};border:1px solid #dde;text-align:center;font-weight:900;font-size:${tblFont};">${r.total || 0}</td>
-      <td style="padding:${rowPad};border:1px solid #dde;text-align:center;"><span style="display:inline-block;padding:1px 5px;border-radius:3px;font-weight:800;font-size:6pt;${gc};">${g.g}</span></td>
-      <td style="padding:${rowPad};border:1px solid #dde;text-align:center;font-size:${tblFont};">${g.r}</td>
-    </tr>`;
-  }).join('');
-  const logoHtml = logoUrl
-    ? `<img src="${logoUrl}" alt="Logo" style="width:44px;height:44px;object-fit:contain;border-radius:50%;border:2px solid #0d1b2a;display:block;margin:0 auto 3px;">`
-    : `<div style="width:44px;height:44px;border-radius:50%;background:#0d1b2a;display:flex;align-items:center;justify-content:center;color:#e8b84b;font-weight:900;font-size:12pt;margin:0 auto 3px;">${(schoolName||'').substring(0,2).toUpperCase()}</div>`;
-  const overallG = gradeOf(d.average || 0);
+
+  // ── Dynamic scaling: fits 1–20+ subjects onto one A4 page ──
+  // Available height ≈ 247mm after header/footer. Each row ≈ 5mm at 7pt.
+  // Scale down proportionally if needed.
+  let basePt   = 7.5;
+  let rowPadV  = 3.5;
+  let rowPadH  = 6;
+  let hdrPadV  = 4;
+  if (subjectCount > 16) { basePt = 6;   rowPadV = 2;   rowPadH = 4; hdrPadV = 3; }
+  else if (subjectCount > 13) { basePt = 6.5; rowPadV = 2.5; rowPadH = 5; hdrPadV = 3.5; }
+  else if (subjectCount > 10) { basePt = 7;   rowPadV = 3;   rowPadH = 5; hdrPadV = 4; }
+  const tblFont = basePt + 'pt';
+  const rowPad  = rowPadV + 'px ' + rowPadH + 'px';
+  const hdrPad  = hdrPadV + 'px 6px';
+
   const gradeColorMap = {
-    A1:'background:#c8f0d8;color:#0a4a20',B2:'background:#d0e8ff;color:#0a3060',
-    B3:'background:#dceeff;color:#0a3878',C4:'background:#fff4c8;color:#6a4400',
-    C5:'background:#fff4c8;color:#6a4400',C6:'background:#fff4c8;color:#6a4400',
-    D7:'background:#ffe8c0;color:#6a3000',E8:'background:#ffe8c0;color:#6a3000',
+    gA1:'background:#c8f0d8;color:#0a4a20', gB2:'background:#d0e8ff;color:#0a3060',
+    gB3:'background:#dceeff;color:#0a3878', gC4:'background:#fff4c8;color:#6a4400',
+    gC5:'background:#fff4c8;color:#6a4400', gC6:'background:#fff4c8;color:#6a4400',
+    gD7:'background:#ffe8c0;color:#6a3000', gE8:'background:#ffe8c0;color:#6a3000',
+    gF9:'background:#ffd0d0;color:#6a0000'
+  };
+  const overallGradeMap = {
+    A1:'background:#c8f0d8;color:#0a4a20', B2:'background:#d0e8ff;color:#0a3060',
+    B3:'background:#dceeff;color:#0a3878', C4:'background:#fff4c8;color:#6a4400',
+    C5:'background:#fff4c8;color:#6a4400', C6:'background:#fff4c8;color:#6a4400',
+    D7:'background:#ffe8c0;color:#6a3000', E8:'background:#ffe8c0;color:#6a3000',
     F9:'background:#ffd0d0;color:#6a0000'
   };
-  const avgGradeStyle = gradeColorMap[overallG.g] || '';
-  // Watermark for report sheet
-  const wmStyle = logoUrl 
-    ? `background-image:url('${logoUrl}');background-repeat:repeat;background-position:center;background-size:100px;opacity:0.06;`
-    : `background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 x=%2250%22 text-anchor=%22middle%22 font-size=%2280%22 fill=%22%230d1b2a%22 opacity=%220.08%22>${(schoolName||'').substring(0,2).toUpperCase()}</text></svg>');background-repeat:repeat;background-size:80px;`;
-  
-  document.getElementById('reportSheet').innerHTML = `
-<div style="width:100%;font-family:Arial,sans-serif;font-size:7pt;color:#111;position:relative;">
-  <div style="position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;${wmStyle}"></div>
+  const rows = results.map((r, idx) => {
+    const g  = gradeOf(r.total);
+    const gc = gradeColorMap[g.cls] || '';
+    const rowBg = idx % 2 === 1 ? 'background:#f8f9ff;' : '';
+    return `<tr style="${rowBg}">
+      <td style="padding:${rowPad};border:1px solid #dde;text-align:left;font-weight:600;">${r.subject_name || r.subject_code}</td>
+      <td style="padding:${rowPad};border:1px solid #dde;text-align:center;">${r.first_test  != null ? r.first_test  : 0}</td>
+      <td style="padding:${rowPad};border:1px solid #dde;text-align:center;">${r.second_test != null ? r.second_test : 0}</td>
+      <td style="padding:${rowPad};border:1px solid #dde;text-align:center;">${r.exam        != null ? r.exam        : 0}</td>
+      <td style="padding:${rowPad};border:1px solid #dde;text-align:center;font-weight:900;">${r.total || 0}</td>
+      <td style="padding:${rowPad};border:1px solid #dde;text-align:center;"><span style="display:inline-block;padding:1px 5px;border-radius:3px;font-weight:800;font-size:6pt;${gc};">${g.g}</span></td>
+      <td style="padding:${rowPad};border:1px solid #dde;text-align:center;">${g.r}</td>
+    </tr>`;
+  }).join('');
+
+  const overallG    = gradeOf(d.average || 0);
+  const avgGradeStyle = overallGradeMap[overallG.g] || '';
+  const logoHtml    = logoUrl
+    ? `<img src="${logoUrl}" alt="Logo" style="width:44px;height:44px;object-fit:contain;border-radius:50%;border:2px solid #0d1b2a;display:block;margin:0 auto 3px;">`
+    : `<div style="width:44px;height:44px;border-radius:50%;background:#0d1b2a;display:flex;align-items:center;justify-content:center;color:#e8b84b;font-weight:900;font-size:12pt;margin:0 auto 3px;">${(schoolName||'').substring(0,2).toUpperCase()}</div>`;
+  const wmStyle = logoUrl
+    ? `background-image:url('${logoUrl}');background-repeat:repeat;background-position:center;background-size:100px;opacity:0.05;`
+    : `background-image:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 x=%2250%22 text-anchor=%22middle%22 font-size=%2280%22 fill=%22%230d1b2a%22 opacity=%220.06%22>${(schoolName||'').substring(0,2).toUpperCase()}</text></svg>');background-repeat:repeat;background-size:80px;`;
+
+  // ── Build full self-contained HTML page for reliable printing ──
+  const reportHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Report — ${student.full_name || meta.student_id || ''}</title>
+<style>
+  @page { margin:0; size:A4 portrait; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { width:210mm; height:297mm; background:#fff; -webkit-print-color-adjust:exact; print-color-adjust:exact; color-adjust:exact; }
+  body { font-family:Arial,sans-serif; font-size:${tblFont}; color:#111; padding:6mm 8mm; }
+  table { width:100%; border-collapse:collapse; }
+  .ptb { display:none; }
+  @media screen {
+    body { margin:0 auto; box-shadow:0 0 30px rgba(0,0,0,.2); }
+  }
+  @media print {
+    .ptb { display:none!important; }
+    html,body { margin:0; padding:6mm 8mm; width:210mm; height:297mm; }
+  }
+</style>
+</head>
+<body>
+<div style="width:100%;font-family:Arial,sans-serif;font-size:${tblFont};color:#111;position:relative;">
+  <!-- WATERMARK -->
+  <div style="position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;${wmStyle}"></div>
+  <div style="position:relative;z-index:1;">
   <!-- HEADER -->
-  <div style="text-align:center;border-bottom:2.5px solid #0d1b2a;padding-bottom:5px;margin-bottom:5px;position:relative;z-index:1;">
+  <div style="text-align:center;border-bottom:2.5px solid #0d1b2a;padding-bottom:5px;margin-bottom:5px;">
     ${logoHtml}
     <div style="font-size:11pt;font-weight:900;color:#0d1b2a;text-transform:uppercase;letter-spacing:1px;line-height:1.2;">${schoolName}</div>
     ${address ? `<div style="font-size:6.5pt;color:#555;margin-top:1px;">${address}</div>` : ''}
@@ -2672,21 +2709,21 @@ function printReport() {
     <div style="display:flex;gap:4px;"><span style="font-weight:800;color:#0d1b2a;min-width:56px;">Session:</span><span>${session || '—'}</span></div>
   </div>
   <!-- RESULTS TABLE -->
-  <table style="width:100%;border-collapse:collapse;margin-bottom:5px;">
+  <table style="width:100%;border-collapse:collapse;margin-bottom:5px;font-size:${tblFont};">
     <thead>
       <tr style="background:#0d1b2a;">
-        <th style="padding:4px 6px;text-align:left;color:#fff;font-size:6.5pt;font-weight:700;width:32%;">Subject</th>
-        <th style="padding:4px 5px;text-align:center;color:#fff;font-size:6.5pt;font-weight:700;">1st (${ms.t1})</th>
-        <th style="padding:4px 5px;text-align:center;color:#fff;font-size:6.5pt;font-weight:700;">2nd (${ms.t2})</th>
-        <th style="padding:4px 5px;text-align:center;color:#fff;font-size:6.5pt;font-weight:700;">Exam (${ms.ex})</th>
-        <th style="padding:4px 5px;text-align:center;color:#fff;font-size:6.5pt;font-weight:700;">Total</th>
-        <th style="padding:4px 5px;text-align:center;color:#fff;font-size:6.5pt;font-weight:700;">Grade</th>
-        <th style="padding:4px 5px;text-align:center;color:#fff;font-size:6.5pt;font-weight:700;">Remark</th>
+        <th style="padding:${hdrPad};text-align:left;color:#fff;font-weight:700;width:32%;">Subject</th>
+        <th style="padding:${hdrPad};text-align:center;color:#fff;font-weight:700;">1st (${ms.t1})</th>
+        <th style="padding:${hdrPad};text-align:center;color:#fff;font-weight:700;">2nd (${ms.t2})</th>
+        <th style="padding:${hdrPad};text-align:center;color:#fff;font-weight:700;">Exam (${ms.ex})</th>
+        <th style="padding:${hdrPad};text-align:center;color:#fff;font-weight:700;">Total</th>
+        <th style="padding:${hdrPad};text-align:center;color:#fff;font-weight:700;">Grade</th>
+        <th style="padding:${hdrPad};text-align:center;color:#fff;font-weight:700;">Remark</th>
       </tr>
     </thead>
     <tbody>${rows}</tbody>
   </table>
-  <!-- SUMMARY ROW -->
+  <!-- SUMMARY -->
   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:5px;">
     <div style="border:1px solid #dde;border-radius:3px;padding:4px;text-align:center;">
       <div style="font-size:6pt;color:#777;font-weight:700;text-transform:uppercase;">Grand Total</div>
@@ -2732,8 +2769,85 @@ function printReport() {
   <div style="text-align:center;font-size:5.5pt;color:#aaa;margin-top:5px;border-top:1px solid #eee;padding-top:4px;">
     &copy; 2026 ACADEX &mdash; Designed by Zekpo Destiny &nbsp;&bull;&nbsp; ${schoolName} &nbsp;&bull;&nbsp; Computer-generated result sheet
   </div>
-</div>`;
+  </div>
+</div>
+<!-- Print button visible on screen only -->
+<div class="ptb" style="position:fixed;top:0;left:0;right:0;background:#0d1b2a;padding:10px;text-align:center;z-index:999;display:flex;gap:10px;justify-content:center;">
+  <button onclick="window.print()" style="background:#c9922a;color:#0d1b2a;border:none;padding:10px 28px;border-radius:8px;font-weight:800;font-size:14px;cursor:pointer;">🖨️ Print / Save as PDF</button>
+  <button onclick="window.close()" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);padding:10px 20px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;">✕ Close</button>
+</div>
+<script>
+  // Auto-trigger print dialog after a short delay for PDF save
+  document.querySelector('.ptb').style.display = 'flex';
+  // Re-hide ptb at print time
+  window.addEventListener('beforeprint', () => { document.querySelector('.ptb').style.display = 'none'; });
+  window.addEventListener('afterprint',  () => { document.querySelector('.ptb').style.display = 'flex'; });
+<\/script>
+</body>
+</html>`;
+
+  // Open in new window — most reliable cross-browser print approach
+  const pw = window.open('', '_blank', 'width=900,height=700');
+  if (!pw) { toast('Allow pop-ups to print the report.', 'warn'); return; }
+  pw.document.open();
+  pw.document.write(reportHtml);
+  pw.document.close();
+  // Also update the in-app modal for preview
+  document.getElementById('reportSheet').innerHTML = document.querySelector('.ptb') ? '' : '';
+  buildReportPreview(d, meta, rows, tblFont, rowPad, hdrPad, ms, schoolName, address, motto, term, session, logoHtml, wmStyle, overallG, avgGradeStyle, principal);
   document.getElementById('reportModal').classList.add('open');
+}
+function buildReportPreview(d, meta, rows, tblFont, rowPad, hdrPad, ms, schoolName, address, motto, term, session, logoHtml, wmStyle, overallG, avgGradeStyle, principal) {
+  const student = d.student || {};
+  document.getElementById('reportSheet').innerHTML = `
+<div style="width:100%;font-family:Arial,sans-serif;font-size:${tblFont};color:#111;position:relative;">
+  <div style="position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;${wmStyle}"></div>
+  <div style="text-align:center;border-bottom:2.5px solid #0d1b2a;padding-bottom:5px;margin-bottom:5px;position:relative;z-index:1;">
+    ${logoHtml}
+    <div style="font-size:11pt;font-weight:900;color:#0d1b2a;text-transform:uppercase;letter-spacing:1px;line-height:1.2;">${schoolName}</div>
+    ${address ? `<div style="font-size:6.5pt;color:#555;margin-top:1px;">${address}</div>` : ''}
+    ${motto    ? `<div style="font-size:6pt;color:#888;font-style:italic;margin-top:1px;">"${motto}"</div>` : ''}
+    <div style="font-size:8pt;font-weight:800;color:#0d1b2a;text-transform:uppercase;letter-spacing:.5px;margin-top:3px;">Student Academic Report Sheet</div>
+    <div style="font-size:6.5pt;color:#666;margin-top:1px;">${term} &nbsp;&middot;&nbsp; ${session}</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;font-size:6.5pt;border:1px solid #ccd;border-radius:3px;padding:4px 8px;margin-bottom:5px;">
+    <div><span style="font-weight:800;color:#0d1b2a;">Name:</span> ${student.full_name || meta.student_id || '—'}</div>
+    <div><span style="font-weight:800;color:#0d1b2a;">Student ID:</span> <span style="font-family:monospace;">${student.student_id || meta.student_id || '—'}</span></div>
+    <div><span style="font-weight:800;color:#0d1b2a;">Class:</span> ${student.class || '—'}</div>
+    <div><span style="font-weight:800;color:#0d1b2a;">Gender:</span> ${student.gender || '—'}</div>
+    <div><span style="font-weight:800;color:#0d1b2a;">Term:</span> ${term || '—'}</div>
+    <div><span style="font-weight:800;color:#0d1b2a;">Session:</span> ${session || '—'}</div>
+  </div>
+  <table style="width:100%;border-collapse:collapse;margin-bottom:5px;font-size:${tblFont};">
+    <thead><tr style="background:#0d1b2a;">
+      <th style="padding:${hdrPad};text-align:left;color:#fff;font-weight:700;width:32%;">Subject</th>
+      <th style="padding:${hdrPad};text-align:center;color:#fff;font-weight:700;">1st (${ms.t1})</th>
+      <th style="padding:${hdrPad};text-align:center;color:#fff;font-weight:700;">2nd (${ms.t2})</th>
+      <th style="padding:${hdrPad};text-align:center;color:#fff;font-weight:700;">Exam (${ms.ex})</th>
+      <th style="padding:${hdrPad};text-align:center;color:#fff;font-weight:700;">Total</th>
+      <th style="padding:${hdrPad};text-align:center;color:#fff;font-weight:700;">Grade</th>
+      <th style="padding:${hdrPad};text-align:center;color:#fff;font-weight:700;">Remark</th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:5px;">
+    <div style="border:1px solid #dde;border-radius:3px;padding:4px;text-align:center;"><div style="font-size:6pt;color:#777;font-weight:700;text-transform:uppercase;">Grand Total</div><div style="font-size:10pt;font-weight:900;color:#0d1b2a;">${d.grand_total || 0}</div></div>
+    <div style="border:1px solid #dde;border-radius:3px;padding:4px;text-align:center;"><div style="font-size:6pt;color:#777;font-weight:700;text-transform:uppercase;">Average</div><div style="font-size:10pt;font-weight:900;color:#0d1b2a;">${d.average || 0}%</div></div>
+    <div style="border:1px solid #dde;border-radius:3px;padding:4px;text-align:center;"><div style="font-size:6pt;color:#777;font-weight:700;text-transform:uppercase;">Overall Grade</div><div style="margin-top:2px;"><span style="display:inline-block;padding:2px 10px;border-radius:4px;font-weight:900;font-size:9pt;${avgGradeStyle};">${overallG.g}</span></div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:5px;">
+    <div style="border:1px solid #dde;border-radius:3px;padding:5px;"><div style="font-size:6.5pt;font-weight:800;color:#0d1b2a;margin-bottom:3px;">Class Teacher's Comment</div><div style="border-bottom:1px solid #ccd;height:13px;margin-bottom:2px;"></div><div style="border-bottom:1px solid #ccd;height:13px;margin-bottom:2px;"></div><div style="border-bottom:1px solid #ccd;height:13px;"></div></div>
+    <div style="border:1px solid #dde;border-radius:3px;padding:5px;"><div style="font-size:6.5pt;font-weight:800;color:#0d1b2a;margin-bottom:3px;">Principal's Comment</div><div style="border-bottom:1px solid #ccd;height:13px;margin-bottom:2px;"></div><div style="border-bottom:1px solid #ccd;height:13px;margin-bottom:2px;"></div><div style="border-bottom:1px solid #ccd;height:13px;"></div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:5px;">
+    <div style="text-align:center;font-size:6.5pt;"><div style="border-top:1px solid #333;padding-top:3px;margin-top:16px;">Class Teacher's Signature</div></div>
+    <div style="text-align:center;font-size:6.5pt;"><div style="border-top:1px solid #333;padding-top:3px;margin-top:16px;">${principal ? principal + '<br>' : ''}Principal's Signature &amp; Stamp</div></div>
+    <div style="text-align:center;font-size:6.5pt;"><div style="border-top:1px solid #333;padding-top:3px;margin-top:16px;">Date</div></div>
+  </div>
+  <div style="text-align:center;font-size:5.5pt;color:#aaa;margin-top:5px;border-top:1px solid #eee;padding-top:4px;">
+    &copy; 2026 ACADEX &mdash; Designed by Zekpo Destiny &nbsp;&bull;&nbsp; ${schoolName} &nbsp;&bull;&nbsp; Computer-generated result sheet
+  </div>
+</div>`;
 }
 function closeReport() { document.getElementById('reportModal').classList.remove('open'); }
 // ════════════════════════════════════════════════
@@ -2904,16 +3018,19 @@ function refreshAdmin() {
   });
 }
 function aTab(i) {
-  document.querySelectorAll('#adminTabs .tab').forEach((t, j) => t.classList.toggle('active', i === j));
-  // Map tab index to sidebar position (sidebar order: 0-12, 14, 15, 16, 13)
+  // Sidebar HTML order: Dashboard(0), Students(1), Staff(2), Classes(3), Subjects(4),
+  // Questions(5), Results(6), ResultIDs(7), Attendance(8), Announcements(9),
+  // Fees(10), ReportCards(11), Export(12), Library(14), Timetable(15), Events(16), Settings(13)
   const sidebarOrder = [0,1,2,3,4,5,6,7,8,9,10,11,12,14,15,16,13];
   const sidebarPos = sidebarOrder.indexOf(i);
+  document.querySelectorAll('#adminTabs .tab').forEach((t, j) => t.classList.toggle('active', sidebarOrder[j] === i));
   document.querySelectorAll('#adminSidebarNav .admin-sidebar-item').forEach((t, j) => t.classList.toggle('active', j === sidebarPos));
-  ['at0','at1','at2','at3','at4','at5','at6','at7','at8','at9','at10','at11','at12','at14','at15','at16','at13'].forEach((id, j) => {
-    const el = document.getElementById(id);
-    if (el) el.classList.toggle('active', j === i);
-  });
-  // Load data when switching to new tabs
+  // Directly activate the correct content div by its real ID
+  const allTabs = ['at0','at1','at2','at3','at4','at5','at6','at7','at8','at9','at10','at11','at12','at13','at14','at15','at16'];
+  allTabs.forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('active'); });
+  const activeEl = document.getElementById('at' + i);
+  if (activeEl) activeEl.classList.add('active');
+  // Load data when switching to tabs
   if (i === 8) loadAttendance();
   if (i === 9) loadAnnouncements();
   if (i === 10) loadFees();
@@ -4889,11 +5006,20 @@ async function parentLogin() {
   try {
     const r = await api({ action: 'parentLogin', student_id: stuId, parent_phone: phone });
     if (r.success) { 
-      S.parent = r.parent; S.settings = r.settings || {};
+      // Normalise: some backends return r.parent, others return fields at root
+      const pd = r.parent || r;
+      S.parent = {
+        student_id:    pd.student_id    || stuId,
+        student_name:  pd.student_name  || pd.full_name || stuId,
+        student_class: pd.student_class || pd.class     || '',
+        school_code:   pd.school_code   || r.school_code || '',
+        parent_phone:  pd.parent_phone  || phone
+      };
+      S.settings = r.settings || {};
       msg('pLMsg', ''); toast('Welcome!', 'ok');
-      document.getElementById('parentIcon').textContent = 'PR';
-      document.getElementById('parentChildName').textContent = r.parent.student_name || stuId;
-      document.getElementById('parentChildInfo').textContent = r.parent.student_class + ' · ' + r.parent.school_code;
+      document.getElementById('parentIcon').textContent = (S.parent.student_name || 'PR').substring(0,2).toUpperCase();
+      document.getElementById('parentChildName').textContent = S.parent.student_name;
+      document.getElementById('parentChildInfo').textContent = (S.parent.student_class ? S.parent.student_class + ' · ' : '') + S.parent.school_code;
       go('parent');
       loadParentData();
     } else { msg('pLMsg', r.message || 'Login failed.'); }
@@ -4916,6 +5042,7 @@ function pTab(i) {
 }
 
 async function loadParentData() {
+  if (!S.parent) return;
   const statsEl = document.getElementById('parentStats');
   const chartEl = document.getElementById('parentChart');
   const resultsEl = document.getElementById('parentResults');
@@ -5027,6 +5154,9 @@ async function loadParentData() {
     
   } catch (e) {
     statsEl.innerHTML = `<div class="alert a-err">${e.message}</div>`;
+    resultsEl.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-list"></i></span><h4>Unable to load results</h4></div>';
+    attEl.innerHTML = '<div class="es"><h4>Unable to load attendance</h4></div>';
+    feesEl.innerHTML = '<div class="es"><h4>Unable to load fees</h4></div>';
   }
 }
 
@@ -5038,6 +5168,7 @@ function stTab(i) {
   if (i === 4) loadStaffProfile();
 }
 async function loadStaffSubjects() {
+  if (!S.staff) return;
   try {
     // Use assigned subjects if available, otherwise fetch all
     let subjects = S.staff.assignedSubjects || [];
@@ -5223,6 +5354,7 @@ async function stLoadResults() {
 // STAFF LIBRARY & TIMETABLE
 // ════════════════════════════════════════════════
 async function loadStaffLibrary() {
+  if (!S.staff) return;
   const w = document.getElementById('staffLibLoans');
   w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
   try {
@@ -5256,6 +5388,7 @@ async function staffReturnBook(loanId) {
 }
 
 async function loadStaffTimetable() {
+  if (!S.staff) return;
   const w = document.getElementById('staffTimetable');
   w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
   try {
@@ -5282,6 +5415,7 @@ async function loadStaffTimetable() {
 }
 
 async function loadStaffProfile() {
+  if (!S.staff) return;
   const el = document.getElementById('staffProfileContent');
   el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
   try {
@@ -5463,4 +5597,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 </body>
-  </html>
+</html>
