@@ -201,6 +201,49 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
 .fee-status.active{background:var(--okb);color:var(--ok);}
 .fee-status.paid{background:var(--infob);color:var(--info);}
 
+
+/* ════════════════════════════════════════
+   FINANCE ERP MODULE
+════════════════════════════════════════ */
+/* Sub-tabs */
+.fin-tabs{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap;border-bottom:2px solid var(--border);padding-bottom:0;}
+.fin-tab{padding:10px 16px;cursor:pointer;font-weight:700;font-size:.8rem;color:var(--tlt);border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:var(--tr);border-radius:var(--r) var(--r) 0 0;}
+.fin-tab:hover{color:var(--navy);}
+.fin-tab.active{color:var(--navy);border-bottom-color:var(--gold);background:rgba(201,146,42,.04);}
+.fin-panel{display:none;}.fin-panel.active{display:block;}
+/* KPI cards row */
+.fin-kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:18px;}
+.fin-kpi-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--rl);padding:16px 14px;position:relative;overflow:hidden;}
+.fin-kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.fin-kpi-card.green::before{background:var(--ok);}
+.fin-kpi-card.blue::before{background:var(--info);}
+.fin-kpi-card.red::before{background:var(--err);}
+.fin-kpi-card.gold::before{background:var(--gold);}
+.fin-kpi-label{font-size:.68rem;color:var(--tlt);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.fin-kpi-val{font-size:1.5rem;font-weight:900;color:var(--navy);}
+.fin-kpi-sub{font-size:.72rem;color:var(--tlt);margin-top:3px;}
+/* Payment table */
+.pay-row-paid td{background:#f0fff6!important;}
+.pay-row-partial td{background:#fffbf0!important;}
+.pay-row-unpaid td{background:#fff5f5!important;}
+[data-theme="dark"] .pay-row-paid td{background:rgba(26,122,69,.08)!important;}
+[data-theme="dark"] .pay-row-partial td{background:rgba(181,107,0,.08)!important;}
+[data-theme="dark"] .pay-row-unpaid td{background:rgba(181,32,32,.08)!important;}
+/* Expense item */
+.exp-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--border);border-radius:var(--r);background:var(--card-bg);margin-bottom:8px;}
+.exp-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.exp-body{flex:1;}
+.exp-title{font-weight:700;color:var(--navy);font-size:.9rem;}
+.exp-meta{font-size:.75rem;color:var(--tlt);}
+.exp-amt{font-weight:900;font-size:1.1rem;color:var(--err);}
+/* Report print styles */
+.fin-report-section{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--rl);padding:18px;margin-bottom:14px;}
+.fin-report-title{font-weight:800;color:var(--navy);font-size:1rem;margin-bottom:14px;display:flex;align-items:center;gap:8px;border-bottom:2px solid var(--gold);padding-bottom:8px;}
+@media print{
+  .fin-print-hide{display:none!important;}
+  .fin-print-area{background:#fff!important;color:#111!important;}
+}
+
 /* Report Cards */
 .rc-preview{background:#fff;border:1px solid var(--border);border-radius:var(--rl);padding:20px;min-height:300px;}
 .rc-page{background:#fff;max-width:800px;margin:0 auto;border:1px solid #ddd;padding:30px;font-family:'Sora',sans-serif;}
@@ -1026,54 +1069,153 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       <div id="annList" class="ann-list"></div>
     </div>
   </div>
-  <!-- FEES TAB -->
+  <!-- FEES / FINANCE ERP TAB -->
   <div id="at10" class="tc">
-    <div class="card">
-      <div class="ch">
-        <div><div class="ct"><i class="fas fa-money-bill-wave"></i> School Fees</div><div class="cs">Manage school fees and track payments</div></div>
-        <div class="fa">
-          <button class="btn btn-ok btn-sm" onclick="toggleForm('feeForm')"><i class="fas fa-plus"></i> Add Fee</button>
+  <div class="card">
+    <div class="ch">
+      <div><div class="ct"><i class="fas fa-university"></i> Financial Control</div><div class="cs">Fees · Payments · Expenses · Reports</div></div>
+      <div class="fa">
+        <button class="btn btn-ghost btn-sm fin-print-hide" onclick="finPrintReport()"><i class="fas fa-print"></i> Print Report</button>
+        <button class="btn btn-gold btn-sm fin-print-hide" onclick="finTab('overview')"><i class="fas fa-chart-pie"></i> Overview</button>
+      </div>
+    </div>
+    <!-- Finance Sub-tabs -->
+    <div class="fin-tabs fin-print-hide">
+      <div class="fin-tab active" id="ftab-overview" onclick="finTab('overview')"><i class="fas fa-chart-pie"></i> Overview</div>
+      <div class="fin-tab" id="ftab-fees" onclick="finTab('fees')"><i class="fas fa-tags"></i> Fee Setup</div>
+      <div class="fin-tab" id="ftab-payments" onclick="finTab('payments')"><i class="fas fa-wallet"></i> Payments</div>
+      <div class="fin-tab" id="ftab-expenses" onclick="finTab('expenses')"><i class="fas fa-receipt"></i> Expenses</div>
+      <div class="fin-tab" id="ftab-reports" onclick="finTab('reports')"><i class="fas fa-file-invoice"></i> Reports</div>
+    </div>
+
+    <!-- OVERVIEW PANEL -->
+    <div class="fin-panel active" id="fpanel-overview">
+      <div class="fin-kpi" id="finKpi">
+        <div class="ls"><div class="loader loader-dk"></div></div>
+      </div>
+      <div class="fr2">
+        <div class="fin-report-section">
+          <div class="fin-report-title"><i class="fas fa-chart-bar"></i> Collection by Class</div>
+          <div id="finClassBreakdown"><div class="ls"><div class="loader loader-dk"></div></div></div>
+        </div>
+        <div class="fin-report-section">
+          <div class="fin-report-title"><i class="fas fa-clock"></i> Recent Payments</div>
+          <div id="finRecentPayments"><div class="ls"><div class="loader loader-dk"></div></div></div>
         </div>
       </div>
+    </div>
+
+    <!-- FEE SETUP PANEL -->
+    <div class="fin-panel" id="fpanel-fees">
+      <div class="fa" style="margin-bottom:14px;">
+        <button class="btn btn-ok btn-sm" onclick="toggleForm('feeForm')"><i class="fas fa-plus"></i> Add Fee Structure</button>
+        <select id="feeClassFilter" class="fc" style="max-width:180px;" onchange="loadFees()"><option value="">All Classes</option></select>
+        <button class="btn btn-ghost btn-sm" onclick="loadFees()"><i class="fas fa-sync"></i></button>
+      </div>
       <div id="feeForm" class="hidden" style="background:var(--off);border-radius:var(--rl);padding:20px;margin-bottom:16px;">
-        <div style="font-weight:800;color:var(--navy);margin-bottom:14px;font-size:.95rem;"><i class="fas fa-tag"></i> Add New Fee</div>
+        <div style="font-weight:800;color:var(--navy);margin-bottom:14px;font-size:.95rem;"><i class="fas fa-tag"></i> Add Fee Structure</div>
         <div class="fr2">
           <div class="fg"><label class="fl">Class <span style="color:red">*</span></label>
             <select id="feeClass" class="fc"><option value="">-- Select Class --</option></select>
           </div>
-          <div class="fg"><label class="fl">Fee Type <span style="color:red">*</span></label><input id="feeType" class="fc" placeholder="e.g. Tuition, Uniform, Book"></div>
-        </div>
-        <div class="fr2">
-          <div class="fg"><label class="fl">Amount <span style="color:red">*</span></label><input id="feeAmount" class="fc" type="number" placeholder="0.00"></div>
-          <div class="fg"><label class="fl">Priority</label>
-            <select id="feePriority" class="fc">
-              <option value="1">1 - Highest</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5" selected>5 - Normal</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8 - Lowest</option>
+          <div class="fg"><label class="fl">Fee Type <span style="color:red">*</span></label>
+            <select id="feeType" class="fc">
+              <option value="">-- Select Type --</option>
+              <option>School Fee</option><option>Lesson Fee</option><option>Uniform</option>
+              <option>Textbooks</option><option>Examination</option><option>Development Levy</option>
+              <option>PTA Levy</option><option>Graduation Fee</option><option>Party/End of Term</option>
+              <option>Sports</option><option>ICT Levy</option><option>Other</option>
             </select>
           </div>
         </div>
         <div class="fr2">
+          <div class="fg"><label class="fl">Amount (₦) <span style="color:red">*</span></label><input id="feeAmount" class="fc" type="number" placeholder="0.00" min="0"></div>
           <div class="fg"><label class="fl">Due Date</label><input id="feeDue" class="fc" type="date"></div>
+        </div>
+        <div class="fr2">
           <div class="fg"><label class="fl">Term</label>
             <select id="feeTerm" class="fc"><option value="">Select term</option><option>First Term</option><option>Second Term</option><option>Third Term</option></select>
           </div>
+          <div class="fg"><label class="fl">Session</label><input id="feeSession" class="fc" placeholder="2025/2026"></div>
         </div>
-        <div class="fg"><label class="fl">Session</label><input id="feeSession" class="fc" placeholder="2025/2026"></div>
-        <div class="fg"><label class="fl">Description</label><textarea id="feeDesc" class="fc" rows="2" placeholder="Additional details..."></textarea></div>
-        <div class="fa"><button class="btn btn-ok" id="btnSaveFee" onclick="saveFee()"><i class="fas fa-save"></i> Save Fee</button><button class="btn btn-ghost" onclick="toggleForm('feeForm',true)">Cancel</button></div>
-      </div>
-      <div class="fa" style="margin-bottom:14px;">
-        <select id="feeClassFilter" class="fc" style="max-width:180px;" onchange="loadFees()"><option value="">All Classes</option></select>
-        <button class="btn btn-ghost btn-sm" onclick="loadFees()"><i class="fas fa-sync"></i></button>
+        <div class="fg"><label class="fl">Description / Notes</label><textarea id="feeDesc" class="fc" rows="2" placeholder="Optional notes..."></textarea></div>
+        <div class="fa"><button class="btn btn-ok" id="btnSaveFee" onclick="saveFee()"><i class="fas fa-save"></i> Save Fee Structure</button><button class="btn btn-ghost" onclick="toggleForm('feeForm',true)">Cancel</button></div>
       </div>
       <div id="feeTable" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
     </div>
+
+    <!-- PAYMENTS PANEL -->
+    <div class="fin-panel" id="fpanel-payments">
+      <div class="fa" style="margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+        <button class="btn btn-ok btn-sm" onclick="openRecordPayment()"><i class="fas fa-plus"></i> Record Payment</button>
+        <select id="payClassFilter" class="fc" style="max-width:160px;" onchange="loadPayments()"><option value="">All Classes</option></select>
+        <select id="payStatusFilter" class="fc" style="max-width:140px;" onchange="loadPayments()">
+          <option value="">All Statuses</option>
+          <option value="paid">Paid</option>
+          <option value="partial">Partial</option>
+          <option value="unpaid">Unpaid</option>
+        </select>
+        <input id="paySearch" class="fc" style="max-width:180px;" placeholder="Search student..." oninput="loadPayments()">
+        <button class="btn btn-ghost btn-sm" onclick="loadPayments()"><i class="fas fa-sync"></i></button>
+      </div>
+      <div id="paymentTable" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
+    </div>
+
+    <!-- EXPENSES PANEL -->
+    <div class="fin-panel" id="fpanel-expenses">
+      <div class="fa" style="margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+        <button class="btn btn-err btn-sm" onclick="openAddExpense()"><i class="fas fa-plus"></i> Log Expense</button>
+        <select id="expCatFilter" class="fc" style="max-width:180px;" onchange="loadExpenses()">
+          <option value="">All Categories</option>
+          <option>Salaries</option><option>Utilities</option><option>Maintenance</option>
+          <option>Supplies</option><option>Transport</option><option>Food/Catering</option>
+          <option>Events</option><option>IT/Equipment</option><option>Other</option>
+        </select>
+        <input id="expDateFrom" class="fc" type="date" style="max-width:150px;" onchange="loadExpenses()" placeholder="From">
+        <input id="expDateTo" class="fc" type="date" style="max-width:150px;" onchange="loadExpenses()" placeholder="To">
+        <button class="btn btn-ghost btn-sm" onclick="loadExpenses()"><i class="fas fa-sync"></i></button>
+      </div>
+      <!-- Expense KPIs -->
+      <div id="expKpi" class="fin-kpi" style="margin-bottom:14px;"></div>
+      <div id="expenseList"></div>
+    </div>
+
+    <!-- REPORTS PANEL -->
+    <div class="fin-panel" id="fpanel-reports">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:18px;">
+        <div class="fin-report-section" style="cursor:pointer;transition:var(--tr);" onclick="generateReport('daily')" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div class="fin-report-title"><i class="fas fa-calendar-day" style="color:var(--info);"></i> Daily Report</div>
+          <p style="font-size:.82rem;color:var(--tlt);">Payments and expenses for a single day</p>
+          <div class="fg" style="margin-top:10px;"><label class="fl">Select Date</label><input id="rptDailyDate" class="fc" type="date" onclick="event.stopPropagation()"></div>
+          <button class="btn btn-info btn-sm" style="margin-top:8px;" onclick="event.stopPropagation();generateReport('daily')"><i class="fas fa-eye"></i> Generate</button>
+        </div>
+        <div class="fin-report-section" style="cursor:pointer;transition:var(--tr);" onclick="generateReport('weekly')" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div class="fin-report-title"><i class="fas fa-calendar-week" style="color:var(--ok);"></i> Weekly Report</div>
+          <p style="font-size:.82rem;color:var(--tlt);">Summary for a 7-day period</p>
+          <div class="fg" style="margin-top:10px;"><label class="fl">Week Starting</label><input id="rptWeekDate" class="fc" type="date" onclick="event.stopPropagation()"></div>
+          <button class="btn btn-ok btn-sm" style="margin-top:8px;" onclick="event.stopPropagation();generateReport('weekly')"><i class="fas fa-eye"></i> Generate</button>
+        </div>
+        <div class="fin-report-section" style="cursor:pointer;transition:var(--tr);" onclick="generateReport('monthly')" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div class="fin-report-title"><i class="fas fa-calendar-alt" style="color:var(--warn);"></i> Monthly Report</div>
+          <p style="font-size:.82rem;color:var(--tlt);">Full month income and expenses</p>
+          <div class="fg" style="margin-top:10px;"><label class="fl">Month</label><input id="rptMonthDate" class="fc" type="month" onclick="event.stopPropagation()"></div>
+          <button class="btn btn-warn btn-sm" style="margin-top:8px;" onclick="event.stopPropagation();generateReport('monthly')"><i class="fas fa-eye"></i> Generate</button>
+        </div>
+        <div class="fin-report-section" style="cursor:pointer;transition:var(--tr);" onclick="generateReport('termly')" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div class="fin-report-title"><i class="fas fa-file-invoice-dollar" style="color:var(--gold);"></i> Termly Report</div>
+          <p style="font-size:.82rem;color:var(--tlt);">Complete term financial statement</p>
+          <div class="fg" style="margin-top:10px;">
+            <select id="rptTermSelect" class="fc" onclick="event.stopPropagation()">
+              <option>First Term</option><option>Second Term</option><option>Third Term</option>
+            </select>
+          </div>
+          <button class="btn btn-gold btn-sm" style="margin-top:8px;" onclick="event.stopPropagation();generateReport('termly')"><i class="fas fa-eye"></i> Generate</button>
+        </div>
+      </div>
+      <!-- Report output -->
+      <div id="finReportOutput"></div>
+    </div>
+  </div>
   </div>
   <!-- REPORT CARDS TAB -->
   <div id="at11" class="tc">
@@ -3044,7 +3186,7 @@ function aTab(i) {
   // Load data when switching tabs
   if (i === 8)  loadAttendance();
   if (i === 9)  loadAnnouncements();
-  if (i === 10) loadFees();
+  if (i === 10) { loadFees(); loadFinOverview(); }
   if (i === 11) loadReportCardsTab();
   if (i === 14) loadLibraryAdmin();
   if (i === 15) loadTimetableAdmin();
@@ -4462,6 +4604,577 @@ async function loadFees() {
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
 }
 
+
+// ════════════════════════════════════════════════
+// FINANCE ERP MODULE
+// ════════════════════════════════════════════════
+
+// ── Sub-tab switcher ──
+function finTab(name) {
+  document.querySelectorAll('.fin-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.fin-panel').forEach(p => p.classList.remove('active'));
+  const tab = document.getElementById('ftab-' + name);
+  const panel = document.getElementById('fpanel-' + name);
+  if (tab) tab.classList.add('active');
+  if (panel) panel.classList.add('active');
+  if (name === 'overview')  loadFinOverview();
+  if (name === 'fees')      loadFees();
+  if (name === 'payments')  loadPayments();
+  if (name === 'expenses')  loadExpenses();
+}
+
+// ── OVERVIEW ──
+async function loadFinOverview() {
+  const kpiEl = document.getElementById('finKpi');
+  const classEl = document.getElementById('finClassBreakdown');
+  const recentEl = document.getElementById('finRecentPayments');
+  kpiEl.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const [pr, er, fr] = await Promise.all([
+      api({ action: 'getPayments', school_code: S.admin.code, term: S.settings.term, session: S.settings.session }, 1, false),
+      api({ action: 'getExpenses', school_code: S.admin.code, term: S.settings.term, session: S.settings.session }, 1, false),
+      api({ action: 'getFees',     school_code: S.admin.code, term: S.settings.term, session: S.settings.session }, 1, false)
+    ]);
+    const payments = pr.payments || [];
+    const expenses = er.expenses || [];
+    const fees     = fr.fees     || [];
+
+    const totalCollected = payments.reduce((s, p) => s + (parseFloat(p.amount_paid) || 0), 0);
+    const totalExpenses  = expenses.reduce((s, e) => s + (parseFloat(e.amount)      || 0), 0);
+    const totalExpected  = fees.reduce((s, f) => s + (parseFloat(f.amount) || 0), 0);
+    const outstanding    = Math.max(0, totalExpected - totalCollected);
+    const netBalance     = totalCollected - totalExpenses;
+
+    kpiEl.innerHTML = `
+      <div class="fin-kpi-card green">
+        <div class="fin-kpi-label">Total Collected</div>
+        <div class="fin-kpi-val">₦${totalCollected.toLocaleString()}</div>
+        <div class="fin-kpi-sub">${payments.length} payment(s) this term</div>
+      </div>
+      <div class="fin-kpi-card red">
+        <div class="fin-kpi-label">Outstanding</div>
+        <div class="fin-kpi-val">₦${outstanding.toLocaleString()}</div>
+        <div class="fin-kpi-sub">Yet to be collected</div>
+      </div>
+      <div class="fin-kpi-card blue">
+        <div class="fin-kpi-label">Total Expenses</div>
+        <div class="fin-kpi-val">₦${totalExpenses.toLocaleString()}</div>
+        <div class="fin-kpi-sub">${expenses.length} expense record(s)</div>
+      </div>
+      <div class="fin-kpi-card ${netBalance >= 0 ? 'green' : 'red'}">
+        <div class="fin-kpi-label">Net Balance</div>
+        <div class="fin-kpi-val" style="color:${netBalance >= 0 ? 'var(--ok)' : 'var(--err)'};">₦${Math.abs(netBalance).toLocaleString()}</div>
+        <div class="fin-kpi-sub">${netBalance >= 0 ? 'Surplus' : 'Deficit'}</div>
+      </div>`;
+
+    // Class breakdown
+    const byClass = {};
+    payments.forEach(p => {
+      const cls = p.class || 'Unknown';
+      if (!byClass[cls]) byClass[cls] = 0;
+      byClass[cls] += parseFloat(p.amount_paid) || 0;
+    });
+    const sorted = Object.entries(byClass).sort((a,b) => b[1]-a[1]);
+    const maxVal = sorted.length ? sorted[0][1] : 1;
+    classEl.innerHTML = sorted.length ? sorted.map(([cls, amt]) => `
+      <div style="margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:3px;">
+          <span style="font-weight:700;color:var(--navy);">${cls}</span>
+          <span style="font-weight:800;">₦${amt.toLocaleString()}</span>
+        </div>
+        <div style="height:6px;background:var(--off);border-radius:3px;overflow:hidden;">
+          <div style="height:100%;width:${Math.round(amt/maxVal*100)}%;background:linear-gradient(90deg,var(--navy),var(--gold));border-radius:3px;"></div>
+        </div>
+      </div>`).join('') : '<div class="es"><span class="es-i">📊</span><h4>No payment data</h4></div>';
+
+    // Recent payments
+    const recent = [...payments].sort((a,b) => new Date(b.payment_date||0) - new Date(a.payment_date||0)).slice(0,8);
+    recentEl.innerHTML = recent.length ? `<table style="width:100%;font-size:.82rem;border-collapse:collapse;">
+      <thead><tr style="background:var(--navy);color:#fff;">
+        <th style="padding:6px 10px;text-align:left;">Student</th>
+        <th style="padding:6px 10px;text-align:left;">Type</th>
+        <th style="padding:6px 10px;text-align:right;">Amount</th>
+        <th style="padding:6px 10px;text-align:center;">Date</th>
+      </tr></thead>
+      <tbody>${recent.map(p => `<tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:6px 10px;">${p.student_name || p.student_id || '—'}</td>
+        <td style="padding:6px 10px;color:var(--tlt);">${p.fee_type || '—'}</td>
+        <td style="padding:6px 10px;text-align:right;font-weight:700;color:var(--ok);">₦${Number(p.amount_paid||0).toLocaleString()}</td>
+        <td style="padding:6px 10px;text-align:center;color:var(--tlt);">${p.payment_date || '—'}</td>
+      </tr>`).join('')}</tbody>
+    </table>` : '<div class="es"><span class="es-i">💳</span><h4>No payments yet</h4></div>';
+  } catch(e) {
+    kpiEl.innerHTML = `<div class="alert a-err">${e.message}</div>`;
+  }
+}
+
+// ── FEES ──
+async function loadFees() {
+  const w = document.getElementById('feeTable');
+  if (!w) return;
+  w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const cls = document.getElementById('feeClassFilter')?.value || '';
+    const r = await api({ action: 'getFees', school_code: S.admin.code, class: cls, term: S.settings.term, session: S.settings.session }, 1, false);
+    const fees = r.fees || [];
+    if (!fees.length) { w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-tags"></i></span><h4>No fee structures defined</h4><p>Click "Add Fee Structure" to begin</p></div>'; return; }
+    w.innerHTML = `<table><thead><tr>
+      <th>Class</th><th>Fee Type</th><th>Amount</th><th>Term</th><th>Session</th><th>Due Date</th><th>Actions</th>
+    </tr></thead><tbody>${fees.map(f => `<tr>
+      <td><span class="badge b-navy">${f.class || '—'}</span></td>
+      <td><strong>${f.fee_type}</strong>${f.description ? '<br><small style="color:var(--tlt);">'+f.description+'</small>' : ''}</td>
+      <td style="font-weight:900;color:var(--ok);">₦${Number(f.amount).toLocaleString()}</td>
+      <td>${f.term || '—'}</td>
+      <td class="td-mono">${f.session || '—'}</td>
+      <td>${f.due_date || '—'}</td>
+      <td><button class="btn btn-err btn-sm" onclick="deleteFee('${f.fee_id||f.id||''}','${(f.fee_type||'').replace(/'/g,"\'")}')"><i class="fas fa-trash"></i></button></td>
+    </tr>`).join('')}</tbody></table>`;
+  } catch(e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+async function saveFee() {
+  const className = document.getElementById('feeClass').value;
+  const feeType   = document.getElementById('feeType').value.trim();
+  const amount    = document.getElementById('feeAmount').value;
+  const description = document.getElementById('feeDesc').value.trim();
+  const dueDate   = document.getElementById('feeDue').value;
+  const term      = document.getElementById('feeTerm').value;
+  const session   = document.getElementById('feeSession').value.trim();
+  if (!className || !feeType || !amount) { toast('Class, fee type, and amount required.', 'warn'); return; }
+  const btn = document.getElementById('btnSaveFee');
+  btn.innerHTML = '<span class="loader"></span>'; btn.disabled = true;
+  try {
+    const r = await api({ action: 'addFee', school_code: S.admin.code, class: className, fee_type: feeType, amount, description, term, session, due_date: dueDate });
+    if (r.success) {
+      toast('Fee structure saved!', 'ok');
+      toggleForm('feeForm', true);
+      loadFees();
+      // Also refresh overview KPIs
+      setTimeout(loadFinOverview, 500);
+    } else { toast(r.message, 'err'); }
+  } catch(e) { toast(e.message, 'err'); }
+  finally { btn.innerHTML = '<i class="fas fa-save"></i> Save Fee Structure'; btn.disabled = false; }
+}
+
+async function deleteFee(feeId, feeType) {
+  if (!confirm('Delete fee: ' + feeType + '?')) return;
+  try {
+    const r = await api({ action: 'deleteFee', school_code: S.admin.code, fee_id: feeId, fee_type: feeType });
+    if (r.success) { toast('Fee deleted.', 'ok'); loadFees(); }
+    else toast(r.message, 'err');
+  } catch(e) { toast(e.message, 'err'); }
+}
+
+// ── PAYMENTS ──
+async function loadPayments() {
+  const w = document.getElementById('paymentTable');
+  if (!w) return;
+  w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const cls    = document.getElementById('payClassFilter')?.value || '';
+    const status = document.getElementById('payStatusFilter')?.value || '';
+    const search = (document.getElementById('paySearch')?.value || '').toLowerCase();
+    const r = await api({ action: 'getPayments', school_code: S.admin.code, class: cls, term: S.settings.term, session: S.settings.session }, 1, false);
+    let payments = r.payments || [];
+    if (status) payments = payments.filter(p => (p.status||'').toLowerCase() === status);
+    if (search) payments = payments.filter(p =>
+      (p.student_name||'').toLowerCase().includes(search) ||
+      (p.student_id||'').toLowerCase().includes(search)
+    );
+    if (!payments.length) { w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-wallet"></i></span><h4>No payments found</h4></div>'; return; }
+    const statusBadge = s => {
+      if (s === 'paid')    return '<span class="badge b-ok">Paid</span>';
+      if (s === 'partial') return '<span class="badge b-warn">Partial</span>';
+      return '<span class="badge b-err">Unpaid</span>';
+    };
+    w.innerHTML = `<table><thead><tr>
+      <th>Student</th><th>Class</th><th>Fee Type</th><th>Expected</th><th>Paid</th><th>Balance</th><th>Status</th><th>Date</th><th>Receipt</th>
+    </tr></thead><tbody>${payments.map(p => {
+      const expected = parseFloat(p.amount_expected || p.fee_amount || 0);
+      const paid     = parseFloat(p.amount_paid || 0);
+      const balance  = expected - paid;
+      const rowClass = p.status === 'paid' ? 'pay-row-paid' : p.status === 'partial' ? 'pay-row-partial' : 'pay-row-unpaid';
+      return `<tr class="${rowClass}">
+        <td><strong>${p.student_name || p.student_id || '—'}</strong></td>
+        <td>${p.class || '—'}</td>
+        <td>${p.fee_type || '—'}</td>
+        <td>₦${expected.toLocaleString()}</td>
+        <td style="color:var(--ok);font-weight:700;">₦${paid.toLocaleString()}</td>
+        <td style="color:${balance>0?'var(--err)':'var(--ok)'};font-weight:700;">₦${balance.toLocaleString()}</td>
+        <td>${statusBadge(p.status)}</td>
+        <td class="td-mono">${p.payment_date || '—'}</td>
+        <td><button class="btn btn-ghost btn-sm" onclick="printReceipt(${JSON.stringify(p).replace(/"/g,'&quot;')})"><i class="fas fa-file-alt"></i></button></td>
+      </tr>`;
+    }).join('')}</tbody></table>`;
+  } catch(e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+function openRecordPayment() {
+  // Populate classes
+  const cls = document.getElementById('stuClassFilter');
+  const opts = cls ? Array.from(cls.options).slice(1).map(o => `<option value="${o.value}">${o.value}</option>`).join('') : '';
+  const today = new Date().toISOString().split('T')[0];
+  const modal = document.getElementById('editModal');
+  const box   = modal.querySelector('.modal-box');
+  box.innerHTML = `
+    <div class="modal-title"><span><i class="fas fa-wallet"></i> Record Payment</span><button class="btn btn-ghost btn-sm" onclick="closeEdit()"><i class="fas fa-times"></i></button></div>
+    <div id="payMsg"></div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Student ID</label><input id="payStudentId" class="fc fc-mono" placeholder="e.g. SCH001-2026-0001"></div>
+      <div class="fg"><label class="fl">Student Name</label><input id="payStudentName" class="fc" placeholder="Full name"></div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Class</label><select id="payClass" class="fc"><option value="">-- Select --</option>${opts}</select></div>
+      <div class="fg"><label class="fl">Fee Type</label>
+        <select id="payFeeType" class="fc">
+          <option>School Fee</option><option>Lesson Fee</option><option>Uniform</option>
+          <option>Textbooks</option><option>Examination</option><option>Development Levy</option>
+          <option>PTA Levy</option><option>Graduation Fee</option><option>Party/End of Term</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Amount Expected (₦)</label><input id="payExpected" class="fc" type="number" placeholder="0.00" min="0"></div>
+      <div class="fg"><label class="fl">Amount Paid (₦)</label><input id="payPaid" class="fc" type="number" placeholder="0.00" min="0" oninput="updatePayStatus()"></div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Payment Date</label><input id="payDate" class="fc" type="date" value="${today}"></div>
+      <div class="fg"><label class="fl">Payment Method</label>
+        <select id="payMethod" class="fc">
+          <option>Cash</option><option>Bank Transfer</option><option>POS</option><option>Cheque</option><option>Online</option>
+        </select>
+      </div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Term</label>
+        <select id="payTerm" class="fc"><option>First Term</option><option>Second Term</option><option>Third Term</option></select>
+      </div>
+      <div class="fg"><label class="fl">Status</label>
+        <select id="payStatus" class="fc">
+          <option value="paid">Paid in Full</option>
+          <option value="partial">Partial Payment</option>
+          <option value="unpaid">Unpaid</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">Receipt / Reference No.</label><input id="payRef" class="fc fc-mono" placeholder="Optional reference"></div>
+    <div class="fg"><label class="fl">Notes</label><textarea id="payNotes" class="fc" rows="2" placeholder="Optional notes..."></textarea></div>
+    <div class="fa"><button class="btn btn-ok" id="btnSavePayment" onclick="savePayment()"><i class="fas fa-save"></i> Record Payment</button><button class="btn btn-ghost" onclick="closeEdit()">Cancel</button></div>`;
+  modal.classList.add('open');
+}
+
+function updatePayStatus() {
+  const expected = parseFloat(document.getElementById('payExpected')?.value) || 0;
+  const paid     = parseFloat(document.getElementById('payPaid')?.value)     || 0;
+  const sel      = document.getElementById('payStatus');
+  if (!sel) return;
+  if (paid <= 0)              sel.value = 'unpaid';
+  else if (paid >= expected)  sel.value = 'paid';
+  else                        sel.value = 'partial';
+}
+
+async function savePayment() {
+  const studentId   = document.getElementById('payStudentId').value.trim();
+  const studentName = document.getElementById('payStudentName').value.trim();
+  const cls         = document.getElementById('payClass').value;
+  const feeType     = document.getElementById('payFeeType').value;
+  const expected    = document.getElementById('payExpected').value;
+  const paid        = document.getElementById('payPaid').value;
+  const date        = document.getElementById('payDate').value;
+  const method      = document.getElementById('payMethod').value;
+  const term        = document.getElementById('payTerm').value;
+  const status      = document.getElementById('payStatus').value;
+  const ref         = document.getElementById('payRef').value.trim();
+  const notes       = document.getElementById('payNotes').value.trim();
+  if (!studentId || !paid || !feeType) { msg('payMsg','Student ID, fee type and amount paid are required.'); return; }
+  const btn = document.getElementById('btnSavePayment');
+  btn.innerHTML = '<span class="loader"></span>'; btn.disabled = true;
+  try {
+    const r = await api({
+      action: 'recordPayment', school_code: S.admin.code,
+      student_id: studentId, student_name: studentName, class: cls,
+      fee_type: feeType, amount_expected: expected, amount_paid: paid,
+      payment_date: date, payment_method: method, term, session: S.settings.session || '',
+      status, receipt_ref: ref, notes
+    });
+    if (r.success) {
+      toast('Payment recorded! Receipt #' + (r.receipt_id || ref || 'N/A'), 'ok');
+      closeEdit();
+      loadPayments();
+      setTimeout(loadFinOverview, 500);
+    } else { msg('payMsg', r.message || 'Failed to save.'); }
+  } catch(e) { msg('payMsg', e.message); }
+  finally { btn.innerHTML = '<i class="fas fa-save"></i> Record Payment'; btn.disabled = false; }
+}
+
+function printReceipt(p) {
+  const school = S.admin?.name || '';
+  const pw = window.open('', '_blank', 'width=420,height=600');
+  pw.document.write(`<!DOCTYPE html><html><head><title>Receipt</title>
+  <style>
+    body{font-family:Arial,sans-serif;padding:20px;max-width:380px;margin:0 auto;color:#111;}
+    .rh{text-align:center;border-bottom:2px solid #0d1b2a;padding-bottom:12px;margin-bottom:12px;}
+    .rh h2{font-size:1.2rem;font-weight:900;color:#0d1b2a;margin:0;}
+    .rh p{font-size:.75rem;color:#666;margin:2px 0;}
+    .rr{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #eee;font-size:.88rem;}
+    .rr span:first-child{color:#666;}
+    .rr span:last-child{font-weight:700;}
+    .rtotal{display:flex;justify-content:space-between;padding:10px 0;font-size:1.1rem;font-weight:900;color:#0d1b2a;}
+    .rfoot{text-align:center;font-size:.7rem;color:#aaa;margin-top:16px;border-top:1px solid #eee;padding-top:8px;}
+    @media print{body{padding:5mm;}.no-print{display:none;}}
+  </style></head><body>
+  <div class="rh"><h2>${school}</h2><p>Official Payment Receipt</p><p style="font-family:monospace;font-size:.8rem;color:#c9922a;">Receipt #${p.receipt_ref || p.payment_id || 'N/A'}</p></div>
+  <div class="rr"><span>Student Name</span><span>${p.student_name || p.student_id || '—'}</span></div>
+  <div class="rr"><span>Student ID</span><span style="font-family:monospace;">${p.student_id || '—'}</span></div>
+  <div class="rr"><span>Class</span><span>${p.class || '—'}</span></div>
+  <div class="rr"><span>Fee Type</span><span>${p.fee_type || '—'}</span></div>
+  <div class="rr"><span>Term / Session</span><span>${p.term || '—'} · ${p.session || '—'}</span></div>
+  <div class="rr"><span>Payment Method</span><span>${p.payment_method || '—'}</span></div>
+  <div class="rr"><span>Payment Date</span><span>${p.payment_date || '—'}</span></div>
+  <div class="rr"><span>Amount Expected</span><span>₦${Number(p.amount_expected||0).toLocaleString()}</span></div>
+  <div class="rtotal"><span>Amount Paid</span><span style="color:#1a7a45;">₦${Number(p.amount_paid||0).toLocaleString()}</span></div>
+  ${parseFloat(p.amount_expected||0) - parseFloat(p.amount_paid||0) > 0 ? `<div class="rr"><span>Outstanding Balance</span><span style="color:#b52020;">₦${(parseFloat(p.amount_expected||0)-parseFloat(p.amount_paid||0)).toLocaleString()}</span></div>` : ''}
+  <div class="rfoot">Issued by ACADEX · ${school} · ${new Date().toLocaleDateString()}<br>This is a computer-generated receipt.</div>
+  <div class="no-print" style="text-align:center;margin-top:16px;"><button onclick="window.print()" style="background:#0d1b2a;color:#fff;border:none;padding:10px 24px;border-radius:6px;font-weight:700;cursor:pointer;">🖨️ Print Receipt</button></div>
+  </body></html>`);
+  pw.document.close();
+}
+
+// ── EXPENSES ──
+async function loadExpenses() {
+  const listEl = document.getElementById('expenseList');
+  const kpiEl  = document.getElementById('expKpi');
+  if (!listEl) return;
+  listEl.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const cat      = document.getElementById('expCatFilter')?.value  || '';
+    const dateFrom = document.getElementById('expDateFrom')?.value   || '';
+    const dateTo   = document.getElementById('expDateTo')?.value     || '';
+    const r = await api({ action: 'getExpenses', school_code: S.admin.code, category: cat, date_from: dateFrom, date_to: dateTo, term: S.settings.term, session: S.settings.session }, 1, false);
+    let expenses = r.expenses || [];
+    if (!expenses.length) { listEl.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-receipt"></i></span><h4>No expenses logged</h4></div>'; kpiEl.innerHTML = ''; return; }
+    const total = expenses.reduce((s,e)=>s+(parseFloat(e.amount)||0),0);
+    const byCat = {};
+    expenses.forEach(e => { byCat[e.category||'Other'] = (byCat[e.category||'Other']||0)+(parseFloat(e.amount)||0); });
+    const topCat = Object.entries(byCat).sort((a,b)=>b[1]-a[1])[0];
+    kpiEl.innerHTML = `
+      <div class="fin-kpi-card red"><div class="fin-kpi-label">Total Expenses</div><div class="fin-kpi-val">₦${total.toLocaleString()}</div><div class="fin-kpi-sub">${expenses.length} record(s)</div></div>
+      <div class="fin-kpi-card blue"><div class="fin-kpi-label">Top Category</div><div class="fin-kpi-val" style="font-size:1rem;">${topCat?topCat[0]:'—'}</div><div class="fin-kpi-sub">${topCat?'₦'+topCat[1].toLocaleString():''}</div></div>
+      <div class="fin-kpi-card gold"><div class="fin-kpi-label">Categories</div><div class="fin-kpi-val">${Object.keys(byCat).length}</div><div class="fin-kpi-sub">Active categories</div></div>`;
+    const catIcons = {Salaries:'👥',Utilities:'💡',Maintenance:'🔧',Supplies:'📦',Transport:'🚌',Food:'🍽️',Events:'🎉',IT:'💻',Other:'📋'};
+    listEl.innerHTML = expenses.map(e => {
+      const icon = catIcons[e.category] || '📋';
+      return `<div class="exp-item">
+        <div class="exp-icon" style="background:var(--errb);color:var(--err);">${icon}</div>
+        <div class="exp-body">
+          <div class="exp-title">${e.title || e.description || '—'}</div>
+          <div class="exp-meta"><span class="badge b-err" style="font-size:.68rem;">${e.category||'Other'}</span> &nbsp; ${e.expense_date||'—'} &nbsp;·&nbsp; ${e.recorded_by||''}</div>
+          ${e.notes?`<div style="font-size:.75rem;color:var(--tlt);margin-top:2px;">${e.notes}</div>`:''}
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div class="exp-amt">₦${Number(e.amount||0).toLocaleString()}</div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:4px;" onclick="deleteExpense('${e.expense_id||e.id||''}')"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) { listEl.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+function openAddExpense() {
+  const today = new Date().toISOString().split('T')[0];
+  const modal = document.getElementById('editModal');
+  const box   = modal.querySelector('.modal-box');
+  box.innerHTML = `
+    <div class="modal-title"><span><i class="fas fa-receipt"></i> Log Expense</span><button class="btn btn-ghost btn-sm" onclick="closeEdit()"><i class="fas fa-times"></i></button></div>
+    <div id="expMsg"></div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Title / Description <span style="color:red">*</span></label><input id="expTitle" class="fc" placeholder="e.g. Diesel for generator"></div>
+      <div class="fg"><label class="fl">Category <span style="color:red">*</span></label>
+        <select id="expCategory" class="fc">
+          <option>Salaries</option><option>Utilities</option><option>Maintenance</option>
+          <option>Supplies</option><option>Transport</option><option>Food/Catering</option>
+          <option>Events</option><option>IT/Equipment</option><option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Amount (₦) <span style="color:red">*</span></label><input id="expAmount" class="fc" type="number" placeholder="0.00" min="0"></div>
+      <div class="fg"><label class="fl">Date</label><input id="expDate" class="fc" type="date" value="${today}"></div>
+    </div>
+    <div class="fr2">
+      <div class="fg"><label class="fl">Payment Method</label>
+        <select id="expMethod" class="fc"><option>Cash</option><option>Bank Transfer</option><option>POS</option><option>Cheque</option></select>
+      </div>
+      <div class="fg"><label class="fl">Receipt / Reference</label><input id="expRef" class="fc fc-mono" placeholder="Optional"></div>
+    </div>
+    <div class="fg"><label class="fl">Notes</label><textarea id="expNotes" class="fc" rows="2" placeholder="Additional details..."></textarea></div>
+    <div class="fa"><button class="btn btn-err" id="btnSaveExp" onclick="saveExpense()"><i class="fas fa-save"></i> Log Expense</button><button class="btn btn-ghost" onclick="closeEdit()">Cancel</button></div>`;
+  modal.classList.add('open');
+}
+
+async function saveExpense() {
+  const title    = document.getElementById('expTitle').value.trim();
+  const category = document.getElementById('expCategory').value;
+  const amount   = document.getElementById('expAmount').value;
+  const date     = document.getElementById('expDate').value;
+  const method   = document.getElementById('expMethod').value;
+  const ref      = document.getElementById('expRef').value.trim();
+  const notes    = document.getElementById('expNotes').value.trim();
+  if (!title || !amount) { msg('expMsg','Title and amount are required.'); return; }
+  const btn = document.getElementById('btnSaveExp');
+  btn.innerHTML = '<span class="loader"></span>'; btn.disabled = true;
+  try {
+    const r = await api({
+      action: 'addExpense', school_code: S.admin.code, title, category, amount,
+      expense_date: date, payment_method: method, receipt_ref: ref, notes,
+      term: S.settings.term || '', session: S.settings.session || '',
+      recorded_by: S.admin?.name || 'Admin'
+    });
+    if (r.success) {
+      toast('Expense logged!', 'ok');
+      closeEdit();
+      loadExpenses();
+      setTimeout(loadFinOverview, 500);
+    } else { msg('expMsg', r.message); }
+  } catch(e) { msg('expMsg', e.message); }
+  finally { btn.innerHTML = '<i class="fas fa-save"></i> Log Expense'; btn.disabled = false; }
+}
+
+async function deleteExpense(id) {
+  if (!confirm('Delete this expense record?')) return;
+  try {
+    const r = await api({ action: 'deleteExpense', school_code: S.admin.code, expense_id: id });
+    if (r.success) { toast('Expense deleted.', 'ok'); loadExpenses(); }
+    else toast(r.message, 'err');
+  } catch(e) { toast(e.message, 'err'); }
+}
+
+// ── FINANCIAL REPORTS ──
+async function generateReport(type) {
+  const outEl = document.getElementById('finReportOutput');
+  outEl.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    let dateFrom, dateTo, label;
+    const today = new Date();
+    if (type === 'daily') {
+      const d = document.getElementById('rptDailyDate').value || today.toISOString().split('T')[0];
+      dateFrom = dateTo = d; label = 'Daily Report — ' + d;
+    } else if (type === 'weekly') {
+      const d = new Date(document.getElementById('rptWeekDate').value || today.toISOString().split('T')[0]);
+      dateFrom = d.toISOString().split('T')[0];
+      const end = new Date(d); end.setDate(d.getDate()+6);
+      dateTo = end.toISOString().split('T')[0];
+      label = 'Weekly Report — ' + dateFrom + ' to ' + dateTo;
+    } else if (type === 'monthly') {
+      const m = document.getElementById('rptMonthDate').value || (today.getFullYear()+'-'+(String(today.getMonth()+1).padStart(2,'0')));
+      dateFrom = m + '-01';
+      const lastDay = new Date(m.split('-')[0], parseInt(m.split('-')[1]), 0).getDate();
+      dateTo = m + '-' + lastDay;
+      label = 'Monthly Report — ' + new Date(dateFrom).toLocaleString('en-NG',{month:'long',year:'numeric'});
+    } else {
+      const term = document.getElementById('rptTermSelect').value;
+      dateFrom = ''; dateTo = '';
+      label = 'Termly Report — ' + term + ' ' + (S.settings.session || '');
+    }
+    const [pr, er] = await Promise.all([
+      api({ action: 'getPayments', school_code: S.admin.code, date_from: dateFrom, date_to: dateTo, term: type==='termly'?document.getElementById('rptTermSelect').value:'' }, 1, false),
+      api({ action: 'getExpenses', school_code: S.admin.code, date_from: dateFrom, date_to: dateTo, term: type==='termly'?document.getElementById('rptTermSelect').value:'' }, 1, false)
+    ]);
+    const payments = pr.payments || [];
+    const expenses = er.expenses || [];
+    const totalIn  = payments.reduce((s,p)=>s+(parseFloat(p.amount_paid)||0),0);
+    const totalOut = expenses.reduce((s,e)=>s+(parseFloat(e.amount)||0),0);
+    const net      = totalIn - totalOut;
+    const school   = S.admin?.name || '';
+    const catTotals = {};
+    expenses.forEach(e => { catTotals[e.category||'Other'] = (catTotals[e.category||'Other']||0)+(parseFloat(e.amount)||0); });
+    outEl.innerHTML = `
+    <div class="fin-report-section fin-print-area" id="finPrintTarget">
+      <div class="fin-report-title"><i class="fas fa-file-invoice-dollar"></i> ${label}</div>
+      <div style="text-align:right;margin-bottom:10px;font-size:.78rem;color:var(--tlt);">Generated: ${new Date().toLocaleString()} &nbsp;·&nbsp; ${school}</div>
+      <!-- KPI summary -->
+      <div class="fin-kpi" style="margin-bottom:16px;">
+        <div class="fin-kpi-card green"><div class="fin-kpi-label">Total Income</div><div class="fin-kpi-val">₦${totalIn.toLocaleString()}</div><div class="fin-kpi-sub">${payments.length} payment(s)</div></div>
+        <div class="fin-kpi-card red"><div class="fin-kpi-label">Total Expenses</div><div class="fin-kpi-val">₦${totalOut.toLocaleString()}</div><div class="fin-kpi-sub">${expenses.length} record(s)</div></div>
+        <div class="fin-kpi-card ${net>=0?'green':'red'}"><div class="fin-kpi-label">Net Balance</div><div class="fin-kpi-val" style="color:${net>=0?'var(--ok)':'var(--err)'}">₦${Math.abs(net).toLocaleString()}</div><div class="fin-kpi-sub">${net>=0?'Surplus':'Deficit'}</div></div>
+      </div>
+      <!-- Payments table -->
+      <div style="margin-bottom:16px;">
+        <div style="font-weight:800;color:var(--navy);margin-bottom:8px;font-size:.9rem;"><i class="fas fa-arrow-down" style="color:var(--ok);"></i> Income / Payments (${payments.length})</div>
+        ${payments.length ? `<div class="tw"><table><thead><tr><th>Student</th><th>Class</th><th>Fee Type</th><th>Paid</th><th>Method</th><th>Date</th><th>Status</th></tr></thead>
+        <tbody>${payments.map(p=>`<tr><td>${p.student_name||p.student_id||'—'}</td><td>${p.class||'—'}</td><td>${p.fee_type||'—'}</td><td style="color:var(--ok);font-weight:700;">₦${Number(p.amount_paid||0).toLocaleString()}</td><td>${p.payment_method||'—'}</td><td class="td-mono">${p.payment_date||'—'}</td><td><span class="badge ${p.status==='paid'?'b-ok':p.status==='partial'?'b-warn':'b-err'}">${p.status||'—'}</span></td></tr>`).join('')}</tbody>
+        </table></div>` : '<div class="es" style="padding:20px;"><h4>No payments in this period</h4></div>'}
+      </div>
+      <!-- Expenses table -->
+      <div style="margin-bottom:16px;">
+        <div style="font-weight:800;color:var(--navy);margin-bottom:8px;font-size:.9rem;"><i class="fas fa-arrow-up" style="color:var(--err);"></i> Expenses (${expenses.length})</div>
+        ${expenses.length ? `<div class="tw"><table><thead><tr><th>Title</th><th>Category</th><th>Amount</th><th>Method</th><th>Date</th><th>By</th></tr></thead>
+        <tbody>${expenses.map(e=>`<tr><td>${e.title||e.description||'—'}</td><td><span class="badge b-err" style="font-size:.7rem;">${e.category||'—'}</span></td><td style="color:var(--err);font-weight:700;">₦${Number(e.amount||0).toLocaleString()}</td><td>${e.payment_method||'—'}</td><td class="td-mono">${e.expense_date||'—'}</td><td>${e.recorded_by||'—'}</td></tr>`).join('')}</tbody>
+        </table></div>` : '<div class="es" style="padding:20px;"><h4>No expenses in this period</h4></div>'}
+      </div>
+      <!-- Expense breakdown by category -->
+      ${Object.keys(catTotals).length ? `<div>
+        <div style="font-weight:800;color:var(--navy);margin-bottom:8px;font-size:.9rem;"><i class="fas fa-chart-pie"></i> Expense Breakdown</div>
+        ${Object.entries(catTotals).sort((a,b)=>b[1]-a[1]).map(([cat,amt])=>`
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:.85rem;">
+          <span>${cat}</span><span style="font-weight:700;color:var(--err);">₦${amt.toLocaleString()}</span>
+        </div>`).join('')}
+      </div>` : ''}
+    </div>
+    <div class="fa fin-print-hide" style="margin-top:12px;">
+      <button class="btn btn-prim" onclick="finPrintReport()"><i class="fas fa-print"></i> Print This Report</button>
+    </div>`;
+  } catch(e) { outEl.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+function finPrintReport() {
+  const el = document.getElementById('finPrintTarget') || document.getElementById('finReportOutput');
+  if (!el || !el.innerText.trim()) { toast('Generate a report first.', 'warn'); return; }
+  const pw = window.open('', '_blank', 'width=900,height=700');
+  const school = S.admin?.name || 'ACADEX';
+  pw.document.write(`<!DOCTYPE html><html><head><title>Financial Report</title>
+  <style>
+    @page{margin:10mm;size:A4 portrait;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:Arial,sans-serif;font-size:9pt;color:#111;padding:10mm;}
+    table{width:100%;border-collapse:collapse;font-size:8pt;margin-bottom:8px;}
+    th{background:#0d1b2a;color:#fff;padding:5px 8px;text-align:left;}
+    td{padding:4px 8px;border-bottom:1px solid #ddd;}
+    tr:nth-child(even) td{background:#f8f8f8;}
+    .fin-kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+    .fin-kpi-card{border:1px solid #ddd;border-radius:6px;padding:10px;text-align:center;}
+    .fin-kpi-card.green{border-top:3px solid #1a7a45;}
+    .fin-kpi-card.red{border-top:3px solid #b52020;}
+    .fin-kpi-label{font-size:7pt;color:#777;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+    .fin-kpi-val{font-size:14pt;font-weight:900;color:#0d1b2a;}
+    .fin-kpi-sub{font-size:7pt;color:#999;}
+    .fin-report-title{font-weight:800;font-size:11pt;color:#0d1b2a;border-bottom:2px solid #c9922a;padding-bottom:6px;margin-bottom:10px;}
+    .badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:7pt;font-weight:700;}
+    .b-ok{background:#e6f4ec;color:#0d5c30;}
+    .b-warn{background:#fff4e0;color:#7a4400;}
+    .b-err{background:#fdeaea;color:#8b1010;}
+    .no-print{display:none;}
+  </style></head><body>
+  <div style="text-align:center;margin-bottom:14px;border-bottom:2px solid #0d1b2a;padding-bottom:10px;">
+    <div style="font-size:14pt;font-weight:900;color:#0d1b2a;">${school}</div>
+    <div style="font-size:8pt;color:#666;">Financial Report — Generated ${new Date().toLocaleString()}</div>
+  </div>
+  ${el.innerHTML}
+  <div style="text-align:center;font-size:7pt;color:#aaa;margin-top:14px;border-top:1px solid #eee;padding-top:8px;">
+    © 2026 ACADEX — Designed by Zekpo Destiny · ${school} · Computer-generated financial report
+  </div>
+  <div class="no-print" style="display:block;text-align:center;margin-top:16px;">
+    <button onclick="window.print()" style="background:#0d1b2a;color:#fff;border:none;padding:10px 28px;border-radius:6px;font-weight:700;cursor:pointer;font-size:13px;">🖨️ Print / Save PDF</button>
+  </div>
+  <script>
+    window.addEventListener('beforeprint',()=>{document.querySelector('.no-print').style.display='none';});
+    window.addEventListener('afterprint', ()=>{document.querySelector('.no-print').style.display='block';});
+  <\/script>
+  </body></html>`);
+  pw.document.close();
+}
+
 // LIBRARY MANAGEMENT
 // ════════════════════════════════════════════════
 async function loadLibraryAdmin() {
@@ -5612,4 +6325,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 </body>
-</html>
+  </html>
