@@ -446,6 +446,72 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   .ec-pin-box{background:#0d1b2a!important;color:#e8b84b!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
   .exam-card::before{background:linear-gradient(90deg,#0d1b2a,#c9922a)!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
 }
+
+/* ════════════════════════════════════════════════
+   WEBSITE BUILDER v2 — styles
+   ════════════════════════════════════════════════ */
+.wb-shell{display:grid;grid-template-columns:300px 1fr;min-height:620px;border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;}
+.wb-left{display:flex;flex-direction:column;background:#fff;border-right:1px solid var(--border);}
+.wb-right{display:flex;flex-direction:column;background:var(--off);}
+.wb-tabs{display:flex;overflow-x:auto;border-bottom:1px solid var(--border);flex-shrink:0;scrollbar-width:none;}
+.wb-tabs::-webkit-scrollbar{display:none;}
+.wb-t{padding:10px 0;flex:1;min-width:44px;text-align:center;font-size:.65rem;font-weight:700;color:var(--tlt);cursor:pointer;border-bottom:3px solid transparent;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap;transition:color .15s,border-color .15s;}
+.wb-t:hover{color:var(--navy);}
+.wb-t.on{color:var(--navy);border-bottom-color:var(--gold);}
+.wb-panels{flex:1;overflow:hidden;position:relative;}
+.wb-p{display:none;padding:14px;height:100%;overflow-y:auto;box-sizing:border-box;}
+.wb-p.on{display:block;}
+.wb-h{font-size:.67rem;font-weight:700;color:var(--tlt);text-transform:uppercase;letter-spacing:.6px;margin:0 0 8px;display:flex;align-items:center;gap:6px;}
+.wb-h::after{content:'';flex:1;height:1px;background:var(--border);}
+.wb-blk{margin-bottom:18px;}
+.wb-cr{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.wb-cf{display:flex;align-items:center;gap:5px;margin-top:4px;}
+.wb-cf input[type=color]{width:28px;height:28px;border:1.5px solid var(--border);border-radius:5px;padding:1px;cursor:pointer;flex-shrink:0;}
+.wb-cf input[type=text]{flex:1;padding:5px 6px;border:1.5px solid var(--border);border-radius:6px;font-size:.74rem;font-family:'JetBrains Mono',monospace;}
+.wb-swatches{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.wb-sw{height:28px;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:transform .12s,border-color .12s;position:relative;}
+.wb-sw:hover{transform:scale(1.12);}
+.wb-sw.sel{border-color:#fff;box-shadow:0 0 0 2px var(--navy);}
+.wb-up{border:2px dashed var(--border);border-radius:8px;padding:12px;text-align:center;cursor:pointer;transition:border-color .15s;}
+.wb-up:hover{border-color:var(--gold);}
+.wb-up-sm{border:1.5px dashed var(--border);border-radius:6px;padding:8px 6px;text-align:center;cursor:pointer;font-size:.74rem;color:var(--tlt);transition:border-color .15s;}
+.wb-up-sm:hover{border-color:var(--gold);color:var(--gold);}
+.wb-tog-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(200,210,225,.3);}
+.wb-tog-row:last-child{border:none;}
+.wb-tog-row span{font-size:.82rem;font-weight:600;color:var(--text);}
+.wb-tog{width:34px;height:19px;background:var(--border);border-radius:10px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;}
+.wb-tog.on{background:var(--ok);}
+.wb-tog::after{content:'';position:absolute;top:2px;left:2px;width:15px;height:15px;background:#fff;border-radius:50%;transition:left .2s;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.wb-tog.on::after{left:17px;}
+.wb-item{background:var(--off);border:1px solid var(--border);border-radius:8px;padding:10px;margin-bottom:7px;position:relative;}
+.wb-item-del{position:absolute;top:7px;right:7px;background:var(--errb);border:none;border-radius:4px;width:20px;height:20px;cursor:pointer;font-size:.65rem;color:var(--err);line-height:20px;text-align:center;}
+.wb-add{width:100%;padding:8px;border:1.5px dashed var(--border);border-radius:7px;background:transparent;color:var(--tlt);font-size:.8rem;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;transition:all .15s;}
+.wb-add:hover{border-color:var(--gold);color:var(--gold);}
+.wb-gal-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;}
+.wb-gal-cell{position:relative;border-radius:6px;overflow:hidden;border:1px solid var(--border);}
+.wb-gal-cell img{width:100%;height:58px;object-fit:cover;display:block;}
+.wb-gal-cell-del{position:absolute;top:3px;right:3px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:3px;width:18px;height:18px;cursor:pointer;font-size:.6rem;line-height:18px;text-align:center;}
+.wb-gal-cell input{width:100%;border:none;border-top:1px solid var(--border);padding:3px 5px;font-size:.66rem;box-sizing:border-box;}
+.wb-ai-btn{width:100%;padding:8px;background:#5b21b6;color:#fff;border:none;border-radius:7px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Sora',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;}
+.wb-ai-btn:hover{background:#4c1d95;}
+.wb-ai-btn:disabled{opacity:.5;cursor:not-allowed;}
+.wb-actions{border-top:1px solid var(--border);padding:10px 14px;display:flex;gap:7px;align-items:center;background:#fff;flex-shrink:0;}
+.wb-prev-bar{padding:8px 14px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.wb-prev-inner{flex:1;overflow:auto;padding:14px;display:flex;justify-content:center;}
+.wb-frame{width:100%;transition:max-width .25s;}
+.wb-frame.mob{max-width:390px;}
+.wb-dev-btn{padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:.7rem;font-weight:700;cursor:pointer;background:#fff;color:var(--tlt);font-family:'Sora',sans-serif;transition:all .15s;}
+.wb-dev-btn.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+#wbModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9500;align-items:center;justify-content:center;padding:16px;}
+#wbModal.open{display:flex;}
+.wb-modal-box{background:#fff;border-radius:14px;padding:26px;max-width:420px;width:100%;}
+#s-public-landing{background:var(--off);}
+[data-theme="dark"] .wb-left{background:var(--card-bg);}
+[data-theme="dark"] .wb-actions{background:var(--card-bg);}
+[data-theme="dark"] .wb-prev-bar{background:var(--card-bg);}
+[data-theme="dark"] .wb-modal-box{background:var(--card-bg);}
+[data-theme="dark"] .wb-cf input[type=text]{background:var(--input-bg);border-color:var(--border);color:var(--text);}
+@media(max-width:860px){.wb-shell{grid-template-columns:1fr;}.wb-right{min-height:360px;}}
 </style>
 </head>
 <body>
@@ -690,6 +756,7 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       <div class="admin-sidebar-item" onclick="aTab(15);toggleAdminSidebar()"><i class="fas fa-calendar-alt"></i> Timetable</div>
       <div class="admin-sidebar-item" onclick="aTab(16);toggleAdminSidebar()"><i class="fas fa-calendar-day"></i> Events</div>
       <div class="admin-sidebar-item" onclick="aTab(13);toggleAdminSidebar()"><i class="fas fa-cog"></i> Settings</div>
+      <div class="admin-sidebar-item" onclick="aTab(17);toggleAdminSidebar()"><i class="fas fa-globe"></i> Website Builder</div>
     </div>
     <div class="admin-sidebar-footer">
       <div class="admin-sidebar-user">
@@ -1477,9 +1544,233 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       <div id="eventsAdminList"></div>
     </div>
   </div>
-</div>
-</div>
-</div>
+  <!-- WEBSITE BUILDER TAB -->
+  <div id="at17" class="tc">
+  <div class="card" style="padding:0;overflow:hidden;">
+    <div style="background:linear-gradient(135deg,var(--navy),#1e3a6e);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <div>
+        <div style="font-size:.96rem;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px;">
+          <i class="fas fa-globe" style="color:var(--gold-lt);"></i> School Website Builder
+          <span style="background:var(--gold);color:var(--navy);font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:6px;">v2</span>
+        </div>
+        <div style="font-size:.76rem;color:rgba(255,255,255,.55);margin-top:2px;">Themes · Photos · Gallery · Blog · AI-Powered</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost btn-sm" onclick="wbLoad()" style="background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.2);"><i class="fas fa-cloud-download-alt"></i> Load</button>
+        <button class="btn btn-gold btn-sm" onclick="wbOpenPublish()"><i class="fas fa-rocket"></i> Publish</button>
+      </div>
+    </div>
+    <div id="wbLiveBar" class="hidden" style="background:#d1fae5;padding:9px 18px;border-bottom:1px solid #a7f3d0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <span style="font-size:.8rem;color:#065f46;font-weight:700;"><i class="fas fa-check-circle"></i> Site is live!</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <code id="wbLiveUrl" style="font-size:.74rem;background:#fff;padding:2px 8px;border-radius:5px;color:#065f46;border:1px solid #a7f3d0;"></code>
+        <button class="btn btn-ok btn-sm" onclick="wbCopyUrl()"><i class="fas fa-copy"></i></button>
+        <a id="wbLiveLink" href="#" target="_blank" class="btn btn-ghost btn-sm" style="text-decoration:none;"><i class="fas fa-external-link-alt"></i></a>
+      </div>
+    </div>
+    <div class="wb-shell">
+      <div class="wb-left">
+        <div class="wb-tabs" id="wbTabs">
+          <div class="wb-t on"  onclick="wbTab(0)">🎨&nbsp;Theme</div>
+          <div class="wb-t"     onclick="wbTab(1)">📝&nbsp;Info</div>
+          <div class="wb-t"     onclick="wbTab(2)">🖼️&nbsp;Photos</div>
+          <div class="wb-t"     onclick="wbTab(3)">📰&nbsp;Blog</div>
+          <div class="wb-t"     onclick="wbTab(4)">📢&nbsp;News</div>
+          <div class="wb-t"     onclick="wbTab(5)">⚙️&nbsp;Layout</div>
+        </div>
+        <div class="wb-panels">
+          <!-- PANEL 0: THEME -->
+          <div id="wbP0" class="wb-p on">
+            <div class="wb-blk">
+              <div class="wb-h">Page Style</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+                <div class="lo-opt sel" id="wbTh0" onclick="wbTheme(0)" style="font-size:.72rem;"><span style="display:block;font-size:1rem;margin-bottom:2px;">🏫</span>Classic</div>
+                <div class="lo-opt" id="wbTh1" onclick="wbTheme(1)" style="font-size:.72rem;"><span style="display:block;font-size:1rem;margin-bottom:2px;">🏛️</span>Chrisland</div>
+                <div class="lo-opt" id="wbTh2" onclick="wbTheme(2)" style="font-size:.72rem;"><span style="display:block;font-size:1rem;margin-bottom:2px;">📰</span>Magazine</div>
+                <div class="lo-opt" id="wbTh3" onclick="wbTheme(3)" style="font-size:.72rem;"><span style="display:block;font-size:1rem;margin-bottom:2px;">⚡</span>Bold</div>
+              </div>
+            </div>
+            <div class="wb-blk">
+              <div class="wb-h">Colour Presets</div>
+              <div class="wb-swatches" id="wbSwatches"></div>
+            </div>
+            <div class="wb-blk">
+              <div class="wb-h">Custom Colours</div>
+              <div class="wb-cr">
+                <div class="fg">
+                  <label class="fl">Primary</label>
+                  <div class="wb-cf"><input type="color" id="wbCP" oninput="wbC('p',this.value)"><input type="text" id="wbCPt" maxlength="7" oninput="wbCt('p',this.value)"></div>
+                </div>
+                <div class="fg">
+                  <label class="fl">Accent</label>
+                  <div class="wb-cf"><input type="color" id="wbCA" oninput="wbC('a',this.value)"><input type="text" id="wbCAt" maxlength="7" oninput="wbCt('a',this.value)"></div>
+                </div>
+                <div class="fg">
+                  <label class="fl">Header BG</label>
+                  <div class="wb-cf"><input type="color" id="wbCH" oninput="wbC('h',this.value)"><input type="text" id="wbCHt" maxlength="7" oninput="wbCt('h',this.value)"></div>
+                </div>
+                <div class="fg">
+                  <label class="fl">Hero BG</label>
+                  <div class="wb-cf"><input type="color" id="wbCR" oninput="wbC('r',this.value)"><input type="text" id="wbCRt" maxlength="7" oninput="wbCt('r',this.value)"></div>
+                </div>
+              </div>
+            </div>
+            <div class="wb-blk">
+              <div class="wb-h">School Logo</div>
+              <div class="wb-up" onclick="document.getElementById('wbLogoF').click()">
+                <div id="wbLogoThumb" style="font-size:1.5rem;margin-bottom:4px;">🏫</div>
+                <div style="font-size:.72rem;color:var(--tlt);font-weight:600;">Click to upload logo</div>
+                <div style="font-size:.66rem;color:var(--tlt);margin-top:2px;">PNG/JPG · max 2MB</div>
+              </div>
+              <input type="file" id="wbLogoF" class="hidden" accept="image/*" onchange="wbUploadLogo(this)">
+              <button class="btn btn-ghost btn-sm" onclick="W.logo=null;document.getElementById('wbLogoThumb').innerHTML='🏫';wbRender()" style="width:100%;margin-top:5px;font-size:.72rem;">Remove</button>
+            </div>
+          </div>
+          <!-- PANEL 1: INFO -->
+          <div id="wbP1" class="wb-p">
+            <div class="wb-blk">
+              <div class="wb-h">School Details</div>
+              <div class="fg"><label class="fl">School Name</label><input class="fc" id="wbName" placeholder="Full name of school" oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">Motto / Tagline</label><input class="fc" id="wbMotto" placeholder="School motto" oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">Address</label><input class="fc" id="wbAddr" placeholder="Street address" oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">City</label><input class="fc" id="wbCity" placeholder="City" oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">State</label><input class="fc" id="wbState" placeholder="State" oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">Phone</label><input class="fc" id="wbPhone" placeholder="+234..." oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">Email</label><input class="fc" id="wbEmail" type="email" placeholder="info@school.edu.ng" oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">Current Term</label><input class="fc" id="wbTerm" placeholder="First Term · 2025/2026" oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">Hero Welcome Text</label><textarea class="fc" id="wbHeroTxt" rows="2" placeholder="Brief welcome message in the hero..." oninput="wbRender()"></textarea></div>
+              <div class="fg"><label class="fl">About Paragraph</label><textarea class="fc" id="wbAbout" rows="3" placeholder="Brief about the school..." oninput="wbRender()"></textarea></div>
+            </div>
+            <div class="wb-blk">
+              <div class="wb-h">Quick Stats</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;">
+                <div><label class="fl">Value</label><input class="fc" id="wbSv1" value="1,200" oninput="wbRender()" style="padding:5px;"></div>
+                <div><label class="fl">Value</label><input class="fc" id="wbSv2" value="85" oninput="wbRender()" style="padding:5px;"></div>
+                <div><label class="fl">Value</label><input class="fc" id="wbSv3" value="40+" oninput="wbRender()" style="padding:5px;"></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-top:4px;">
+                <input class="fc" id="wbSl1" value="Students" oninput="wbRender()" style="padding:5px;">
+                <input class="fc" id="wbSl2" value="Teachers" oninput="wbRender()" style="padding:5px;">
+                <input class="fc" id="wbSl3" value="Years" oninput="wbRender()" style="padding:5px;">
+              </div>
+            </div>
+            <div class="wb-blk">
+              <div class="wb-h">Social Links</div>
+              <div class="fg"><label class="fl">Facebook</label><input class="fc" id="wbFb" placeholder="https://facebook.com/..." oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">Instagram</label><input class="fc" id="wbIg" placeholder="https://instagram.com/..." oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">WhatsApp No.</label><input class="fc" id="wbWa" placeholder="2348012345678" oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">YouTube</label><input class="fc" id="wbYt" placeholder="https://youtube.com/..." oninput="wbRender()"></div>
+            </div>
+          </div>
+          <!-- PANEL 2: PHOTOS -->
+          <div id="wbP2" class="wb-p">
+            <div class="wb-blk">
+              <div class="wb-h">Hero Photo</div>
+              <div style="font-size:.74rem;color:var(--tlt);margin-bottom:8px;">Upload or paste a URL to replace the hero background with a real school photo.</div>
+              <div class="wb-up" onclick="document.getElementById('wbHeroF').click()">
+                <div id="wbHeroThumb" style="font-size:1.5rem;margin-bottom:4px;">📸</div>
+                <div style="font-size:.72rem;color:var(--tlt);font-weight:600;">Upload hero photo</div>
+                <div style="font-size:.66rem;color:var(--tlt);margin-top:2px;">Landscape · JPG/PNG · max 3MB</div>
+              </div>
+              <input type="file" id="wbHeroF" class="hidden" accept="image/*" onchange="wbUploadHero(this)">
+              <div class="fg" style="margin-top:8px;"><label class="fl">Or paste a photo URL</label><input class="fc" id="wbHeroUrl" placeholder="https://..." oninput="W.heroUrl=this.value;wbRender()"></div>
+              <button class="btn btn-ghost btn-sm" onclick="W.heroImg=null;W.heroUrl='';document.getElementById('wbHeroUrl').value='';document.getElementById('wbHeroThumb').innerHTML='📸';wbRender()" style="width:100%;margin-top:5px;font-size:.72rem;">Remove Hero Photo</button>
+            </div>
+            <div class="wb-blk">
+              <div class="wb-h">Gallery <span style="font-weight:400;font-size:.65rem;color:var(--tlt);">up to 6 photos</span></div>
+              <div class="wb-gal-grid" id="wbGalGrid"></div>
+              <div id="wbGalAdd" class="wb-up-sm" onclick="document.getElementById('wbGalF').click()">+ Add Photos</div>
+              <input type="file" id="wbGalF" class="hidden" accept="image/*" multiple onchange="wbUploadGal(this)">
+              <div class="fg" style="margin-top:8px;"><label class="fl">Or paste photo URLs (one per line, max 6)</label>
+                <textarea class="fc" id="wbGalUrls" rows="3" placeholder="https://school.com/photo1.jpg" oninput="wbSyncGalUrls()" style="font-size:.74rem;"></textarea>
+              </div>
+            </div>
+          </div>
+          <!-- PANEL 3: BLOG -->
+          <div id="wbP3" class="wb-p">
+            <div class="wb-blk">
+              <div class="wb-h">Blog / Featured News</div>
+              <div style="font-size:.74rem;color:var(--tlt);margin-bottom:10px;">Posts appear in the Featured News section.</div>
+              <div style="background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:10px;margin-bottom:12px;">
+                <div style="font-size:.74rem;font-weight:800;color:#5b21b6;margin-bottom:7px;">✨ AI Blog Generator</div>
+                <div class="fg" style="margin-bottom:5px;"><label class="fl">Topic</label><input class="fc" id="wbAiTopic" placeholder="e.g. Inter-House Sports 2025" style="font-size:.8rem;"></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
+                  <div class="fg"><label class="fl">Category</label>
+                    <select class="fc" id="wbAiCat" style="padding:5px;font-size:.78rem;">
+                      <option>News</option><option>Achievement</option><option>Event</option>
+                      <option>Alumni</option><option>Academics</option><option>Sports</option>
+                    </select>
+                  </div>
+                  <div class="fg"><label class="fl">Tone</label>
+                    <select class="fc" id="wbAiTone" style="padding:5px;font-size:.78rem;">
+                      <option>Professional</option><option>Celebratory</option><option>Inspirational</option>
+                    </select>
+                  </div>
+                </div>
+                <button class="wb-ai-btn" id="wbAiBtn" onclick="wbAiGen()">✨ <span id="wbAiLbl">Generate Post</span></button>
+              </div>
+              <div id="wbBlogList"></div>
+              <button class="wb-add" onclick="wbAddBlog()">+ Add Post Manually</button>
+            </div>
+          </div>
+          <!-- PANEL 4: ANNOUNCEMENTS -->
+          <div id="wbP4" class="wb-p">
+            <div class="wb-blk">
+              <div class="wb-h">Public Announcements</div>
+              <div style="font-size:.74rem;color:var(--tlt);margin-bottom:9px;">These show on your public page. Synced from admin announcements tab automatically.</div>
+              <div id="wbAnnList"></div>
+              <button class="wb-add" onclick="wbAddAnn()">+ Add Announcement</button>
+            </div>
+          </div>
+          <!-- PANEL 5: LAYOUT -->
+          <div id="wbP5" class="wb-p">
+            <div class="wb-blk">
+              <div class="wb-h">Sections</div>
+              <div class="wb-tog-row"><span>🌟 Hero Banner</span><div class="wb-tog on" id="wbTogHero" onclick="wbTog(this,'hero')"></div></div>
+              <div class="wb-tog-row"><span>📊 Stats Bar</span><div class="wb-tog on" id="wbTogStats" onclick="wbTog(this,'stats')"></div></div>
+              <div class="wb-tog-row"><span>🎓 Portal Cards</span><div class="wb-tog on" id="wbTogPortals" onclick="wbTog(this,'portals')"></div></div>
+              <div class="wb-tog-row"><span>📝 About Section</span><div class="wb-tog on" id="wbTogAbout" onclick="wbTog(this,'about')"></div></div>
+              <div class="wb-tog-row"><span>📰 Featured News / Blog</span><div class="wb-tog on" id="wbTogBlog" onclick="wbTog(this,'blog')"></div></div>
+              <div class="wb-tog-row"><span>🖼️ Photo Gallery</span><div class="wb-tog" id="wbTogGallery" onclick="wbTog(this,'gallery')"></div></div>
+              <div class="wb-tog-row"><span>📢 Announcements</span><div class="wb-tog on" id="wbTogAnn" onclick="wbTog(this,'ann')"></div></div>
+              <div class="wb-tog-row"><span>📞 Contact Section</span><div class="wb-tog on" id="wbTogContact" onclick="wbTog(this,'contact')"></div></div>
+            </div>
+            <div class="wb-blk">
+              <div class="wb-h">Nav Links <span style="font-weight:400;font-size:.65rem;color:var(--tlt);">comma-separated</span></div>
+              <input class="fc" id="wbNav" value="Home,About Us,Academics,Admissions,Contact" oninput="wbRender()">
+            </div>
+            <div class="wb-blk">
+              <div class="wb-h">Footer Text</div>
+              <textarea class="fc" id="wbFooter" rows="2" placeholder="Custom footer text (optional)" oninput="wbRender()"></textarea>
+            </div>
+          </div>
+        </div><!-- /wb-panels -->
+        <div class="wb-actions">
+          <button class="btn btn-ghost btn-sm" onclick="wbOpenFull()" title="Open full preview"><i class="fas fa-expand-alt"></i></button>
+          <button class="wb-dev-btn on" id="wbDevD" onclick="wbDev('d')"><i class="fas fa-desktop"></i></button>
+          <button class="wb-dev-btn" id="wbDevM" onclick="wbDev('m')"><i class="fas fa-mobile-alt"></i></button>
+          <div style="flex:1;"></div>
+          <button class="btn btn-navy btn-sm" onclick="wbSave()"><i class="fas fa-cloud-upload-alt"></i> Save</button>
+          <button class="btn btn-gold btn-sm" onclick="wbOpenPublish()"><i class="fas fa-rocket"></i> Publish</button>
+        </div>
+      </div><!-- /wb-left -->
+      <div class="wb-right">
+        <div class="wb-prev-bar">
+          <span style="font-size:.76rem;font-weight:700;color:var(--tlt);"><i class="fas fa-eye" style="color:var(--gold);"></i> Live Preview</span>
+          <div style="display:flex;gap:4px;">
+            <button class="wb-dev-btn on" id="wbdD" onclick="wbDev('d')"><i class="fas fa-desktop"></i> Desktop</button>
+            <button class="wb-dev-btn" id="wbdM" onclick="wbDev('m')"><i class="fas fa-mobile-alt"></i> Mobile</button>
+          </div>
+        </div>
+        <div class="wb-prev-inner">
+          <div class="wb-frame" id="wbFrame">
+            <iframe id="wbIframe" style="width:100%;border:none;border-radius:8px;display:block;" scrolling="no"></iframe>
+          </div>
+        </div>
+      </div>
+    </div><!-- /wb-shell -->
+  </div><!-- /card -->
+  </div><!-- /at17 -->
 <!-- STAFF LOGIN -->
 <div id="s-staff-login" class="section">
 <div class="con"><div class="pw">
@@ -1721,6 +2012,39 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
     </div>
   </div>
 </div>
+</div>
+<!-- WEBSITE BUILDER PUBLISH MODAL -->
+<div id="wbModal">
+  <div class="wb-modal-box">
+    <div id="wbMStep1">
+      <div style="font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:4px;"><i class="fas fa-rocket" style="color:var(--gold);"></i> Publish School Website</div>
+      <p style="font-size:.82rem;color:var(--tlt);margin-bottom:16px;">Save your website config and get a shareable public link.</p>
+      <div class="fg"><label class="fl">Confirm School Code</label><input class="fc" id="wbPubCode" placeholder="e.g. SCH001" style="text-transform:uppercase;font-family:'JetBrains Mono',monospace;" oninput="wbPubCodeChange(this)"></div>
+      <div class="alert a-info" style="margin-bottom:14px;">
+        <i class="fas fa-link"></i>
+        <div><div style="font-weight:700;font-size:.8rem;">Your public URL:</div>
+          <code id="wbPubPreview" style="font-size:.72rem;word-break:break-all;"></code></div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost" onclick="wbCloseModal()" style="flex:1;">Cancel</button>
+        <button class="btn btn-gold" onclick="wbPublish()" style="flex:2;" id="wbPubBtn"><i class="fas fa-rocket"></i> Publish Now</button>
+      </div>
+    </div>
+    <div id="wbMStep2" class="hidden" style="text-align:center;">
+      <div style="width:50px;height:50px;background:var(--okb);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.4rem;">✅</div>
+      <div style="font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:4px;">Website Published!</div>
+      <p style="font-size:.82rem;color:var(--tlt);margin-bottom:14px;">Share this link with parents and students:</p>
+      <div style="background:var(--off);border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--navy);word-break:break-all;margin-bottom:12px;position:relative;" id="wbPubFinalUrl">—</div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost" onclick="wbCloseModal()" style="flex:1;">Close</button>
+        <a id="wbPubOpenBtn" href="#" target="_blank" class="btn btn-ok" style="flex:1;text-decoration:none;"><i class="fas fa-external-link-alt"></i> Open Site</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- PUBLIC LANDING (renders when ?school= in URL) -->
+<div id="s-public-landing" class="section">
+  <div id="plWrap"></div>
 </div>
 <!-- REPORT MODAL -->
 <div id="reportModal">
@@ -3172,13 +3496,13 @@ function refreshAdmin() {
   });
 }
 function aTab(i) {
-  // Tab order in both sidebar and top bar: 0-12, 14, 15, 16, 13
-  const tabOrder = [0,1,2,3,4,5,6,7,8,9,10,11,12,14,15,16,13];
+  // Tab order in both sidebar and top bar: 0-12, 14, 15, 16, 13, 17
+  const tabOrder = [0,1,2,3,4,5,6,7,8,9,10,11,12,14,15,16,13,17];
   const pos = tabOrder.indexOf(i);
   document.querySelectorAll('#adminTabs .tab').forEach((t, j) => t.classList.toggle('active', j === pos));
   document.querySelectorAll('#adminSidebarNav .admin-sidebar-item').forEach((t, j) => t.classList.toggle('active', j === pos));
   // Activate correct content div by real ID
-  ['at0','at1','at2','at3','at4','at5','at6','at7','at8','at9','at10','at11','at12','at13','at14','at15','at16'].forEach(id => {
+  ['at0','at1','at2','at3','at4','at5','at6','at7','at8','at9','at10','at11','at12','at13','at14','at15','at16','at17'].forEach(id => {
     const el = document.getElementById(id); if (el) el.classList.remove('active');
   });
   const activeEl = document.getElementById('at' + i);
@@ -3192,6 +3516,7 @@ function aTab(i) {
   if (i === 15) loadTimetableAdmin();
   if (i === 16) loadEventsAdmin();
   if (i === 3)  { loadClasses(); loadClassArms(); }
+  if (i === 17) setTimeout(wbInit, 120);
 }
 function toggleAdminSidebar() {
   document.getElementById('adminSidebar').classList.toggle('open');
@@ -6338,6 +6663,687 @@ document.addEventListener('DOMContentLoaded', () => {
     try { document.getElementById('s-home').classList.add('active'); } catch(e) {}
   }
 });
+
+// ════════════════════════════════════════════════
+// WEBSITE BUILDER v2 — IIFE
+// ════════════════════════════════════════════════
+(function(){
+'use strict';
+
+/* ─── State ─────────────────────────────────────────────────────── */
+const W = {
+  c: { p:'#0d1b2a', a:'#c9922a', h:'#0d1b2a', r:'#1a2f45' },
+  theme: 0,
+  sec: { hero:true, stats:true, portals:true, about:true, blog:true, gallery:false, ann:true, contact:true },
+  ann: [],
+  blog: [],
+  gal: [],
+  logo: null,
+  heroImg: null,
+  heroUrl: '',
+  publishedUrl: null,
+  device: 'd'
+};
+window.W = W;
+
+/* ─── Colour presets ────────────────────────────────────────────── */
+const PRESETS = [
+  { c:'#0d1b2a', a:'#c9922a', h:'#0d1b2a', r:'#1a2f45' },
+  { c:'#0c2461', a:'#ffd32a', h:'#0c2461', r:'#1e3799' },
+  { c:'#1e3a2f', a:'#a3cb38', h:'#1e3a2f', r:'#2d5a3d' },
+  { c:'#6b0000', a:'#e8b84b', h:'#6b0000', r:'#8b0000' },
+  { c:'#341f97', a:'#e8b84b', h:'#341f97', r:'#5f27cd' },
+  { c:'#0d0d0d', a:'#00d2d3', h:'#0d0d0d', r:'#1a1a2e' },
+  { c:'#0a3d62', a:'#60a3bc', h:'#0a3d62', r:'#1289a7' },
+  { c:'#4a0404', a:'#e8b84b', h:'#4a0404', r:'#6b0000' },
+  { c:'#3d2000', a:'#ffd32a', h:'#3d2000', r:'#7a4000' },
+  { c:'#b34000', a:'#ffcc02', h:'#7a2900', r:'#c94b0c' },
+  { c:'#0d4f4f', a:'#2ecdb0', h:'#0a3d3d', r:'#136b6b' },
+  { c:'#1a0a00', a:'#ff6b35', h:'#1a0a00', r:'#3d1a00' },
+  { c:'#07284a', a:'#6cbcf5', h:'#07284a', r:'#1564a3' },
+  { c:'#2e3b1e', a:'#c8b560', h:'#2e3b1e', r:'#3f5229' },
+];
+
+function initSwatches(){
+  const g = document.getElementById('wbSwatches');
+  if(!g) return;
+  g.innerHTML = PRESETS.map((p,i)=>`
+    <div class="wb-sw ${i===0?'sel':''}" style="background:linear-gradient(135deg,${p.c},${p.r});"
+      title="Preset ${i+1}" onclick="applyPreset(${i})"></div>`).join('');
+}
+window.applyPreset = function(i){
+  const p = PRESETS[i];
+  W.c = { p:p.c, a:p.a, h:p.h, r:p.r };
+  syncColourInputs();
+  document.querySelectorAll('.wb-sw').forEach((el,j)=>el.classList.toggle('sel',j===i));
+  wbRender();
+};
+
+function syncColourInputs(){
+  const m = { wbCP:'p', wbCA:'a', wbCH:'h', wbCR:'r' };
+  Object.entries(m).forEach(([id,k])=>{
+    const c = document.getElementById(id);
+    const t = document.getElementById(id+'t');
+    if(c) c.value = W.c[k];
+    if(t) t.value = W.c[k];
+  });
+}
+
+/* ─── Tab switching ─────────────────────────────────────────────── */
+window.wbTab = function(i){
+  document.querySelectorAll('.wb-t').forEach((el,j)=>el.classList.toggle('on',j===i));
+  document.querySelectorAll('.wb-p').forEach((el,j)=>el.classList.toggle('on',j===i));
+};
+
+/* ─── Theme picker ──────────────────────────────────────────────── */
+window.wbTheme = function(i){
+  W.theme = i;
+  document.querySelectorAll('[id^=wbTh]').forEach((el,j)=>el.classList.toggle('sel',j===i));
+  wbRender();
+};
+
+/* ─── Colour inputs ─────────────────────────────────────────────── */
+window.wbC = function(k,v){
+  W.c[k]=v;
+  const t=document.getElementById({p:'wbCPt',a:'wbCAt',h:'wbCHt',r:'wbCRt'}[k]);
+  if(t) t.value=v;
+  wbRender();
+};
+window.wbCt = function(k,v){
+  if(/^#[0-9a-fA-F]{6}$/.test(v)){
+    W.c[k]=v;
+    const c=document.getElementById({p:'wbCP',a:'wbCA',h:'wbCH',r:'wbCR'}[k]);
+    if(c) c.value=v;
+    wbRender();
+  }
+};
+
+/* ─── Logo upload ───────────────────────────────────────────────── */
+window.wbUploadLogo = function(inp){
+  const f=inp.files[0]; if(!f) return;
+  if(f.size>2*1024*1024){ if(typeof toast==='function') toast('Logo must be under 2MB','warn'); return; }
+  const r=new FileReader();
+  r.onload=e=>{ W.logo=e.target.result; document.getElementById('wbLogoThumb').innerHTML=`<img src="${W.logo}" style="max-width:54px;max-height:54px;border-radius:6px;">`; wbRender(); };
+  r.readAsDataURL(f);
+};
+
+/* ─── Hero image upload ─────────────────────────────────────────── */
+window.wbUploadHero = function(inp){
+  const f=inp.files[0]; if(!f) return;
+  if(f.size>3*1024*1024){ if(typeof toast==='function') toast('Hero image must be under 3MB','warn'); return; }
+  const r=new FileReader();
+  r.onload=e=>{ W.heroImg=e.target.result; document.getElementById('wbHeroThumb').innerHTML=`<img src="${W.heroImg}" style="max-width:100%;max-height:58px;border-radius:6px;object-fit:cover;">`; wbRender(); };
+  r.readAsDataURL(f);
+};
+
+/* ─── Gallery ───────────────────────────────────────────────────── */
+window.wbUploadGal = function(inp){
+  const files=Array.from(inp.files).slice(0,6-W.gal.length);
+  let done=0;
+  if(!files.length) return;
+  files.forEach(f=>{
+    if(f.size>2*1024*1024) return;
+    const r=new FileReader();
+    r.onload=e=>{ W.gal.push({src:e.target.result,cap:''}); done++; if(done===files.length){ renderGalEdit(); wbRender(); } };
+    r.readAsDataURL(f);
+  });
+  inp.value='';
+};
+window.wbSyncGalUrls = function(){
+  const urls=(document.getElementById('wbGalUrls')?.value||'').split('\n').map(s=>s.trim()).filter(Boolean).slice(0,6);
+  const uploaded=W.gal.filter(g=>!g.isUrl);
+  W.gal=[...uploaded,...urls.map(u=>({src:u,cap:'',isUrl:true}))].slice(0,6);
+  renderGalEdit(); wbRender();
+};
+function renderGalEdit(){
+  const g=document.getElementById('wbGalGrid'); if(!g) return;
+  g.innerHTML=W.gal.map((it,i)=>`
+    <div class="wb-gal-cell">
+      <img src="${it.src}" alt="">
+      <button class="wb-gal-cell-del" onclick="W.gal.splice(${i},1);renderGalEdit();wbRender();">✕</button>
+      <input value="${(it.cap||'').replace(/"/g,'&quot;')}" placeholder="Caption..." oninput="W.gal[${i}].cap=this.value;wbRender();">
+    </div>`).join('');
+  const add=document.getElementById('wbGalAdd');
+  if(add) add.style.display=W.gal.length>=6?'none':'';
+}
+window.renderGalEdit = renderGalEdit;
+
+/* ─── Section toggles ───────────────────────────────────────────── */
+window.wbTog = function(el,k){
+  el.classList.toggle('on');
+  W.sec[k]=el.classList.contains('on');
+  wbRender();
+};
+
+/* ─── Announcements ─────────────────────────────────────────────── */
+window.wbAddAnn = function(){
+  W.ann.push({title:'New Announcement',body:'Enter details here.',priority:'normal'});
+  renderAnnList(); wbRender();
+};
+window.wbDelAnn = function(i){ W.ann.splice(i,1); renderAnnList(); wbRender(); };
+function renderAnnList(){
+  const el=document.getElementById('wbAnnList'); if(!el) return;
+  el.innerHTML=W.ann.map((a,i)=>`
+    <div class="wb-item">
+      <button class="wb-item-del" onclick="wbDelAnn(${i})">✕</button>
+      <input class="fc" value="${a.title.replace(/"/g,'&quot;')}" placeholder="Headline" oninput="W.ann[${i}].title=this.value;wbRender();" style="margin-bottom:5px;padding:5px;">
+      <textarea class="fc" rows="2" oninput="W.ann[${i}].body=this.value;wbRender();" style="padding:5px;">${a.body}</textarea>
+      <select class="fc" onchange="W.ann[${i}].priority=this.value;wbRender();" style="padding:5px;margin-top:4px;">
+        <option ${a.priority==='normal'?'selected':''}>normal</option>
+        <option value="high" ${a.priority==='high'?'selected':''}>Important</option>
+        <option value="urgent" ${a.priority==='urgent'?'selected':''}>Urgent</option>
+      </select>
+    </div>`).join('');
+}
+
+/* ─── Blog ──────────────────────────────────────────────────────── */
+window.wbAddBlog = function(data){
+  W.blog.push(data||{title:'Blog Post Title',excerpt:'Brief description of the post.',date:new Date().toISOString().split('T')[0],author:'Admin',category:'News',img:''});
+  renderBlogList(); wbRender();
+};
+window.wbDelBlog = function(i){ W.blog.splice(i,1); renderBlogList(); wbRender(); };
+function renderBlogList(){
+  const el=document.getElementById('wbBlogList'); if(!el) return;
+  el.innerHTML=W.blog.map((b,i)=>`
+    <div class="wb-item">
+      <button class="wb-item-del" onclick="wbDelBlog(${i})">✕</button>
+      <input class="fc" value="${b.title.replace(/"/g,'&quot;')}" placeholder="Post title" oninput="W.blog[${i}].title=this.value;wbRender();" style="margin-bottom:4px;padding:5px;">
+      <textarea class="fc" rows="2" oninput="W.blog[${i}].excerpt=this.value;wbRender();" style="padding:5px;margin-bottom:4px;">${b.excerpt}</textarea>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+        <input class="fc" value="${b.date}" type="date" oninput="W.blog[${i}].date=this.value;wbRender();" style="padding:5px;">
+        <input class="fc" value="${b.category}" placeholder="Category" oninput="W.blog[${i}].category=this.value;wbRender();" style="padding:5px;">
+      </div>
+      <input class="fc" value="${(b.img||'').replace(/"/g,'&quot;')}" placeholder="Image URL (optional)" oninput="W.blog[${i}].img=this.value;wbRender();" style="padding:5px;margin-top:4px;">
+    </div>`).join('');
+}
+
+/* ─── AI Blog Generator ─────────────────────────────────────────── */
+window.wbAiGen = async function(){
+  const topic=(document.getElementById('wbAiTopic')?.value||'').trim();
+  if(!topic){ if(typeof toast==='function') toast('Enter a topic first','warn'); return; }
+  const cat=document.getElementById('wbAiCat')?.value||'News';
+  const tone=document.getElementById('wbAiTone')?.value||'Professional';
+  const btn=document.getElementById('wbAiBtn');
+  const lbl=document.getElementById('wbAiLbl');
+  if(btn) btn.disabled=true;
+  if(lbl) lbl.textContent='Generating…';
+  try {
+    const schoolName=(document.getElementById('wbName')?.value||'the school');
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:400,
+        messages:[{role:'user',content:`Write a short school blog post for ${schoolName}.\nTopic: ${topic}\nCategory: ${cat}\nTone: ${tone}\nRespond ONLY with a JSON object: {"title":"...","excerpt":"2-3 sentence summary...","author":"Admin","category":"${cat}"}\nNo markdown, no backticks, just raw JSON.`}]
+      })
+    });
+    const data=await res.json();
+    const raw=(data.content||[]).map(b=>b.text||'').join('').replace(/```json?|```/g,'').trim();
+    const parsed=JSON.parse(raw);
+    parsed.date=new Date().toISOString().split('T')[0];
+    parsed.img='';
+    wbAddBlog(parsed);
+    if(typeof toast==='function') toast('Blog post generated!','ok');
+  } catch(e){
+    if(typeof toast==='function') toast('AI generation failed: '+e.message,'err');
+  } finally {
+    if(btn) btn.disabled=false;
+    if(lbl) lbl.textContent='Generate Post';
+  }
+};
+
+/* ─── Device toggle ─────────────────────────────────────────────── */
+window.wbDev = function(d){
+  W.device=d;
+  const frame=document.getElementById('wbFrame');
+  if(frame) frame.classList.toggle('mob',d==='m');
+  ['wbDevD','wbDevM','wbdD','wbdM'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.classList.toggle('on', id.endsWith('D') ? d==='d' : d==='m');
+  });
+};
+
+/* ─── Full preview ──────────────────────────────────────────────── */
+window.wbOpenFull = function(){
+  const html=buildPage(collectConfig());
+  const win=window.open('','_blank','width=1200,height=800');
+  if(win){ win.document.write(html); win.document.close(); }
+};
+
+/* ─── Collect config from form ──────────────────────────────────── */
+function gv(id){ return document.getElementById(id)?.value||''; }
+function collectConfig(){
+  return {
+    c:{...W.c}, theme:W.theme, sec:{...W.sec},
+    ann:[...W.ann], blog:[...W.blog], gal:[...W.gal],
+    logo:W.logo, heroImg:W.heroImg, heroUrl:W.heroUrl,
+    name:gv('wbName'), motto:gv('wbMotto'), addr:gv('wbAddr'),
+    city:gv('wbCity'), state:gv('wbState'), phone:gv('wbPhone'),
+    email:gv('wbEmail'), term:gv('wbTerm'), heroTxt:gv('wbHeroTxt'),
+    about:gv('wbAbout'), footer:gv('wbFooter'), nav:gv('wbNav'),
+    heroUrl:gv('wbHeroUrl'),
+    social:{ fb:gv('wbFb'), ig:gv('wbIg'), wa:gv('wbWa'), yt:gv('wbYt') },
+    stats:[
+      {v:gv('wbSv1'),l:gv('wbSl1')},
+      {v:gv('wbSv2'),l:gv('wbSl2')},
+      {v:gv('wbSv3'),l:gv('wbSl3')}
+    ]
+  };
+}
+
+/* ─── RENDER (iframe live preview) ─────────────────────────────── */
+let _rt=null;
+function wbRender(){
+  clearTimeout(_rt);
+  _rt=setTimeout(()=>{
+    const iframe=document.getElementById('wbIframe'); if(!iframe) return;
+    const cfg=collectConfig();
+    const html=buildPage(cfg);
+    const doc=iframe.contentDocument||iframe.contentWindow?.document;
+    if(!doc) return;
+    doc.open(); doc.write(html); doc.close();
+    const resize=()=>{ try{ iframe.style.height=Math.max(400,doc.body.scrollHeight)+'px'; }catch(e){} };
+    setTimeout(resize,200);
+  },80);
+}
+window.wbRender=wbRender;
+
+/* ─── BUILD FULL PAGE HTML ──────────────────────────────────────── */
+function buildPage(cfg){
+  const c=cfg.c||{};
+  const p=c.p||'#0d1b2a', a=c.a||'#c9922a', h=c.h||'#0d1b2a', r=c.r||'#1a2f45';
+  const name=cfg.name||'School Portal';
+  const motto=cfg.motto||'';
+  const fullAddr=[cfg.addr,cfg.city,cfg.state].filter(Boolean).join(', ');
+  const initials=name.trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase()||'SC';
+  const logoHtml=cfg.logo?`<img src="${cfg.logo}" style="width:48px;height:48px;border-radius:10px;object-fit:contain;">`:`<div style="width:48px;height:48px;border-radius:10px;background:${a};color:${p};display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1rem;font-family:monospace;">${initials}</div>`;
+  const navLinks=(cfg.nav||'Home,About,Contact').split(',').map(n=>n.trim()).filter(Boolean);
+  const heroBg=cfg.heroImg?`url('${cfg.heroImg}') center/cover no-repeat`:(cfg.heroUrl?`url('${cfg.heroUrl}') center/cover no-repeat`:`linear-gradient(135deg,${r},${p})`);
+
+  /* THEME LAYOUTS */
+  const themes={
+    0:{ /* Classic */ heroClass:'th0' },
+    1:{ /* Chrisland */ heroClass:'th1' },
+    2:{ /* Magazine */ heroClass:'th2' },
+    3:{ /* Bold */ heroClass:'th3' }
+  };
+  const th=themes[cfg.theme]||themes[0];
+
+  /* SECTIONS */
+  const heroSection=cfg.sec?.hero!==false?`
+    <section class="hero ${th.heroClass}" style="background:${heroBg};">
+      <div class="hero-overlay"></div>
+      <div class="hero-inner">
+        ${cfg.term?`<div class="hero-badge">✦ ${cfg.term}</div>`:''}
+        <h1 class="hero-title">${name}</h1>
+        ${fullAddr?`<p class="hero-addr">📍 ${fullAddr}</p>`:''}
+        ${motto?`<p class="hero-motto">"${motto}"</p>`:''}
+        ${cfg.heroTxt?`<p class="hero-sub">${cfg.heroTxt}</p>`:''}
+        <div class="hero-btns">
+          <a href="#portals" class="hbtn hbtn-accent">🎓 Student Login</a>
+          <a href="#portals" class="hbtn hbtn-ghost">📋 Check Results</a>
+        </div>
+      </div>
+    </section>`:'';
+
+  const statsSection=cfg.sec?.stats!==false&&cfg.stats?.length?`
+    <section class="stats-bar" style="background:${p};">
+      ${cfg.stats.map(s=>`<div class="stat-item"><div class="stat-v" style="color:${a};">${s.v}</div><div class="stat-l">${s.l}</div></div>`).join('')}
+    </section>`:'';
+
+  const portalsSection=cfg.sec?.portals!==false?`
+    <section class="portals" id="portals">
+      <h2 class="sec-title">School Portals</h2>
+      <div class="portal-grid">
+        <div class="portal-card"><div class="portal-icon" style="background:${p}15;color:${p};">🎓</div><h3>Student Portal</h3><p>Take CBT exams and view your results</p></div>
+        <div class="portal-card"><div class="portal-icon" style="background:${a}22;color:${a};">👨‍👩‍👦</div><h3>Parent Portal</h3><p>Track attendance, fees and performance</p></div>
+        <div class="portal-card"><div class="portal-icon" style="background:#1a7a4515;color:#1a7a45;">🏆</div><h3>Check Results</h3><p>Enter your Result ID to view report sheet</p></div>
+      </div>
+    </section>`:'';
+
+  const aboutSection=cfg.sec?.about!==false&&cfg.about?`
+    <section class="about-sec">
+      <h2 class="sec-title">About Us</h2>
+      <p style="font-size:.95rem;line-height:1.8;color:#444;max-width:720px;margin:0 auto;">${cfg.about}</p>
+    </section>`:'';
+
+  const blogSection=cfg.sec?.blog!==false&&cfg.blog?.length?`
+    <section class="blog-sec">
+      <h2 class="sec-title">Featured News</h2>
+      <div class="blog-grid">
+        ${cfg.blog.map(b=>`<div class="blog-card">
+          ${b.img?`<img src="${b.img}" class="blog-img" alt="">`:`<div class="blog-img-ph" style="background:${p}15;"><span>📰</span></div>`}
+          <div class="blog-body">
+            <span class="blog-cat" style="color:${a};">${b.category||'News'}</span>
+            <h3 class="blog-title">${b.title}</h3>
+            <p class="blog-exc">${b.excerpt}</p>
+            <div class="blog-meta">${b.author||'Admin'} · ${b.date||''}</div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </section>`:'';
+
+  const gallerySection=cfg.sec?.gallery&&cfg.gal?.length?`
+    <section class="gallery-sec">
+      <h2 class="sec-title">Gallery</h2>
+      <div class="gallery-grid">
+        ${cfg.gal.map(g=>`<div class="gallery-item"><img src="${g.src}" alt="${g.cap||''}"><div class="gallery-cap">${g.cap||''}</div></div>`).join('')}
+      </div>
+    </section>`:'';
+
+  const annSection=cfg.sec?.ann!==false&&cfg.ann?.length?`
+    <section class="ann-sec">
+      <h2 class="sec-title">Announcements</h2>
+      <div class="ann-list">
+        ${cfg.ann.map(an=>`<div class="ann-item ann-${an.priority||'normal'}">
+          <div class="ann-title">${an.title}</div>
+          <div class="ann-body">${an.body}</div>
+        </div>`).join('')}
+      </div>
+    </section>`:'';
+
+  const socialLinks=cfg.social?[
+    cfg.social.fb?`<a href="${cfg.social.fb}" target="_blank" style="color:${a};">Facebook</a>`:'',
+    cfg.social.ig?`<a href="${cfg.social.ig}" target="_blank" style="color:${a};">Instagram</a>`:'',
+    cfg.social.wa?`<a href="https://wa.me/${cfg.social.wa}" target="_blank" style="color:${a};">WhatsApp</a>`:'',
+    cfg.social.yt?`<a href="${cfg.social.yt}" target="_blank" style="color:${a};">YouTube</a>`:''
+  ].filter(Boolean).join(' · '):'';
+
+  const contactSection=cfg.sec?.contact!==false?`
+    <section class="contact-sec" style="background:${p};">
+      <h2 class="sec-title" style="color:${a};">Contact Us</h2>
+      <div class="contact-grid">
+        ${fullAddr?`<div class="contact-item"><span class="contact-icon">📍</span><div><strong style="color:${a};">Address</strong><br>${fullAddr}</div></div>`:''}
+        ${cfg.phone?`<div class="contact-item"><span class="contact-icon">📞</span><div><strong style="color:${a};">Phone</strong><br>${cfg.phone}</div></div>`:''}
+        ${cfg.email?`<div class="contact-item"><span class="contact-icon">✉️</span><div><strong style="color:${a};">Email</strong><br>${cfg.email}</div></div>`:''}
+        ${socialLinks?`<div class="contact-item"><span class="contact-icon">🌐</span><div><strong style="color:${a};">Follow Us</strong><br>${socialLinks}</div></div>`:''}
+      </div>
+    </section>`:'';
+
+  const footerTxt=cfg.footer||`${name} · Powered by <strong style="color:${a};">ACADEX</strong> · © ${new Date().getFullYear()}`;
+
+  return `<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="${h}">
+<title>${name}</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Sora',sans-serif;color:#222;background:#f4f6f9;}
+a{text-decoration:none;}
+/* ─── Header ─── */
+.site-header{background:${h};border-bottom:3px solid ${a};position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.15);}
+.header-inner{max-width:1100px;margin:0 auto;padding:0 20px;height:64px;display:flex;align-items:center;justify-content:space-between;}
+.header-logo{display:flex;align-items:center;gap:12px;}
+.header-name{color:#fff;font-weight:800;font-size:1rem;}
+.header-sub{color:rgba(255,255,255,.45);font-size:.6rem;}
+.header-nav{display:flex;gap:6px;flex-wrap:wrap;}
+.header-nav a{padding:6px 12px;border-radius:6px;font-size:.76rem;font-weight:700;color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);}
+.header-nav a:hover,.header-nav a.accent{background:${a};color:${p};border-color:transparent;}
+/* ─── Hero ─── */
+.hero{position:relative;overflow:hidden;min-height:480px;display:flex;align-items:center;}
+.hero-overlay{position:absolute;inset:0;background:rgba(0,0,0,.52);}
+.hero-inner{position:relative;max-width:1100px;margin:0 auto;padding:60px 24px;width:100%;}
+.hero-badge{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:${a};padding:5px 14px;border-radius:20px;font-size:.8rem;font-weight:700;margin-bottom:14px;}
+.hero-title{font-size:2.6rem;font-weight:900;color:#fff;line-height:1.15;margin-bottom:8px;}
+.hero-addr{color:rgba(255,255,255,.65);font-size:.88rem;margin-bottom:4px;}
+.hero-motto{color:${a};font-style:italic;font-size:.9rem;margin-bottom:12px;}
+.hero-sub{color:rgba(255,255,255,.72);font-size:.9rem;max-width:480px;margin-bottom:22px;line-height:1.6;}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;}
+.hbtn{padding:11px 24px;border-radius:9px;font-size:.88rem;font-weight:700;cursor:pointer;display:inline-block;}
+.hbtn-accent{background:${a};color:${p};}
+.hbtn-ghost{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3);}
+/* Theme 1 — Chrisland */
+.hero.th1 .hero-inner{text-align:left;border-left:4px solid ${a};padding-left:28px;}
+/* Theme 2 — Magazine */
+.hero.th2{min-height:360px;}
+.hero.th2 .hero-inner{max-width:700px;}
+/* Theme 3 — Bold */
+.hero.th3 .hero-title{font-size:3.2rem;letter-spacing:-1px;}
+.hero.th3 .hero-inner{text-align:center;}
+.hero.th3 .hero-btns{justify-content:center;}
+/* ─── Stats bar ─── */
+.stats-bar{display:flex;justify-content:center;gap:0;padding:0;}
+.stat-item{flex:1;max-width:200px;text-align:center;padding:20px 10px;border-right:1px solid rgba(255,255,255,.1);}
+.stat-item:last-child{border:none;}
+.stat-v{font-size:2rem;font-weight:900;}
+.stat-l{font-size:.7rem;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.6);margin-top:3px;}
+/* ─── Sections ─── */
+.portals,.about-sec,.blog-sec,.gallery-sec,.ann-sec{max-width:1100px;margin:0 auto;padding:48px 20px;}
+.sec-title{font-size:1.5rem;font-weight:800;color:#0d1b2a;margin-bottom:24px;text-align:center;}
+/* ─── Portals ─── */
+.portal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;}
+.portal-card{background:#fff;border-radius:14px;border:1.5px solid #e0e6ef;padding:24px 20px;text-align:center;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.portal-card:hover{border-color:${a};transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.1);}
+.portal-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 14px;}
+.portal-card h3{font-size:.95rem;font-weight:800;color:#0d1b2a;margin-bottom:6px;}
+.portal-card p{font-size:.78rem;color:#7a8a9e;}
+/* ─── Blog ─── */
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;}
+.blog-card{background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e0e6ef;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.blog-img{width:100%;height:160px;object-fit:cover;display:block;}
+.blog-img-ph{width:100%;height:120px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;}
+.blog-body{padding:16px;}
+.blog-cat{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+.blog-title{font-size:.95rem;font-weight:800;color:#0d1b2a;margin:6px 0;}
+.blog-exc{font-size:.8rem;color:#7a8a9e;line-height:1.5;margin-bottom:8px;}
+.blog-meta{font-size:.72rem;color:#aab;}
+/* ─── Gallery ─── */
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.gallery-item{border-radius:8px;overflow:hidden;position:relative;}
+.gallery-item img{width:100%;height:160px;object-fit:cover;display:block;}
+.gallery-cap{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.5);color:#fff;font-size:.72rem;padding:6px 8px;}
+/* ─── Announcements ─── */
+.ann-list{display:flex;flex-direction:column;gap:12px;max-width:720px;margin:0 auto;}
+.ann-item{background:#fff;border-radius:10px;padding:16px;border:1px solid #e0e6ef;border-left:4px solid #1560a0;}
+.ann-item.ann-high{border-left-color:#b56b00;}
+.ann-item.ann-urgent{border-left-color:#b52020;}
+.ann-title{font-weight:800;color:#0d1b2a;margin-bottom:5px;}
+.ann-body{font-size:.86rem;color:#4a5a70;line-height:1.5;}
+/* ─── Contact ─── */
+.contact-sec{padding:48px 20px;}
+.contact-sec .sec-title{color:#fff;}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;max-width:900px;margin:0 auto;color:rgba(255,255,255,.8);}
+.contact-item{display:flex;align-items:flex-start;gap:12px;font-size:.88rem;line-height:1.5;}
+.contact-icon{font-size:1.4rem;}
+/* ─── Footer ─── */
+.site-footer{background:#0a111a;color:rgba(255,255,255,.5);text-align:center;padding:18px;font-size:.78rem;}
+.site-footer a{color:${a};text-decoration:none;}
+@media(max-width:640px){
+  .hero-title{font-size:1.8rem;}.stats-bar{flex-wrap:wrap;}.stat-item{min-width:33%;}
+  .header-nav{display:none;}
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-logo">
+      ${logoHtml}
+      <div><div class="header-name">${name}</div><div class="header-sub">Powered by ACADEX</div></div>
+    </div>
+    <nav class="header-nav">
+      ${navLinks.map((n,i)=>`<a href="#" class="${i===0?'accent':''}">${n}</a>`).join('')}
+    </nav>
+  </div>
+</header>
+${heroSection}
+${statsSection}
+${portalsSection}
+${aboutSection}
+${blogSection}
+${gallerySection}
+${annSection}
+${contactSection}
+<footer class="site-footer">${footerTxt}</footer>
+</body></html>`;
+}
+
+/* ─── Save draft ────────────────────────────────────────────────── */
+window.wbSave = async function(){
+  if(typeof S==='undefined'||!S?.admin){ if(typeof toast==='function') toast('Not logged in','err'); return; }
+  try{
+    const cfg=collectConfig();
+    const r=await api({action:'saveWebsiteConfig',school_code:S.admin.code,config_json:JSON.stringify(cfg)});
+    if(r.success&&typeof toast==='function') toast('Website config saved!','ok');
+    else if(typeof toast==='function') toast(r.message||'Save failed','err');
+  }catch(e){ if(typeof toast==='function') toast('Error: '+e.message,'err'); }
+};
+
+/* ─── Publish ───────────────────────────────────────────────────── */
+window.wbOpenPublish = function(){
+  if(typeof S!=='undefined'&&S?.admin?.code) document.getElementById('wbPubCode').value=S.admin.code;
+  wbPubCodeChange(document.getElementById('wbPubCode'));
+  document.getElementById('wbModal').classList.add('open');
+};
+window.wbCloseModal = function(){
+  document.getElementById('wbModal').classList.remove('open');
+  const s1=document.getElementById('wbMStep1'); const s2=document.getElementById('wbMStep2');
+  if(s1) s1.classList.remove('hidden');
+  if(s2) s2.classList.add('hidden');
+};
+window.wbPubCodeChange = function(el){
+  const code=(el.value||'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+  el.value=code;
+  const base=window.location.origin+window.location.pathname;
+  const prev=document.getElementById('wbPubPreview');
+  if(prev) prev.textContent=`${base}?school=${code||'SCHOOLCODE'}`;
+};
+window.wbPublish = async function(){
+  const code=(document.getElementById('wbPubCode')?.value||'').trim().toUpperCase();
+  if(!code){ if(typeof toast==='function') toast('Enter your school code','warn'); return; }
+  const btn=document.getElementById('wbPubBtn');
+  if(btn){ btn.innerHTML='<span class="loader"></span> Publishing…'; btn.disabled=true; }
+  try{
+    const cfg=collectConfig();
+    try{ await api({action:'saveWebsiteConfig',school_code:code,config_json:JSON.stringify(cfg),published:'yes'}); }catch(e){}
+    const base=window.location.origin+window.location.pathname;
+    const url=`${base}?school=${code}`;
+    W.publishedUrl=url;
+    const finalEl=document.getElementById('wbPubFinalUrl');
+    if(finalEl) finalEl.textContent=url;
+    const openBtn=document.getElementById('wbPubOpenBtn');
+    if(openBtn) openBtn.href=url;
+    document.getElementById('wbMStep1')?.classList.add('hidden');
+    document.getElementById('wbMStep2')?.classList.remove('hidden');
+    const bar=document.getElementById('wbLiveBar');
+    const liveUrl=document.getElementById('wbLiveUrl');
+    const liveLink=document.getElementById('wbLiveLink');
+    if(bar) bar.classList.remove('hidden');
+    if(liveUrl) liveUrl.textContent=url;
+    if(liveLink) liveLink.href=url;
+    if(typeof toast==='function') toast('Site published!','ok');
+  }catch(e){ if(typeof toast==='function') toast('Error: '+e.message,'err'); }
+  finally{ if(btn){ btn.innerHTML='<i class="fas fa-rocket"></i> Publish Now'; btn.disabled=false; } }
+};
+window.wbCopyUrl = function(){
+  if(!W.publishedUrl) return;
+  navigator.clipboard?.writeText(W.publishedUrl)
+    .then(()=>{ if(typeof toast==='function') toast('URL copied!','ok'); })
+    .catch(()=>{ if(typeof toast==='function') toast('Copy: '+W.publishedUrl,'info'); });
+};
+
+/* ─── Load saved config ─────────────────────────────────────────── */
+window.wbLoad = async function(){
+  if(typeof S==='undefined'||!S?.admin) return;
+  try{
+    const r=await api({action:'getWebsiteConfig',school_code:S.admin.code});
+    if(r.success&&r.config){ wbApplyConfig(JSON.parse(r.config)); if(typeof toast==='function') toast('Loaded saved config','ok'); }
+    else if(typeof toast==='function') toast('No saved config — start building!','info');
+  }catch(e){ if(typeof toast==='function') toast('Could not load: '+e.message,'err'); }
+};
+
+function wbApplyConfig(cfg){
+  if(!cfg) return;
+  if(cfg.c){ Object.assign(W.c,cfg.c); syncColourInputs(); }
+  if(cfg.theme!==undefined) wbTheme(cfg.theme);
+  if(cfg.sec) Object.assign(W.sec,cfg.sec);
+  if(cfg.ann){ W.ann=cfg.ann; renderAnnList(); }
+  if(cfg.blog){ W.blog=cfg.blog; renderBlogList(); }
+  if(cfg.gal){ W.gal=cfg.gal; renderGalEdit(); }
+  if(cfg.logo){ W.logo=cfg.logo; document.getElementById('wbLogoThumb').innerHTML=`<img src="${cfg.logo}" style="max-width:54px;max-height:54px;border-radius:6px;">`; }
+  if(cfg.heroImg){ W.heroImg=cfg.heroImg; document.getElementById('wbHeroThumb').innerHTML=`<img src="${cfg.heroImg}" style="max-width:100%;max-height:58px;border-radius:6px;object-fit:cover;">`; }
+  const fm={wbName:'name',wbMotto:'motto',wbAddr:'addr',wbCity:'city',wbState:'state',wbPhone:'phone',wbEmail:'email',wbTerm:'term',wbHeroTxt:'heroTxt',wbAbout:'about',wbFooter:'footer',wbNav:'nav',wbHeroUrl:'heroUrl',wbFb:'social.fb',wbIg:'social.ig',wbWa:'social.wa',wbYt:'social.yt'};
+  Object.entries(fm).forEach(([id,path])=>{
+    const keys=path.split('.'); let val=cfg; for(const k of keys) val=val?.[k];
+    const el=document.getElementById(id); if(el&&val) el.value=val;
+  });
+  if(cfg.stats) cfg.stats.forEach((s,i)=>{
+    const vi=document.getElementById('wbSv'+(i+1)); const li=document.getElementById('wbSl'+(i+1));
+    if(vi) vi.value=s.v; if(li) li.value=s.l;
+  });
+  Object.entries(W.sec).forEach(([k,v])=>{
+    const tog=document.getElementById('wbTog'+k[0].toUpperCase()+k.slice(1));
+    if(tog) tog.classList.toggle('on',v);
+  });
+  wbRender();
+}
+
+/* ─── Auto-fill from admin settings ────────────────────────────── */
+function wbAutoFill(){
+  if(typeof S==='undefined'||!S?.admin) return;
+  const sc=S.settings||{};
+  const si=(id,v)=>{ const el=document.getElementById(id); if(el&&!el.value&&v) el.value=v; };
+  si('wbName', sc.school_name||S.admin.name);
+  si('wbMotto', sc.motto);
+  si('wbAddr', sc.address);
+  si('wbCity', sc.town);
+  si('wbState', sc.state);
+  si('wbTerm', sc.term?(sc.term+(sc.session?' · '+sc.session:'')):null);
+  wbRender();
+}
+
+/* ─── PUBLIC LANDING PAGE ───────────────────────────────────────── */
+async function loadPublicLanding(code){
+  if(typeof go==='function') go('public-landing');
+  const wrap=document.getElementById('plWrap'); if(!wrap) return;
+  wrap.innerHTML='<div style="text-align:center;padding:60px 20px;"><div style="font-size:2rem;margin-bottom:12px;">⏳</div><div>Loading school page…</div></div>';
+  try{
+    const r=await api({action:'getWebsiteConfig',school_code:code});
+    if(!r.success||!r.config){
+      wrap.innerHTML=`<div style="text-align:center;padding:60px 20px;"><div style="font-size:3rem;margin-bottom:12px;">🏫</div><h2>Page not found</h2><p style="color:#666;margin-top:8px;">School code <strong>${code}</strong> has no published website.</p><a href="${window.location.pathname}" style="display:inline-block;margin-top:20px;background:#0d1b2a;color:#fff;padding:10px 24px;border-radius:8px;font-weight:700;">Go to ACADEX Home</a></div>`;
+      return;
+    }
+    const cfg=JSON.parse(r.config);
+    const html=buildPage(cfg);
+    wrap.innerHTML='<iframe style="width:100%;border:none;" id="plIframe" scrolling="yes"></iframe>';
+    const iframe=document.getElementById('plIframe');
+    const doc=iframe.contentDocument||iframe.contentWindow.document;
+    doc.open(); doc.write(html); doc.close();
+    iframe.style.height='100vh';
+    setTimeout(()=>{ try{ iframe.style.height=doc.body.scrollHeight+'px'; }catch(e){} },600);
+  }catch(e){
+    wrap.innerHTML=`<div style="text-align:center;padding:60px 20px;"><div style="font-size:2rem;margin-bottom:10px;">⚠️</div><h3>Could not load page</h3><p style="margin-top:6px;color:#666;">${e.message}</p></div>`;
+  }
+}
+
+/* ─── Init ──────────────────────────────────────────────────────── */
+function wbInit(){
+  initSwatches();
+  renderAnnList();
+  renderBlogList();
+  renderGalEdit();
+  syncColourInputs();
+  wbAutoFill();
+  wbRender();
+  wbLoad();
+}
+window.wbInit = wbInit;
+
+/* ─── Auto-detect ?school= on page load ────────────────────────── */
+(function(){
+  const code=new URLSearchParams(window.location.search).get('school');
+  if(code){
+    const run=()=>setTimeout(()=>loadPublicLanding(code.toUpperCase()),300);
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run); else run();
+  }
+})();
+
+})(); // end IIFE
 </script>
 </body>
 </html>
