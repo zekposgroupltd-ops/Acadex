@@ -5859,20 +5859,35 @@ async function loadParentData() {
       }
     } catch(e) { attEl.innerHTML = '<div class="es"><h4>Unable to load attendance</h4></div>'; }
     
-    // Load fees
+    // Load fees — use getParentFees which returns balance + payments
     try {
-      const fr = await api({ action: 'getFees', school_code: S.parent.school_code, class: S.parent.student_class, term: S.settings.term, session: S.settings.session });
+      const fr = await api({ action: 'getParentFees', school_code: S.parent.school_code, student_id: S.parent.student_id, student_class: S.parent.student_class, term: S.settings.term, session: S.settings.session }, 1, false);
       const fees = fr.fees || [];
+      const payments = fr.payments || [];
+      const totalFees = fr.totalFees || 0;
+      const totalPaid = fr.totalPaid || 0;
+      const balance   = fr.balance   || 0;
       if (!fees.length) {
-        feesEl.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-money-bill-wave"></i></span><h4>No fees</h4></div>';
+        feesEl.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-money-bill-wave"></i></span><h4>No fees set for your class</h4></div>';
       } else {
-        feesEl.innerHTML = fees.map(f => `<div class="fee-item">
-          <div class="fee-l">
-            <div class="fee-n">${f.fee_type}</div>
-            <div class="fee-d">${f.term || ''} ${f.due_date ? '· Due: ' + f.due_date : ''}</div>
+        // Build payment map
+        const paidMap = {};
+        payments.forEach(p => { paidMap[p.fee_id] = (paidMap[p.fee_id]||0) + parseFloat(p.amount_paid||0); });
+        feesEl.innerHTML = `
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;">
+            <div class="pstat"><div class="pstat-n">₦${Number(totalFees).toLocaleString()}</div><div class="pstat-l">Total Fees</div></div>
+            <div class="pstat"><div class="pstat-n ok">₦${Number(totalPaid).toLocaleString()}</div><div class="pstat-l">Paid</div></div>
+            <div class="pstat"><div class="pstat-n ${balance>0?'err':'ok'}">₦${Number(Math.abs(balance)).toLocaleString()}</div><div class="pstat-l">${balance>0?'Owing':'Cleared'}</div></div>
           </div>
-          <div class="fee-amt">₦${Number(f.amount).toLocaleString()}</div>
-        </div>`).join('');
+          ${fees.map(f => {
+            const paid = paidMap[f.id] || 0;
+            const owing = Math.max(0, parseFloat(f.amount||0) - paid);
+            const statusLabel = owing <= 0 ? '✓ Paid' : paid > 0 ? 'Partial' : 'Unpaid';
+            const statusColor = owing <= 0 ? 'var(--ok)' : paid > 0 ? 'var(--warn)' : 'var(--err)';
+            const paidRow = paid > 0 ? '<div style="font-size:.75rem;color:var(--ok);">Paid: ₦' + Number(paid).toLocaleString() + '</div>' : '';
+            const owingRow = owing > 0 ? '<div style="font-size:.75rem;color:var(--err);">Owing: ₦' + Number(owing).toLocaleString() + '</div>' : '';
+            return '<div class="fee-item"><div class="fee-l"><div class="fee-n">' + f.fee_type + '</div><div class="fee-d">' + (f.term||'') + (f.due_date ? ' · Due: '+f.due_date : '') + '</div></div><div style="text-align:right;"><div class="fee-amt">₦' + Number(f.amount||0).toLocaleString() + '</div>' + paidRow + owingRow + '<span style="font-size:.72rem;font-weight:700;color:' + statusColor + ';">' + statusLabel + '</span></div></div>';
+          }).join('')}`;
       }
     } catch(e) { feesEl.innerHTML = '<div class="es"><h4>Unable to load fees</h4></div>'; }
     
@@ -6325,4 +6340,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 </body>
-  </html>
+</html>
