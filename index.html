@@ -232,6 +232,13 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
 .export-icon{width:56px;height:56px;border-radius:50%;background:var(--infob);color:var(--info);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 12px;}
 .export-title{font-weight:800;color:var(--navy);font-size:1.1rem;margin-bottom:4px;}
 .export-desc{font-size:.8rem;color:var(--tlt);}
+/* Timetable */
+.timetable-wrap{overflow-x:auto;margin-top:16px;}
+.timetable{width:100%;border-collapse:collapse;font-size:.9rem;}
+.timetable th,.timetable td{border:1px solid var(--border);padding:12px 8px;text-align:center;}
+.timetable th{background:var(--navy);color:#fff;font-weight:700;}
+.timetable td{background:#fff;}
+.timetable tr:nth-child(even) td{background:var(--off);}
 .etb{background:var(--navy);border-radius:var(--rl);padding:16px 20px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;color:#fff;}
 .esn{font-weight:800;font-size:1rem;}.est{font-size:.8rem;opacity:.7;margin-top:2px;}
 .etimer{font-family:'JetBrains Mono',monospace;font-size:1.6rem;font-weight:700;background:rgba(255,255,255,.08);padding:6px 18px;border-radius:8px;letter-spacing:2px;min-width:110px;text-align:center;border:1px solid rgba(201,146,42,.3);}
@@ -289,7 +296,7 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
 .rsfoot{text-align:center;font-size:6pt;color:#aaa;margin-top:6px;border-top:1px solid #eee;padding-top:4px;}
 #cardPrintArea{background:#fff;width:210mm;padding:8mm;border-radius:4px;box-shadow:0 12px 60px rgba(0,0,0,.4);margin-top:60px;}
 .card-grid{display:grid;grid-template-columns:1fr 1fr;gap:5mm;}
-.exam-card{border:1.5px solid #0d1b2a;border-radius:4px;padding:5mm 6mm;page-break-inside:avoid;background:#fff;position:relative;overflow:hidden;}
+.exam-card{border:1.5px solid #0d1b2a;border-radius:4px;padding:5mm 6mm;page-break-inside:avoid;page-break-after:always;background:#fff;position:relative;overflow:hidden;}
 .exam-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#0d1b2a,#c9922a);}
 .ec-school{font-size:7pt;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:#0d1b2a;margin-bottom:2mm;}
 .ec-type{font-size:6pt;color:#666;text-transform:uppercase;letter-spacing:.5px;margin-bottom:1.5mm;border-bottom:1px dashed #ddd;padding-bottom:1.5mm;}
@@ -327,6 +334,36 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   /* Prevent double-tap zoom on interactive elements */
   a,button,input,select{touch-action:manipulation;}
 }
+/* Admin Sidebar */
+#adminSidebar{position:fixed;left:0;top:0;bottom:0;width:260px;background:linear-gradient(180deg,#0d1b2a 0%,#1a2f45 100%);z-index:1000;transform:translateX(-100%);transition:transform .3s ease;display:flex;flex-direction:column;}
+#adminSidebar.open{transform:translateX(0);}
+#adminSidebarOverlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;display:none;}
+#adminSidebarOverlay.open{display:block;}
+#adminSidebarToggle{position:fixed;left:12px;top:70px;z-index:1001;background:var(--navy);color:var(--gold-lt);border:none;border-radius:8px;width:40px;height:40px;cursor:pointer;box-shadow:var(--sh);display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+#adminSidebarToggle:hover{background:#1a2f45;}
+#adminSidebarToggle.shifted{left:272px;}
+.admin-sidebar-header{padding:20px 16px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:12px;}
+.admin-sidebar-logo{width:36px;height:36px;background:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--navy);font-size:.9rem;}
+.admin-sidebar-title{color:#fff;font-weight:800;font-size:.95rem;}
+.admin-sidebar-sub{color:rgba(255,255,255,.5);font-size:.7rem;}
+.admin-sidebar-nav{flex:1;overflow-y:auto;padding:12px 0;}
+.admin-sidebar-item{display:flex;align-items:center;gap:12px;padding:12px 16px;color:rgba(255,255,255,.7);cursor:pointer;transition:all .2s;border-left:3px solid transparent;font-size:.88rem;}
+.admin-sidebar-item:hover{background:rgba(255,255,255,.05);color:#fff;}
+.admin-sidebar-item.active{background:rgba(201,146,42,.15);color:var(--gold-lt);border-left-color:var(--gold);}
+.admin-sidebar-item i{width:20px;text-align:center;font-size:.95rem;}
+.admin-sidebar-footer{padding:16px;border-top:1px solid rgba(255,255,255,.1);}
+.admin-sidebar-user{display:flex;align-items:center;gap:10px;color:#fff;}
+.admin-sidebar-avatar{width:32px;height:32px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--navy);font-weight:800;font-size:.8rem;}
+.admin-sidebar-user-info{flex:1;}
+.admin-sidebar-user-name{font-size:.85rem;font-weight:700;}
+.admin-sidebar-user-role{font-size:.7rem;color:rgba(255,255,255,.5);}
+#adminMain{margin-left:0;transition:margin-left .3s ease;}
+#adminMain.sidebar-open{margin-left:260px;}
+@media(max-width:768px){
+  #adminSidebar{width:240px;}
+  #adminSidebarToggle.shifted{left:252px;}
+  #adminMain.sidebar-open{margin-left:240px;}
+}
 #staffEditModal,#assignModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:8500;align-items:center;justify-content:center;padding:16px;}
 #staffEditModal.open,#assignModal.open{display:flex;}
 .assign-item{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:var(--r);border:1px solid var(--border);margin-bottom:6px;background:#fff;}
@@ -351,11 +388,12 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   }
   #cardPrintArea{
     position:fixed!important;left:0!important;top:0!important;
-    width:210mm!important;padding:6mm!important;margin:0!important;
+    width:210mm!important;min-height:297mm!important;padding:6mm!important;margin:0!important;
     box-shadow:none!important;border-radius:0!important;
     -webkit-print-color-adjust:exact!important;
     print-color-adjust:exact!important;
     color-adjust:exact!important;
+    overflow:visible!important;
   }
   .ptb{display:none!important;}
   .exam-card{page-break-inside:avoid!important;}
@@ -365,6 +403,14 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   .ec-pin-box{background:#0d1b2a!important;color:#e8b84b!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
   .exam-card::before{background:linear-gradient(90deg,#0d1b2a,#c9922a)!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
 }
+
+/* ═══ WEB BUILDER MODAL ═══ */
+#wbModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9500;align-items:center;justify-content:center;padding:16px;}
+#wbModal.open{display:flex;}
+.wb-modal-box{background:#fff;border-radius:14px;padding:26px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+#s-public-landing{background:var(--off);}
+.wb-shell{display:grid;grid-template-columns:300px 1fr;min-height:620px;border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;}
+@media(max-width:860px){.wb-shell{grid-template-columns:1fr;}.wb-right{min-height:360px;}}
 </style>
 </head>
 <body>
@@ -382,6 +428,7 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
     <button class="nb nb-g hidden" id="btnStudentLogout" onclick="studentLogout()"><i class="fas fa-sign-out-alt"></i> Exit</button>
     <button class="nb nb-g hidden" id="btnAdminLogout" onclick="aLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
     <button class="nb nb-g hidden" id="btnStaffLogout" onclick="stLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    <button class="nb nb-g hidden" id="btnParentLogout" onclick="pLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
     <button class="nb nb-g hidden" id="btnSALogout" onclick="saLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
   </div>
 </div>
@@ -412,6 +459,25 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       <div class="pcard-i" style="background:#e6f4ec;color:#1a7a45;"><i class="fas fa-award"></i></div>
       <h3>Check Results</h3><p>View result with your Result ID</p>
     </div>
+    <div class="pcard" onclick="visitSchoolPage()">
+      <div class="pcard-i" style="background:var(--gold-pale);color:var(--gold);"><i class="fas fa-globe"></i></div>
+      <h3>School Website</h3><p>Visit a school's dedicated ACADEX page</p>
+    </div>
+  </div>
+  <!-- School Page URL Bar -->
+  <div class="card" style="margin-top:0;border:2px solid var(--border);background:linear-gradient(135deg,var(--navy) 0%,var(--navy-lt) 100%);">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:220px;">
+        <div style="font-size:.82rem;font-weight:800;color:var(--gold-lt);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;"><i class="fas fa-globe"></i> Visit a School Page</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.55);margin-bottom:10px;">Enter a school code to view their dedicated website</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input id="homeSchoolCode" class="fc fc-mono" placeholder="e.g. SCH001" style="text-transform:uppercase;max-width:180px;background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:#fff;" oninput="this.value=this.value.toUpperCase()" onkeydown="if(event.key==='Enter')visitSchoolPage()">
+          <button class="btn btn-gold" onclick="visitSchoolPage()"><i class="fas fa-arrow-right"></i> Go</button>
+        </div>
+        <div id="homeSchoolPreview" style="font-size:.72rem;color:rgba(255,255,255,.4);margin-top:6px;font-family:'JetBrains Mono',monospace;"></div>
+      </div>
+      <div style="font-size:2rem;opacity:.3;color:#fff;">🏫</div>
+    </div>
   </div>
 </div>
 </div>
@@ -421,6 +487,14 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   <h2 style="text-align:center;color:var(--navy);margin-bottom:6px;">Select Portal</h2>
   <p style="text-align:center;font-size:.85rem;color:var(--tlt);margin-bottom:24px;">Choose your role to continue</p>
   <div style="display:flex;flex-direction:column;gap:12px;">
+    <div class="pcard" onclick="go('student')" style="display:flex;align-items:center;gap:16px;text-align:left;">
+      <div class="pcard-i" style="background:var(--okb);color:var(--ok);margin:0;flex-shrink:0;"><i class="fas fa-user-graduate"></i></div>
+      <div><h3>Student</h3><p>Take exams and view your results</p></div>
+    </div>
+    <div class="pcard" onclick="go('parent-login')" style="display:flex;align-items:center;gap:16px;text-align:left;">
+      <div class="pcard-i" style="background:var(--warnb);color:var(--warn);margin:0;flex-shrink:0;"><i class="fas fa-user-friends"></i></div>
+      <div><h3>Parent</h3><p>View your child's progress, attendance and fees</p></div>
+    </div>
     <div class="pcard" onclick="go('admin-login')" style="display:flex;align-items:center;gap:16px;text-align:left;">
       <div class="pcard-i" style="background:var(--gold-pale);color:var(--gold);margin:0;flex-shrink:0;"><i class="fas fa-user-shield"></i></div>
       <div><h3>School Admin</h3><p>Manage students, staff, subjects and results</p></div>
@@ -463,6 +537,8 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   <div class="stabs">
     <button class="stab active" onclick="showStuTab('progress')" id="tabProgress"><i class="fas fa-chart-line"></i> My Progress</button>
     <button class="stab" onclick="showStuTab('subjects')" id="tabSubjects"><i class="fas fa-book-open"></i> Subjects</button>
+    <button class="stab" onclick="showStuTab('timetable')" id="tabTimetable"><i class="fas fa-calendar-alt"></i> Timetable</button>
+    <button class="stab" onclick="showStuTab('profile')" id="tabProfile"><i class="fas fa-user-circle"></i> My Profile</button>
   </div>
   <!-- Progress Tab -->
   <div id="stuProgress" class="stu-tab">
@@ -482,6 +558,22 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       <div class="ch"><div><div class="ct"><i class="fas fa-book-open"></i> Select Subject</div><div class="cs">Choose a subject to begin your exam. ✓ = already taken.</div></div></div>
       <div id="subjMsg"></div>
       <div id="subjectGrid" class="subg"></div>
+    </div>
+  </div>
+  <!-- Timetable Tab -->
+  <div id="stuTimetable" class="stu-tab hidden">
+    <div class="card">
+      <div class="ch"><div><div class="ct"><i class="fas fa-calendar-alt"></i> My Timetable</div><div class="cs">Class schedule for ${S.settings.term} ${S.settings.session}</div></div></div>
+      <div id="studentTimetable" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
+    </div>
+  </div>
+  <!-- Profile Tab -->
+  <div id="stuProfile" class="stu-tab hidden">
+    <div class="card">
+      <div class="ch"><div><div class="ct"><i class="fas fa-user-circle"></i> My Profile</div><div class="cs">View and update your personal information</div></div></div>
+      <div id="studentProfileContent">
+        <div class="ls"><div class="loader loader-dk"></div></div>
+      </div>
     </div>
   </div>
 </div>
@@ -551,6 +643,51 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
 <!-- ADMIN PANEL -->
 <div id="s-admin" class="section">
 <div class="con">
+  <!-- Sidebar Toggle Button -->
+  <button id="adminSidebarToggle" onclick="toggleAdminSidebar()"><i class="fas fa-bars"></i></button>
+  <!-- Sidebar Overlay -->
+  <div id="adminSidebarOverlay" onclick="toggleAdminSidebar()"></div>
+  <!-- Sidebar -->
+  <div id="adminSidebar">
+    <div class="admin-sidebar-header">
+      <div class="admin-sidebar-logo">A</div>
+      <div>
+        <div class="admin-sidebar-title">ACADEX</div>
+        <div class="admin-sidebar-sub">School Admin</div>
+      </div>
+    </div>
+    <div class="admin-sidebar-nav" id="adminSidebarNav">
+      <div class="admin-sidebar-item active" onclick="aTab(0);toggleAdminSidebar()"><i class="fas fa-tachometer-alt"></i> Dashboard</div>
+      <div class="admin-sidebar-item" onclick="aTab(1);toggleAdminSidebar()"><i class="fas fa-users"></i> Students</div>
+      <div class="admin-sidebar-item" onclick="aTab(2);toggleAdminSidebar()"><i class="fas fa-chalkboard-teacher"></i> Staff</div>
+      <div class="admin-sidebar-item" onclick="aTab(3);toggleAdminSidebar()"><i class="fas fa-school"></i> Classes</div>
+      <div class="admin-sidebar-item" onclick="aTab(4);toggleAdminSidebar()"><i class="fas fa-book"></i> Subjects</div>
+      <div class="admin-sidebar-item" onclick="aTab(5);toggleAdminSidebar()"><i class="fas fa-question-circle"></i> Questions</div>
+      <div class="admin-sidebar-item" onclick="aTab(6);toggleAdminSidebar()"><i class="fas fa-chart-bar"></i> Results</div>
+      <div class="admin-sidebar-item" onclick="aTab(7);toggleAdminSidebar()"><i class="fas fa-id-card"></i> Result IDs</div>
+      <div class="admin-sidebar-item" onclick="aTab(8);toggleAdminSidebar()"><i class="fas fa-calendar-check"></i> Attendance</div>
+      <div class="admin-sidebar-item" onclick="aTab(9);toggleAdminSidebar()"><i class="fas fa-bullhorn"></i> Announcements</div>
+      <div class="admin-sidebar-item" onclick="aTab(10);toggleAdminSidebar()"><i class="fas fa-money-bill-wave"></i> Fees</div>
+      <div class="admin-sidebar-item" onclick="aTab(11);toggleAdminSidebar()"><i class="fas fa-file-alt"></i> Report Cards</div>
+      <div class="admin-sidebar-item" onclick="aTab(12);toggleAdminSidebar()"><i class="fas fa-download"></i> Export Data</div>
+      <div class="admin-sidebar-item" onclick="aTab(14);toggleAdminSidebar()"><i class="fas fa-book-open"></i> Library</div>
+      <div class="admin-sidebar-item" onclick="aTab(15);toggleAdminSidebar()"><i class="fas fa-calendar-alt"></i> Timetable</div>
+      <div class="admin-sidebar-item" onclick="aTab(16);toggleAdminSidebar()"><i class="fas fa-calendar-day"></i> Events</div>
+      <div class="admin-sidebar-item" onclick="aTab(17);toggleAdminSidebar()"><i class="fas fa-globe"></i> Website Builder</div>
+      <div class="admin-sidebar-item" onclick="aTab(13);toggleAdminSidebar()"><i class="fas fa-cog"></i> Settings</div>
+    </div>
+    <div class="admin-sidebar-footer">
+      <div class="admin-sidebar-user">
+        <div class="admin-sidebar-avatar" id="adminSidebarAvatar">AD</div>
+        <div class="admin-sidebar-user-info">
+          <div class="admin-sidebar-user-name" id="adminSidebarName">Admin</div>
+          <div class="admin-sidebar-user-role">School Admin</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Main Content -->
+  <div id="adminMain">
   <div class="atb">
     <div class="asb">
       <div class="asi" id="adminIcon">AD</div>
@@ -562,7 +699,8 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       <button class="btn btn-err btn-sm" onclick="aLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
   </div>
-  <div class="tabs" id="adminTabs">
+  <!-- Hidden horizontal tabs - using sidebar instead -->
+  <div class="tabs" id="adminTabs" style="display:none;">
     <div class="tab active" onclick="aTab(0)"><i class="fas fa-tachometer-alt"></i> Dashboard</div>
     <div class="tab" onclick="aTab(1)"><i class="fas fa-users"></i> Students</div>
     <div class="tab" onclick="aTab(2)"><i class="fas fa-chalkboard-teacher"></i> Staff</div>
@@ -674,6 +812,26 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
         <div class="fa"><button class="btn btn-ok" id="btnSaveCls" onclick="saveClass()"><i class="fas fa-save"></i> Save Class</button><button class="btn btn-ghost" onclick="toggleForm('classForm',true)">Cancel</button></div>
       </div>
       <div id="classTable" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
+      <!-- Class Arms Section -->
+      <div style="margin-top:20px;">
+        <div class="ch" style="margin-top:20px;border-top:1px solid var(--border);padding-top:20px;">
+          <div><div class="ct"><i class="fas fa-layer-group"></i> Class Arms / Streams</div><div class="cs">Manage streams like Science, Commercial, Arts for senior classes</div></div>
+          <div><button class="btn btn-info btn-sm" onclick="toggleForm('armForm')"><i class="fas fa-plus"></i> Add Arm</button></div>
+        </div>
+        <div id="armForm" class="hidden" style="background:var(--off);border-radius:var(--rl);padding:20px;margin-bottom:16px;">
+          <div style="font-weight:800;color:var(--navy);margin-bottom:14px;"><i class="fas fa-layer-group"></i> Add Class Arm</div>
+          <div class="fr2">
+            <div class="fg"><label class="fl">Class Name <span style="color:red">*</span></label><input id="armClassName" class="fc" placeholder="e.g. SS2"></div>
+            <div class="fg"><label class="fl">Arm / Stream <span style="color:red">*</span></label><input id="armName" class="fc" placeholder="e.g. Science, Commercial, Arts"></div>
+          </div>
+          <div class="fr2">
+            <div class="fg"><label class="fl">Level</label><input id="armLevel" class="fc" placeholder="e.g. Senior"></div>
+            <div class="fg"><label class="fl">Capacity</label><input id="armCap" class="fc" type="number" placeholder="Max students"></div>
+          </div>
+          <div class="fa"><button class="btn btn-info" onclick="saveClassArm()"><i class="fas fa-save"></i> Save Arm</button> <button class="btn btn-ghost" onclick="toggleForm('armForm',true)">Cancel</button></div>
+        </div>
+        <div id="classArmsList"></div>
+      </div>
     </div>
   </div>
   <!-- SUBJECTS TAB -->
@@ -912,22 +1070,94 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
         </div>
         <div class="fr2">
           <div class="fg"><label class="fl">Amount <span style="color:red">*</span></label><input id="feeAmount" class="fc" type="number" placeholder="0.00"></div>
-          <div class="fg"><label class="fl">Due Date</label><input id="feeDue" class="fc" type="date"></div>
+          <div class="fg"><label class="fl">Priority</label>
+            <select id="feePriority" class="fc">
+              <option value="1">1 - Highest</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5" selected>5 - Normal</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8 - Lowest</option>
+            </select>
+          </div>
         </div>
         <div class="fr2">
+          <div class="fg"><label class="fl">Due Date</label><input id="feeDue" class="fc" type="date"></div>
           <div class="fg"><label class="fl">Term</label>
             <select id="feeTerm" class="fc"><option value="">Select term</option><option>First Term</option><option>Second Term</option><option>Third Term</option></select>
           </div>
-          <div class="fg"><label class="fl">Session</label><input id="feeSession" class="fc" placeholder="2025/2026"></div>
         </div>
+        <div class="fg"><label class="fl">Session</label><input id="feeSession" class="fc" placeholder="2025/2026"></div>
         <div class="fg"><label class="fl">Description</label><textarea id="feeDesc" class="fc" rows="2" placeholder="Additional details..."></textarea></div>
         <div class="fa"><button class="btn btn-ok" id="btnSaveFee" onclick="saveFee()"><i class="fas fa-save"></i> Save Fee</button><button class="btn btn-ghost" onclick="toggleForm('feeForm',true)">Cancel</button></div>
       </div>
-      <div class="fa" style="margin-bottom:14px;">
+      <!-- Fee Filters -->
+      <div class="fa" style="margin-bottom:14px;flex-wrap:wrap;">
         <select id="feeClassFilter" class="fc" style="max-width:180px;" onchange="loadFees()"><option value="">All Classes</option></select>
-        <button class="btn btn-ghost btn-sm" onclick="loadFees()"><i class="fas fa-sync"></i></button>
+        <button class="btn btn-ghost btn-sm" onclick="loadFees()"><i class="fas fa-sync"></i> Refresh</button>
+        <button class="btn btn-info btn-sm" onclick="aFeeTab(1)"><i class="fas fa-money-check-alt"></i> Record Payment</button>
+        <button class="btn btn-warn btn-sm" onclick="aFeeTab(2)"><i class="fas fa-chart-pie"></i> Fee Report</button>
       </div>
-      <div id="feeTable" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
+      <!-- Fee Sub-Tabs -->
+      <div class="tabs" style="margin-bottom:0;">
+        <div class="tab active" onclick="aFeeTab(0)" id="feeTab0"><i class="fas fa-list"></i> Fee Schedule</div>
+        <div class="tab" onclick="aFeeTab(1)" id="feeTab1"><i class="fas fa-money-check-alt"></i> Record Payment</div>
+        <div class="tab" onclick="aFeeTab(2)" id="feeTab2"><i class="fas fa-chart-pie"></i> Student Report</div>
+        <div class="tab" onclick="aFeeTab(3)" id="feeTab3"><i class="fas fa-history"></i> Payment History</div>
+      </div>
+      <!-- SCHEDULE tab -->
+      <div id="feeTc0" class="tc active" style="padding-top:14px;">
+        <div id="feeTable" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
+      </div>
+      <!-- RECORD PAYMENT tab -->
+      <div id="feeTc1" class="tc" style="padding-top:14px;">
+        <div class="card card-sm">
+          <div class="ch"><div class="ct"><i class="fas fa-money-check-alt"></i> Record Fee Payment</div></div>
+          <div class="fr2">
+            <div class="fg"><label class="fl">Student ID <span style="color:red">*</span></label><input id="payStudentId" class="fc fc-mono" placeholder="e.g. SCH001-001"></div>
+            <div class="fg"><label class="fl">Amount Paid (₦) <span style="color:red">*</span></label><input id="payAmount" class="fc" type="number" placeholder="0.00"></div>
+          </div>
+          <div class="fr2">
+            <div class="fg"><label class="fl">Payment Date</label><input id="payDate" class="fc" type="date"></div>
+            <div class="fg"><label class="fl">Payment Method</label>
+              <select id="payMethod" class="fc"><option value="cash">Cash</option><option value="bank_transfer">Bank Transfer</option><option value="pos">POS</option><option value="cheque">Cheque</option><option value="online">Online</option></select>
+            </div>
+          </div>
+          <div class="fg"><label class="fl">Fee Type (optional reference)</label><input id="payFeeRef" class="fc" placeholder="e.g. Tuition, Uniform..."></div>
+          <div id="payMsg"></div>
+          <div class="fa"><button class="btn btn-ok" id="btnRecordPay" onclick="recordFeePayment()"><i class="fas fa-check-circle"></i> Record Payment</button></div>
+        </div>
+        <div class="card card-sm" style="margin-top:14px;">
+          <div class="ch"><div class="ct"><i class="fas fa-search"></i> Lookup Student Fee Balance</div></div>
+          <div class="fr2">
+            <div class="fg"><label class="fl">Student ID</label><input id="balStuId" class="fc fc-mono" placeholder="Enter Student ID"></div>
+            <div class="fg" style="display:flex;align-items:flex-end;">
+              <button class="btn btn-info btn-bl" onclick="lookupFeeBalance()"><i class="fas fa-search"></i> Check Balance</button>
+            </div>
+          </div>
+          <div id="feeBalanceResult" style="margin-top:12px;"></div>
+        </div>
+      </div>
+      <!-- STUDENT REPORT tab -->
+      <div id="feeTc2" class="tc" style="padding-top:14px;">
+        <div class="fa" style="margin-bottom:14px;flex-wrap:wrap;">
+          <select id="feeRptClass" class="fc" style="max-width:180px;"><option value="">All Classes</option></select>
+          <button class="btn btn-prim btn-sm" onclick="loadFeeReport()"><i class="fas fa-search"></i> Generate Report</button>
+          <button class="btn btn-ghost btn-sm" onclick="exportFeeReport()"><i class="fas fa-download"></i> Export CSV</button>
+        </div>
+        <div id="feeReportTable" class="tw"></div>
+      </div>
+      <!-- PAYMENT HISTORY tab -->
+      <div id="feeTc3" class="tc" style="padding-top:14px;">
+        <div class="fa" style="margin-bottom:14px;flex-wrap:wrap;">
+          <select id="feeHistClass" class="fc" style="max-width:180px;"><option value="">All Classes</option></select>
+          <input id="feeHistStudent" class="fc" style="max-width:180px;" placeholder="Student ID (optional)">
+          <button class="btn btn-prim btn-sm" onclick="loadPaymentHistory()"><i class="fas fa-search"></i> Load History</button>
+        </div>
+        <div id="payHistoryTable" class="tw"></div>
+      </div>
     </div>
   </div>
   <!-- REPORT CARDS TAB -->
@@ -1046,6 +1276,408 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       <div class="fa"><button class="btn btn-gold" onclick="saveSettings()"><i class="fas fa-save"></i> Save Settings</button></div>
     </div>
   </div>
+  <!-- LIBRARY TAB -->
+  <div id="at14" class="tc">
+    <div class="card">
+      <div class="ch">
+        <div><div class="ct"><i class="fas fa-book-open"></i> Library Management</div><div class="cs">Manage school library books and loans</div></div>
+        <div><button class="btn btn-info" onclick="showAddBookForm()"><i class="fas fa-plus"></i> Add Book</button></div>
+      </div>
+      <div id="addBookForm" style="display:none;background:var(--bg);padding:15px;border-radius:8px;margin-bottom:15px;">
+        <div class="fr2">
+          <div class="fg"><label class="fl">Title</label><input id="bookTitle" class="fc" placeholder="Book title"></div>
+          <div class="fg"><label class="fl">Author</label><input id="bookAuthor" class="fc" placeholder="Author name"></div>
+        </div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">ISBN</label><input id="bookIsbn" class="fc" placeholder="ISBN number"></div>
+          <div class="fg"><label class="fl">Category</label><input id="bookCategory" class="fc" placeholder="e.g. Fiction, Science"></div>
+        </div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Quantity</label><input id="bookQty" class="fc" type="number" placeholder="Number of copies"></div>
+          <div class="fg"><label class="fl">Shelf Location</label><input id="bookShelf" class="fc" placeholder="e.g. Shelf A-1"></div>
+        </div>
+        <div class="fa"><button class="btn btn-ok" onclick="addBook()"><i class="fas fa-save"></i> Save Book</button> <button class="btn btn-ghost" onclick="hideAddBookForm()">Cancel</button></div>
+      </div>
+      <div id="libraryBooksList"></div>
+    </div>
+    <div class="card" style="margin-top:15px;">
+      <div class="ch"><div class="ct"><i class="fas fa-hand-holding"></i> Active Loans</div></div>
+      <div id="libraryLoansList"></div>
+    </div>
+  </div>
+  <!-- TIMETABLE TAB -->
+  <div id="at15" class="tc">
+    <div class="card">
+      <div class="ch">
+        <div><div class="ct"><i class="fas fa-calendar-alt"></i> Timetable Management</div><div class="cs">Manage class schedules and periods</div></div>
+        <div><button class="btn btn-info" onclick="showAddTimetableForm()"><i class="fas fa-plus"></i> Add Schedule</button></div>
+      </div>
+      <div id="addTimetableForm" style="display:none;background:var(--bg);padding:15px;border-radius:8px;margin-bottom:15px;">
+        <div class="fr2">
+          <div class="fg"><label class="fl">Class</label>
+            <select id="timetableClass" class="fc"></select>
+          </div>
+          <div class="fg"><label class="fl">Day</label>
+            <select id="timetableDay" class="fc">
+              <option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option>
+            </select>
+          </div>
+        </div>
+        <div class="fr3">
+          <div class="fg"><label class="fl">Period</label><input id="timetablePeriod" class="fc" type="number" placeholder="Period number"></div>
+          <div class="fg"><label class="fl">Subject</label><input id="timetableSubject" class="fc" placeholder="Subject name"></div>
+          <div class="fg"><label class="fl">Teacher</label><input id="timetableTeacher" class="fc" placeholder="Teacher name"></div>
+        </div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Start Time</label><input id="timetableStart" class="fc" type="time"></div>
+          <div class="fg"><label class="fl">End Time</label><input id="timetableEnd" class="fc" type="time"></div>
+        </div>
+        <div class="fa"><button class="btn btn-ok" onclick="addTimetableEntry()"><i class="fas fa-save"></i> Save Schedule</button> <button class="btn btn-ghost" onclick="hideAddTimetableForm()">Cancel</button></div>
+      </div>
+      <div class="fr2" style="margin-bottom:15px;">
+        <div class="fg"><label class="fl">Filter by Class</label>
+          <select id="filterTimetableClass" class="fc" onchange="loadTimetableAdmin()">
+            <option value="">All Classes</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Filter by Day</label>
+          <select id="filterTimetableDay" class="fc" onchange="loadTimetableAdmin()">
+            <option value="">All Days</option>
+            <option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option>
+          </select>
+        </div>
+      </div>
+      <div id="timetableAdminList"></div>
+    </div>
+  </div>
+  <!-- EVENTS TAB -->
+  <div id="at16" class="tc">
+    <div class="card">
+      <div class="ch">
+        <div><div class="ct"><i class="fas fa-calendar-day"></i> Event Calendar</div><div class="cs">Manage school events, holidays, and activities</div></div>
+        <div><button class="btn btn-info" onclick="toggleEventForm()"><i class="fas fa-plus"></i> Add Event</button></div>
+      </div>
+      <div id="eventForm" style="display:none;background:var(--off);padding:20px;border-radius:var(--rl);margin-bottom:16px;">
+        <div style="font-weight:800;color:var(--navy);margin-bottom:14px;"><i class="fas fa-calendar-plus"></i> Add New Event</div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Event Title <span style="color:red">*</span></label><input id="evtTitle" class="fc" placeholder="Event title"></div>
+          <div class="fg"><label class="fl">Event Type</label>
+            <select id="evtType" class="fc">
+              <option value="general">General</option>
+              <option value="holiday">Holiday</option>
+              <option value="exam">Exam</option>
+              <option value="meeting">Meeting</option>
+              <option value="activity">Activity</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg"><label class="fl">Description</label><textarea id="evtDesc" class="fc" rows="2" placeholder="Event description"></textarea></div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Start Date <span style="color:red">*</span></label><input id="evtStart" class="fc" type="date"></div>
+          <div class="fg"><label class="fl">End Date</label><input id="evtEnd" class="fc" type="date"></div>
+        </div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">All Day</label>
+            <select id="evtAllDay" class="fc">
+              <option value="yes">Yes</option>
+              <option value="no">No (has time)</option>
+            </select>
+          </div>
+          <div class="fg"><label class="fl">Location</label><input id="evtLocation" class="fc" placeholder="Event location"></div>
+        </div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Target Role</label>
+            <select id="evtTargetRole" class="fc">
+              <option value="all">All</option>
+              <option value="student">Students</option>
+              <option value="staff">Staff</option>
+              <option value="parent">Parents</option>
+            </select>
+          </div>
+          <div class="fg"><label class="fl">Target Class</label>
+            <select id="evtTargetClass" class="fc">
+              <option value="all">All Classes</option>
+            </select>
+          </div>
+        </div>
+        <div class="fa"><button class="btn btn-ok" onclick="saveEvent()"><i class="fas fa-save"></i> Save Event</button> <button class="btn btn-ghost" onclick="toggleEventForm()">Cancel</button></div>
+      </div>
+      <div class="fr2" style="margin-bottom:15px;">
+        <div class="fg"><label class="fl">Filter by Type</label>
+          <select id="filterEventType" class="fc" onchange="loadEventsAdmin()">
+            <option value="">All Types</option>
+            <option value="general">General</option>
+            <option value="holiday">Holiday</option>
+            <option value="exam">Exam</option>
+            <option value="meeting">Meeting</option>
+            <option value="activity">Activity</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Filter by Month</label>
+          <input id="filterEventMonth" class="fc" type="month" onchange="loadEventsAdmin()">
+        </div>
+      </div>
+      <div id="eventsAdminList"></div>
+    </div>
+  </div>
+  <!-- WEBSITE BUILDER TAB (at17) -->
+<div id="at17" class="tc">
+  <div class="card" style="padding:0;overflow:hidden;">
+
+    <!-- header bar -->
+    <div style="background:linear-gradient(135deg,var(--navy),#1e3a6e);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <div>
+        <div style="font-size:.96rem;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px;">
+          <i class="fas fa-globe" style="color:var(--gold-lt);"></i> School Website Builder
+          <span style="background:var(--gold);color:var(--navy);font-size:.6rem;font-weight:800;padding:2px 7px;border-radius:6px;">v2</span>
+        </div>
+        <div style="font-size:.76rem;color:rgba(255,255,255,.55);margin-top:2px;">Themes · Photos · Gallery · Blog · AI-Powered</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost btn-sm" onclick="wbLoad()" style="background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.2);"><i class="fas fa-cloud-download-alt"></i> Load</button>
+        <button class="btn btn-gold btn-sm" onclick="wbOpenPublish()"><i class="fas fa-rocket"></i> Publish</button>
+      </div>
+    </div>
+
+    <!-- live-url bar (shows after publish) -->
+    <div id="wbLiveBar" class="hidden" style="background:#d1fae5;padding:9px 18px;border-bottom:1px solid #a7f3d0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <span style="font-size:.8rem;color:#065f46;font-weight:700;"><i class="fas fa-check-circle"></i> Site is live!</span>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <code id="wbLiveUrl" style="font-size:.74rem;background:#fff;padding:2px 8px;border-radius:5px;color:#065f46;border:1px solid #a7f3d0;"></code>
+        <button class="btn btn-ok btn-sm" onclick="wbCopyUrl()"><i class="fas fa-copy"></i></button>
+        <a id="wbLiveLink" href="#" target="_blank" class="btn btn-ghost btn-sm" style="text-decoration:none;"><i class="fas fa-external-link-alt"></i></a>
+      </div>
+    </div>
+
+    <!-- builder body -->
+    <div class="wb-shell">
+
+      <!-- ── LEFT: sidebar ── -->
+      <div class="wb-left">
+        <div class="wb-tabs" id="wbTabs">
+          <div class="wb-t on"  onclick="wbTab(0)">🎨&nbsp;Theme</div>
+          <div class="wb-t"     onclick="wbTab(1)">📝&nbsp;Info</div>
+          <div class="wb-t"     onclick="wbTab(2)">🖼️&nbsp;Photos</div>
+          <div class="wb-t"     onclick="wbTab(3)">📰&nbsp;Blog</div>
+          <div class="wb-t"     onclick="wbTab(4)">📢&nbsp;News</div>
+          <div class="wb-t"     onclick="wbTab(5)">⚙️&nbsp;Layout</div>
+        </div>
+
+        <div class="wb-panels">
+
+          <!-- PANEL 0: THEME -->
+          <div id="wbP0" class="wb-p on">
+
+            <div class="wb-blk">
+              <div class="wb-h">Page Style</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+                <div class="lo-opt sel" id="wbTh0" onclick="wbTheme(0)" style="font-size:.72rem;"><span style="display:block;font-size:1rem;margin-bottom:2px;">🏫</span>Classic</div>
+                <div class="lo-opt" id="wbTh1" onclick="wbTheme(1)" style="font-size:.72rem;"><span style="display:block;font-size:1rem;margin-bottom:2px;">🏛️</span>Chrisland</div>
+                <div class="lo-opt" id="wbTh2" onclick="wbTheme(2)" style="font-size:.72rem;"><span style="display:block;font-size:1rem;margin-bottom:2px;">📰</span>Magazine</div>
+                <div class="lo-opt" id="wbTh3" onclick="wbTheme(3)" style="font-size:.72rem;"><span style="display:block;font-size:1rem;margin-bottom:2px;">⚡</span>Bold</div>
+              </div>
+            </div>
+
+            <div class="wb-blk">
+              <div class="wb-h">Colour Presets</div>
+              <div class="wb-swatches" id="wbSwatches"></div>
+            </div>
+
+            <div class="wb-blk">
+              <div class="wb-h">Custom Colours</div>
+              <div class="wb-cr">
+                <div class="fg">
+                  <label class="fl">Primary</label>
+                  <div class="wb-cf"><input type="color" id="wbCP" oninput="wbC('p',this.value)"><input type="text" id="wbCPt" maxlength="7" oninput="wbCt('p',this.value)"></div>
+                </div>
+                <div class="fg">
+                  <label class="fl">Accent</label>
+                  <div class="wb-cf"><input type="color" id="wbCA" oninput="wbC('a',this.value)"><input type="text" id="wbCAt" maxlength="7" oninput="wbCt('a',this.value)"></div>
+                </div>
+                <div class="fg">
+                  <label class="fl">Header BG</label>
+                  <div class="wb-cf"><input type="color" id="wbCH" oninput="wbC('h',this.value)"><input type="text" id="wbCHt" maxlength="7" oninput="wbCt('h',this.value)"></div>
+                </div>
+                <div class="fg">
+                  <label class="fl">Hero BG</label>
+                  <div class="wb-cf"><input type="color" id="wbCR" oninput="wbC('r',this.value)"><input type="text" id="wbCRt" maxlength="7" oninput="wbCt('r',this.value)"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="wb-blk">
+              <div class="wb-h">School Logo</div>
+              <div class="wb-up" onclick="document.getElementById('wbLogoF').click()">
+                <div id="wbLogoThumb" style="font-size:1.5rem;margin-bottom:4px;">🏫</div>
+                <div style="font-size:.72rem;color:var(--tlt);font-weight:600;">Click to upload logo</div>
+                <div style="font-size:.66rem;color:var(--tlt);margin-top:2px;">PNG/JPG · max 2MB</div>
+              </div>
+              <input type="file" id="wbLogoF" class="hidden" accept="image/*" onchange="wbUploadLogo(this)">
+              <button class="btn btn-ghost btn-sm" onclick="W.logo=null;wbLogoThumb.innerHTML='🏫';wbRender()" style="width:100%;margin-top:5px;font-size:.72rem;">Remove</button>
+            </div>
+          </div>
+
+          <!-- PANEL 1: INFO -->
+          <div id="wbP1" class="wb-p">
+            <div class="wb-blk">
+              <div class="wb-h">School Details</div>
+              <div class="fg"><label class="fl">School Name</label><input class="fc" id="wbName" placeholder="Full name of school" oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">Motto / Tagline</label><input class="fc" id="wbMotto" placeholder="School motto" oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">Address</label><input class="fc" id="wbAddr" placeholder="Street address" oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">City</label><input class="fc" id="wbCity" placeholder="City" oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">State</label><input class="fc" id="wbState" placeholder="State" oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">Phone</label><input class="fc" id="wbPhone" placeholder="+234..." oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">Email</label><input class="fc" id="wbEmail" type="email" placeholder="info@school.edu.ng" oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">Current Term</label><input class="fc" id="wbTerm" placeholder="First Term · 2025/2026" oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">Hero Welcome Text</label><textarea class="fc" id="wbHeroTxt" rows="2" placeholder="Brief welcome message in the hero..." oninput="wbRender()"></textarea></div>
+              <div class="fg"><label class="fl">About Paragraph</label><textarea class="fc" id="wbAbout" rows="3" placeholder="Brief about the school..." oninput="wbRender()"></textarea></div>
+            </div>
+            <div class="wb-blk">
+              <div class="wb-h">Quick Stats</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;">
+                <div><label class="fl">Value</label><input class="fc" id="wbSv1" value="1,200" oninput="wbRender()" style="padding:5px;"></div>
+                <div><label class="fl">Value</label><input class="fc" id="wbSv2" value="85" oninput="wbRender()" style="padding:5px;"></div>
+                <div><label class="fl">Value</label><input class="fc" id="wbSv3" value="40+" oninput="wbRender()" style="padding:5px;"></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-top:4px;">
+                <input class="fc" id="wbSl1" value="Students" oninput="wbRender()" style="padding:5px;">
+                <input class="fc" id="wbSl2" value="Teachers" oninput="wbRender()" style="padding:5px;">
+                <input class="fc" id="wbSl3" value="Years" oninput="wbRender()" style="padding:5px;">
+              </div>
+            </div>
+            <div class="wb-blk">
+              <div class="wb-h">Social Links</div>
+              <div class="fg"><label class="fl">Facebook</label><input class="fc" id="wbFb" placeholder="https://facebook.com/..." oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">Instagram</label><input class="fc" id="wbIg" placeholder="https://instagram.com/..." oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">WhatsApp No.</label><input class="fc" id="wbWa" placeholder="2348012345678" oninput="wbRender()"></div>
+              <div class="fg"><label class="fl">YouTube</label><input class="fc" id="wbYt" placeholder="https://youtube.com/..." oninput="wbRender()"></div>
+            </div>
+          </div>
+
+          <!-- PANEL 2: PHOTOS -->
+          <div id="wbP2" class="wb-p">
+            <div class="wb-blk">
+              <div class="wb-h">Hero Photo</div>
+              <div style="font-size:.74rem;color:var(--tlt);margin-bottom:8px;">Upload or paste a URL to replace the hero background with a real school photo.</div>
+              <div class="wb-up" onclick="document.getElementById('wbHeroF').click()">
+                <div id="wbHeroThumb" style="font-size:1.5rem;margin-bottom:4px;">📸</div>
+                <div style="font-size:.72rem;color:var(--tlt);font-weight:600;">Upload hero photo</div>
+                <div style="font-size:.66rem;color:var(--tlt);margin-top:2px;">Landscape · JPG/PNG · max 3MB</div>
+              </div>
+              <input type="file" id="wbHeroF" class="hidden" accept="image/*" onchange="wbUploadHero(this)">
+              <div class="fg" style="margin-top:8px;"><label class="fl">Or paste a photo URL</label><input class="fc" id="wbHeroUrl" placeholder="https://..." oninput="W.heroUrl=this.value;wbRender()"></div>
+              <button class="btn btn-ghost btn-sm" onclick="W.heroImg=null;W.heroUrl='';wbHeroUrl.value='';wbHeroThumb.innerHTML='📸';wbRender()" style="width:100%;margin-top:5px;font-size:.72rem;">Remove Hero Photo</button>
+            </div>
+
+            <div class="wb-blk">
+              <div class="wb-h">Gallery <span style="font-weight:400;font-size:.65rem;color:var(--tlt);">up to 6 photos</span></div>
+              <div class="wb-gal-grid" id="wbGalGrid"></div>
+              <div id="wbGalAdd" class="wb-up-sm" onclick="document.getElementById('wbGalF').click()">+ Add Photos</div>
+              <input type="file" id="wbGalF" class="hidden" accept="image/*" multiple onchange="wbUploadGal(this)">
+              <div class="fg" style="margin-top:8px;"><label class="fl">Or paste photo URLs (one per line, max 6)</label>
+                <textarea class="fc" id="wbGalUrls" rows="3" placeholder="https://school.com/photo1.jpg" oninput="wbSyncGalUrls()" style="font-size:.74rem;"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANEL 3: BLOG -->
+          <div id="wbP3" class="wb-p">
+            <div class="wb-blk">
+              <div class="wb-h">Blog / Featured News</div>
+              <div style="font-size:.74rem;color:var(--tlt);margin-bottom:10px;">Posts appear in the Featured News section like Chrisland's website.</div>
+
+              <!-- AI generator -->
+              <div style="background:#f5f3ff;border:1px solid #ddd6fe;border-radius:8px;padding:10px;margin-bottom:12px;">
+                <div style="font-size:.74rem;font-weight:800;color:#5b21b6;margin-bottom:7px;display:flex;align-items:center;gap:5px;">✨ AI Blog Generator</div>
+                <div class="fg" style="margin-bottom:5px;"><label class="fl">Topic</label><input class="fc" id="wbAiTopic" placeholder="e.g. Inter-House Sports 2025" style="font-size:.8rem;"></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;">
+                  <div class="fg"><label class="fl">Category</label>
+                    <select class="fc" id="wbAiCat" style="padding:5px;font-size:.78rem;">
+                      <option>News</option><option>Achievement</option><option>Event</option>
+                      <option>Alumni</option><option>Academics</option><option>Sports</option>
+                    </select>
+                  </div>
+                  <div class="fg"><label class="fl">Tone</label>
+                    <select class="fc" id="wbAiTone" style="padding:5px;font-size:.78rem;">
+                      <option>Professional</option><option>Celebratory</option><option>Inspirational</option>
+                    </select>
+                  </div>
+                </div>
+                <button class="wb-ai-btn" id="wbAiBtn" onclick="wbAiGen()">✨ <span id="wbAiLbl">Generate Post</span></button>
+              </div>
+
+              <div id="wbBlogList"></div>
+              <button class="wb-add" onclick="wbAddBlog()">+ Add Post Manually</button>
+            </div>
+          </div>
+
+          <!-- PANEL 4: ANNOUNCEMENTS -->
+          <div id="wbP4" class="wb-p">
+            <div class="wb-blk">
+              <div class="wb-h">Public Announcements</div>
+              <div style="font-size:.74rem;color:var(--tlt);margin-bottom:9px;">These show on your public page. Synced from admin announcements tab automatically.</div>
+              <div id="wbAnnList"></div>
+              <button class="wb-add" onclick="wbAddAnn()">+ Add Announcement</button>
+            </div>
+          </div>
+
+          <!-- PANEL 5: LAYOUT -->
+          <div id="wbP5" class="wb-p">
+            <div class="wb-blk">
+              <div class="wb-h">Sections</div>
+              <div class="wb-tog-row"><span>🌟 Hero Banner</span><div class="wb-tog on" id="wbTogHero" onclick="wbTog(this,'hero')"></div></div>
+              <div class="wb-tog-row"><span>📊 Stats Bar</span><div class="wb-tog on" id="wbTogStats" onclick="wbTog(this,'stats')"></div></div>
+              <div class="wb-tog-row"><span>🎓 Portal Cards</span><div class="wb-tog on" id="wbTogPortals" onclick="wbTog(this,'portals')"></div></div>
+              <div class="wb-tog-row"><span>📝 About Section</span><div class="wb-tog on" id="wbTogAbout" onclick="wbTog(this,'about')"></div></div>
+              <div class="wb-tog-row"><span>📰 Featured News / Blog</span><div class="wb-tog on" id="wbTogBlog" onclick="wbTog(this,'blog')"></div></div>
+              <div class="wb-tog-row"><span>🖼️ Photo Gallery</span><div class="wb-tog" id="wbTogGallery" onclick="wbTog(this,'gallery')"></div></div>
+              <div class="wb-tog-row"><span>📢 Announcements</span><div class="wb-tog on" id="wbTogAnn" onclick="wbTog(this,'ann')"></div></div>
+              <div class="wb-tog-row"><span>📞 Contact Section</span><div class="wb-tog on" id="wbTogContact" onclick="wbTog(this,'contact')"></div></div>
+            </div>
+            <div class="wb-blk">
+              <div class="wb-h">Nav Links <span style="font-weight:400;font-size:.65rem;color:var(--tlt);">comma-separated</span></div>
+              <input class="fc" id="wbNav" value="Home,About Us,Academics,Admissions,Contact" oninput="wbRender()">
+            </div>
+            <div class="wb-blk">
+              <div class="wb-h">Footer Text</div>
+              <textarea class="fc" id="wbFooter" rows="2" placeholder="Custom footer text (optional)" oninput="wbRender()"></textarea>
+            </div>
+          </div>
+
+        </div><!-- /wb-panels -->
+
+        <!-- action bar -->
+        <div class="wb-actions">
+          <button class="btn btn-ghost btn-sm" onclick="wbOpenFull()" title="Open full preview">
+            <i class="fas fa-expand-alt"></i>
+          </button>
+          <button class="wb-dev-btn on" id="wbDevD" onclick="wbDev('d')"><i class="fas fa-desktop"></i></button>
+          <button class="wb-dev-btn" id="wbDevM" onclick="wbDev('m')"><i class="fas fa-mobile-alt"></i></button>
+          <div style="flex:1;"></div>
+          <button class="btn btn-navy btn-sm" onclick="wbSave()"><i class="fas fa-cloud-upload-alt"></i> Save</button>
+          <button class="btn btn-gold btn-sm" onclick="wbOpenPublish()"><i class="fas fa-rocket"></i> Publish</button>
+        </div>
+      </div><!-- /wb-left -->
+
+      <!-- ── RIGHT: preview ── -->
+      <div class="wb-right">
+        <div class="wb-prev-bar">
+          <span style="font-size:.76rem;font-weight:700;color:var(--tlt);"><i class="fas fa-eye" style="color:var(--gold);"></i> Live Preview</span>
+          <div style="display:flex;gap:4px;">
+            <button class="wb-dev-btn on" id="wbdD" onclick="wbDev('d')"><i class="fas fa-desktop"></i> Desktop</button>
+            <button class="wb-dev-btn" id="wbdM" onclick="wbDev('m')"><i class="fas fa-mobile-alt"></i> Mobile</button>
+          </div>
+        </div>
+        <div class="wb-prev-inner">
+          <div class="wb-frame" id="wbFrame">
+            <iframe id="wbIframe" style="width:100%;border:none;border-radius:8px;display:block;" scrolling="no"></iframe>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /wb-shell -->
+  </div><!-- /card -->
+</div><!-- /at17 -->
 </div>
 </div>
 <!-- STAFF LOGIN -->
@@ -1063,6 +1695,90 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   </div>
 </div></div>
 </div>
+<!-- PARENT LOGIN -->
+<div id="s-parent-login" class="section">
+<div class="con"><div class="pw">
+  <div class="lcard">
+    <div class="li" style="background:var(--warnb);color:var(--warn);"><i class="fas fa-user-friends"></i></div>
+    <div class="lt">Parent Portal</div>
+    <div class="ls2">Enter your child's Student ID and your phone number to view results</div>
+    <div id="pLMsg"></div>
+    <div class="fg"><label class="fl">Student ID</label><input id="pLStuId" class="fc fc-mono" placeholder="e.g. SCH001-2026-0001" autocomplete="off"></div>
+    <div class="fg"><label class="fl">Parent Phone</label><input id="pLPin" class="fc fc-mono" type="tel" placeholder="e.g. 08012345678" autocomplete="off"></div>
+    <div class="fa"><button class="btn btn-warn btn-bl" id="btnPL" onclick="parentLogin()"><i class="fas fa-sign-in-alt"></i> Login</button></div>
+    <div style="text-align:center;margin-top:14px;"><button class="btn btn-ghost btn-sm" onclick="go('home')">← Back to Home</button></div>
+  </div>
+</div></div>
+</div>
+<!-- PARENT PANEL -->
+<div id="s-parent" class="section">
+<div class="con">
+  <div class="atb">
+    <div class="asb">
+      <div class="asi" id="parentIcon">PR</div>
+      <div><div id="parentChildName" style="font-weight:800;color:var(--navy);"></div><div id="parentChildInfo" style="font-size:.78rem;color:var(--tlt);"></div></div>
+    </div>
+    <button class="btn btn-err btn-sm" onclick="pLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+  </div>
+<div class="tabs">
+    <div class="tab active" onclick="pTab(0)"><i class="fas fa-chart-line"></i> My Child's Progress</div>
+    <div class="tab" onclick="pTab(1)"><i class="fas fa-calendar-check"></i> Attendance</div>
+    <div class="tab" onclick="pTab(2)"><i class="fas fa-money-bill-wave"></i> Fees</div>
+    <div class="tab" onclick="pTab(3)"><i class="fas fa-book-open-reader"></i> Library</div>
+    <div class="tab" onclick="pTab(4)"><i class="fas fa-calendar-alt"></i> Schedule</div>
+    <div class="tab" onclick="pTab(5)"><i class="fas fa-bullhorn"></i> Announcements</div>
+  </div>
+  <!-- Progress Tab -->
+  <div id="pt0" class="tc active">
+
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-chart-pie"></i> Academic Performance</div></div>
+      <div id="parentStats" class="pstats"></div>
+      <div id="parentChart" class="pchart"></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-list"></i> Subject Results</div></div>
+      <div id="parentResults" class="srlist"></div>
+    </div>
+  </div>
+  <!-- Attendance Tab -->
+  <div id="pt1" class="tc">
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-calendar-check"></i> Attendance History</div></div>
+      <div id="parentAttendance" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
+    </div>
+  </div>
+  <!-- Fees Tab -->
+<div id="pt2" class="tc">
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-money-bill-wave"></i> School Fees</div></div>
+      <div id="parentFees" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
+    </div>
+  </div>
+  <!-- LIBRARY TAB -->
+  <div id="pt3" class="tc">
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-book-open-reader"></i> Library Records</div><div class="cs">Your child&#39;s library books and borrowing history</div></div>
+      <div id="parentLibrary" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
+    </div>
+  </div>
+  <!-- SCHEDULE TAB -->
+  <div id="pt4" class="tc">
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-calendar-alt"></i> Class Schedule</div><div class="cs">Weekly timetable and important dates</div></div>
+      <div id="parentSchedule" class="tw"><div class="ls"><div class="loader loader-dk"></div></div></div>
+    </div>
+  </div>
+  <!-- ANNOUNCEMENTS TAB -->
+  <div id="pt5" class="tc">
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-bullhorn"></i> Announcements</div><div class="cs">Latest school updates and notices</div></div>
+      <div id="parentAnnouncements" class="ann-list"></div>
+    </div>
+  </div>
+
+</div>
+</div>
 <!-- STAFF PANEL -->
 <div id="s-staff" class="section">
 <div class="con">
@@ -1076,6 +1792,9 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
   <div class="tabs">
     <div class="tab active" onclick="stTab(0)"><i class="fas fa-keyboard"></i> Enter Scores</div>
     <div class="tab" onclick="stTab(1)"><i class="fas fa-chart-bar"></i> View Results</div>
+    <div class="tab" onclick="stTab(2)"><i class="fas fa-book-open"></i> Library</div>
+    <div class="tab" onclick="stTab(3)"><i class="fas fa-calendar-alt"></i> Timetable</div>
+    <div class="tab" onclick="stTab(4)"><i class="fas fa-user-circle"></i> My Profile</div>
   </div>
   <div id="st0" class="tc active">
     <div class="card">
@@ -1120,6 +1839,35 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
       <div id="stResTable" class="tw"></div>
     </div>
   </div>
+  <!-- Staff Library Tab -->
+  <div id="st2" class="tc">
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-book-open"></i> Library Management</div><div class="cs">Borrow books to students</div></div>
+      <div class="fr2">
+        <div class="fg"><label class="fl">Student ID</label><input id="staffLibStudentId" class="fc fc-mono" placeholder="e.g. SCH001-2026-0001"></div>
+        <div class="fg"><label class="fl">Book Title</label><input id="staffLibBookTitle" class="fc" placeholder="Book title to borrow"></div>
+      </div>
+      <div class="fa" style="margin-bottom:15px;"><button class="btn btn-ok" onclick="staffBorrowBook()"><i class="fas fa-hand-holding"></i> Borrow Book</button></div>
+      <div id="staffLibLoans"></div>
+    </div>
+  </div>
+  <!-- Staff Timetable Tab -->
+  <div id="st3" class="tc">
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-calendar-alt"></i> My Timetable</div><div class="cs">View your teaching schedule</div></div>
+      <div id="staffTimetable"></div>
+    </div>
+  </div>
+  <!-- Staff Profile Tab -->
+  <div id="st4" class="tc">
+    <div class="card">
+      <div class="ch"><div class="ct"><i class="fas fa-user-circle"></i> My Profile</div><div class="cs">View and update your profile</div></div>
+      <div id="staffProfileContent">
+        <div class="ls"><div class="loader loader-dk"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 </div>
 <!-- SUPER ADMIN LOGIN -->
@@ -1173,6 +1921,39 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);}tr:last-child td{bor
     </div>
   </div>
 </div>
+</div>
+<!-- WEB BUILDER MODAL -->
+<div id="wbModal">
+  <div class="wb-modal-box">
+    <div id="wbMStep1">
+      <div style="font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:4px;"><i class="fas fa-rocket" style="color:var(--gold);"></i> Publish School Website</div>
+      <p style="font-size:.82rem;color:var(--tlt);margin-bottom:16px;">Save your website config and get a shareable public link.</p>
+      <div class="fg"><label class="fl">Confirm School Code</label><input class="fc" id="wbPubCode" placeholder="e.g. SCH001" style="text-transform:uppercase;font-family:'JetBrains Mono',monospace;" oninput="wbPubCodeChange(this)"></div>
+      <div class="alert a-info" style="margin-bottom:14px;">
+        <i class="fas fa-link"></i>
+        <div><div style="font-weight:700;font-size:.8rem;">Your public URL:</div>
+          <code id="wbPubPreview" style="font-size:.72rem;word-break:break-all;"></code></div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost" onclick="wbCloseModal()" style="flex:1;">Cancel</button>
+        <button class="btn btn-gold" onclick="wbPublish()" style="flex:2;" id="wbPubBtn"><i class="fas fa-rocket"></i> Publish Now</button>
+      </div>
+    </div>
+    <div id="wbMStep2" class="hidden" style="text-align:center;">
+      <div style="width:50px;height:50px;background:var(--okb);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.4rem;">✅</div>
+      <div style="font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:4px;">Website Published!</div>
+      <p style="font-size:.82rem;color:var(--tlt);margin-bottom:14px;">Share this link with parents and students:</p>
+      <div style="background:var(--off);border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--navy);word-break:break-all;margin-bottom:12px;position:relative;" id="wbPubFinalUrl">—</div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost" onclick="wbCloseModal()" style="flex:1;">Close</button>
+        <a id="wbPubOpenBtn" href="#" target="_blank" class="btn btn-ok" style="flex:1;text-decoration:none;"><i class="fas fa-external-link-alt"></i> Open Site</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- PUBLIC LANDING SECTION -->
+<div id="s-public-landing" class="section">
+  <div id="plWrap"></div>
 </div>
 <!-- REPORT MODAL -->
 <div id="reportModal">
@@ -1386,6 +2167,117 @@ async function api(params, retries = 2, useCache = true) {
   }
 }
 // ════════════════════════════════════════════════
+// PARENT TAB SWITCHING
+// ════════════════════════════════════════════════
+
+async function loadParentAttendance() {
+  const el = document.getElementById('parentAttendance');
+  el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    // Mock data - replace with real API later
+    el.innerHTML = `
+      <table><thead><tr><th>Date</th><th>Status</th><th>Period</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>2026-01-15</td><td><span class="badge b-ok">Present</span></td><td>Morning</td><td>On time</td></tr>
+        <tr><td>2026-01-14</td><td><span class="badge b-warn">Late</span></td><td>Morning</td><td>10 mins late</td></tr>
+        <tr><td>2026-01-13</td><td><span class="badge b-ok">Present</span></td><td>Full day</td><td>—</td></tr>
+      </tbody></table>`;
+  } catch(e) { el.innerHTML = '<div class="alert a-err">Loading attendance...</div>'; }
+}
+
+async function loadParentFees() {
+  const el = document.getElementById('parentFees');
+  el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    // Mock data
+    el.innerHTML = `
+      <table><thead><tr><th>Fee Type</th><th>Amount</th><th>Due</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Tuition (Term 1)</td><td>₦25,000</td><td>2026-02-15</td><td><span class="badge b-ok">Paid</span></td></tr>
+        <tr><td>Development</td><td>₦5,000</td><td>2026-01-31</td><td><span class="badge b-info">Pending</span></td></tr>
+        <tr><td>Uniform</td><td>₦12,000</td><td>2026-01-20</td><td><span class="badge b-warn">Overdue</span></td></tr>
+      </tbody></table>`;
+  } catch(e) { el.innerHTML = '<div class="alert a-err">Loading fees...</div>'; }
+}
+
+async function loadParentLibrary() {
+  const el = document.getElementById('parentLibrary');
+  el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({ action: 'getLibraryLoans', school_code: S.parent.school_code, student_id: S.parent.student_id });
+    const loans = r.loans || [];
+    if (!loans.length) {
+      el.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-book-open"></i></span><h4>No library records</h4><p>Your child has no borrowed books</p></div>';
+      return;
+    }
+    // Get book details
+    const br = await api({ action: 'getLibraryBooks', school_code: S.parent.school_code });
+    const books = br.books || [];
+    const bookMap = {};
+    books.forEach(b => { bookMap[b.book_id] = b; });
+    el.innerHTML = `<table><thead><tr><th>Book</th><th>Borrowed</th><th>Due</th><th>Status</th></tr></thead><tbody>${loans.map(l => {
+      const book = bookMap[l.book_id] || {};
+      const isOverdue = l.status === 'borrowed' && new Date(l.due_date) < new Date();
+      return `<tr><td>${book.title || l.book_id}</td><td>${l.borrow_date || '-'}</td><td>${l.due_date || '-'}</td><td><span class="badge ${l.status === 'returned' ? 'b-ok' : isOverdue ? 'b-err' : 'b-warn'}">${l.status === 'returned' ? 'Returned' : isOverdue ? 'Overdue' : 'Borrowed'}</span></td></tr>`;
+    }).join('')}</tbody></table>`;
+  } catch(e) { el.innerHTML = '<div class="alert a-err">Unable to load library records</div>'; }
+}
+
+async function loadParentSchedule() {
+  const el = document.getElementById('parentSchedule');
+  el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({ action: 'getTimetable', school_code: S.parent.school_code, class: S.parent.student_class, term: S.settings.term, session: S.settings.session });
+    const timetable = r.timetable || [];
+    if (!timetable.length) {
+      el.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-calendar-alt"></i></span><h4>No timetable</h4><p>No schedule available for this class</p></div>';
+      return;
+    }
+    // Get subjects
+    const sr = await api({ action: 'getSubjects', school_code: S.parent.school_code });
+    const subjects = sr.subjects || [];
+    const subjMap = {};
+    subjects.forEach(s => { subjMap[s.subject_code] = s.subject_name; });
+    // Group by day
+    const days = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
+    let html = '<div class="timetable-wrap"><table class="timetable"><thead><tr><th>Period</th>';
+    days.forEach(d => html += `<th>${d}</th>`);
+    html += '</tr></thead><tbody>';
+    const periods = ['1','2','3','4','Break','5','6','7'];
+    periods.forEach(p => {
+      html += `<tr><td>${p === 'Break' ? 'Break' : p + ':00'}</td>`;
+      days.forEach(d => {
+        const entry = timetable.find(t => t.day.toLowerCase() === d.toLowerCase() && String(t.period) === p);
+        html += `<td>${entry ? (subjMap[entry.subject_code] || entry.subject_code) + (entry.room ? '<br><small>' + entry.room + '</small>' : '') : '-'}</td>`;
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    el.innerHTML = html;
+  } catch(e) { el.innerHTML = '<div class="alert a-err">Unable to load timetable</div>'; }
+}
+async function loadParentAnnouncements() {
+  const el = document.getElementById('parentAnnouncements');
+  el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({ action: 'getAnnouncements', school_code: S.parent.school_code });
+    const ann = r.announcements || [];
+    // Filter for parents (target_role = 'all' or 'parent')
+    const parentAnn = ann.filter(a => 
+      !a.target_role || a.target_role === 'all' || a.target_role === 'parent'
+    );
+    if (!parentAnn.length) {
+      el.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-bullhorn"></i></span><h4>No announcements</h4><p>No announcements for parents at this time</p></div>';
+      return;
+    }
+    el.innerHTML = parentAnn.map(a => `<div class="ann-item ${a.priority}">
+      <div class="ann-h">${a.title}<span class="ann-prio ${a.priority}">${a.priority}</span></div>
+      <div class="ann-c">${a.content}</div>
+      <div class="ann-f"><span><i class="fas fa-calendar"></i> ${a.start_date || 'Ongoing'}</span></div>
+    </div>`).join('');
+  } catch(e) { el.innerHTML = '<div class="alert a-err">Unable to load announcements</div>'; }
+
+// ════════════════════════════════════════════════
 // NAVIGATION
 // ════════════════════════════════════════════════
 function go(id) {
@@ -1396,15 +2288,16 @@ function go(id) {
   updateNav(id);
 }
 function updateNav(id) {
-  const loggedIn = S.student || S.admin || S.staff;
-  document.getElementById('btnResults').classList.toggle('hidden', !!S.student || !!S.admin || !!S.staff);
-  document.getElementById('btnPortal').classList.toggle('hidden', !!loggedIn || id === 'portal' || id === 'admin-login' || id === 'staff-login' || id === 'sa-login');
+  const loggedIn = S.student || S.admin || S.staff || S.parent;
+  document.getElementById('btnResults').classList.toggle('hidden', !!S.student || !!S.admin || !!S.staff || !!S.parent);
+  document.getElementById('btnPortal').classList.toggle('hidden', !!loggedIn || id === 'portal' || id === 'admin-login' || id === 'staff-login' || id === 'sa-login' || id === 'parent-login');
   document.getElementById('btnStudentLogout').classList.toggle('hidden', !S.student);
   document.getElementById('btnAdminLogout').classList.toggle('hidden', !S.admin);
   document.getElementById('btnStaffLogout').classList.toggle('hidden', !S.staff);
+  document.getElementById('btnParentLogout').classList.toggle('hidden', !S.parent);
   document.getElementById('btnSALogout').classList.toggle('hidden', !S._sa);
   const hs = document.getElementById('hSchool');
-  const name = S.admin ? S.admin.name : S.staff ? S.staff.schoolName : S.student ? S.student.school_code : '';
+  const name = S.admin ? S.admin.name : S.staff ? S.staff.schoolName : S.student ? S.student.school_code : S.parent ? S.parent.school_code : '';
   hs.classList.toggle('hidden', !name);
   hs.textContent = name;
 }
@@ -1532,11 +2425,18 @@ async function loadHomeStats() {
     const r = await api({ action: 'getSchools' });
     const schools = (r.schools || []).filter(s => String(s.super_admin || '').toLowerCase() !== 'yes');
     document.getElementById('homeStats').innerHTML = `
-      <div class="sc"><div class="si">🏫</div><div class="sv">${schools.length}</div><div class="sl">Schools</div></div>
+      <div class="sc" onclick="aTab&&aTab(0)" style="cursor:default;"><div class="si">🏫</div><div class="sv">${schools.length}</div><div class="sl">Schools</div></div>
+      <div class="sc" style="cursor:default;"><div class="si">👨‍🎓</div><div class="sv">CBT</div><div class="sl">Ready</div></div>
+      <div class="sc" onclick="go('results')" style="cursor:pointer;"><div class="si">📋</div><div class="sv">Auto</div><div class="sl">Results</div></div>
+      <div class="sc" style="cursor:default;"><div class="si">🔒</div><div class="sv">Secure</div><div class="sl">Platform</div></div>`;
+  } catch (e) { 
+    // Show static stats if API unavailable
+    document.getElementById('homeStats').innerHTML = `
+      <div class="sc"><div class="si">🏫</div><div class="sv">Multi</div><div class="sl">School</div></div>
       <div class="sc"><div class="si">👨‍🎓</div><div class="sv">CBT</div><div class="sl">Ready</div></div>
-      <div class="sc"><div class="si">📋</div><div class="sv">Auto</div><div class="sl">Results</div></div>
+      <div class="sc" onclick="go('results')" style="cursor:pointer;"><div class="si">📋</div><div class="sv">Auto</div><div class="sl">Results</div></div>
       <div class="sc"><div class="si">🔒</div><div class="sv">Secure</div><div class="sl">Platform</div></div>`;
-  } catch (e) { document.getElementById('homeStats').innerHTML = ''; }
+  }
 }
 // ════════════════════════════════════════════════
 // STUDENT LOGIN
@@ -1606,6 +2506,113 @@ async function loadSubjects() {
   loadStudentProgress();
 }
 
+async function loadStudentTimetable() {
+  const el = document.getElementById('studentTimetable');
+  el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({ action: 'getTimetable', school_code: S.student.school_code, class: S.student.class, term: S.settings.term, session: S.settings.session });
+    const timetable = r.timetable || [];
+    if (!timetable.length) {
+      el.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-calendar-alt"></i></span><h4>No timetable</h4><p>No schedule available for your class</p></div>';
+      return;
+    }
+    // Get subjects
+    const sr = await api({ action: 'getSubjects', school_code: S.student.school_code, class: S.student.class });
+    const subjects = sr.subjects || [];
+    const subjMap = {};
+    subjects.forEach(s => { subjMap[s.subject_code] = s.subject_name; });
+    // Group by day
+    const days = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
+    let html = '<div class="timetable-wrap"><table class="timetable"><thead><tr><th>Period</th>';
+    days.forEach(d => html += `<th>${d}</th>`);
+    html += '</tr></thead><tbody>';
+    const periods = ['1','2','3','4','Break','5','6','7'];
+    periods.forEach(p => {
+      html += `<tr><td>${p === 'Break' ? 'Break' : p + ':00'}</td>`;
+      days.forEach(d => {
+        const entry = timetable.find(t => t.day.toLowerCase() === d.toLowerCase() && String(t.period) === p);
+        html += `<td>${entry ? (subjMap[entry.subject_code] || entry.subject_code) + (entry.room ? '<br><small>' + entry.room + '</small>' : '') : '-'}</td>`;
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    el.innerHTML = html;
+  } catch(e) { el.innerHTML = '<div class="alert a-err">Unable to load timetable</div>'; }
+}
+
+async function loadStudentProfile() {
+  const el = document.getElementById('studentProfileContent');
+  el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({ action: 'getStudentProfile', student_id: S.student.student_id, school_code: S.student.school_code });
+    if (!r.success) { el.innerHTML = '<div class="alert a-err">' + r.message + '</div>'; return; }
+    const s = r.student;
+    el.innerHTML = `
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px;">
+        <div style="flex:1;min-width:250px;">
+          <div style="background:var(--off);padding:20px;border-radius:var(--rl);text-align:center;">
+            <div style="width:80px;height:80px;background:var(--navy);border-radius:50%;margin:0 auto 15px;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#fff;font-weight:800;">${s.full_name ? s.full_name.charAt(0).toUpperCase() : 'S'}</div>
+            <div style="font-weight:800;font-size:1.1rem;color:var(--navy);">${s.full_name || 'N/A'}</div>
+            <div style="color:var(--tlt);font-size:.9rem;">${s.student_id || ''}</div>
+          </div>
+        </div>
+        <div style="flex:2;min-width:300px;">
+          <div style="background:var(--off);padding:20px;border-radius:var(--rl);">
+            <div class="ct" style="margin-bottom:15px;"><i class="fas fa-info-circle"></i> Personal Information</div>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+              <div><div style="font-size:.75rem;color:var(--tlt);">Class</div><div style="font-weight:600;">${s.class || 'N/A'}</div></div>
+              <div><div style="font-size:.75rem;color:var(--tlt);">Gender</div><div style="font-weight:600;">${s.gender || 'Not set'}</div></div>
+              <div><div style="font-size:.75rem;color:var(--tlt);">Date of Birth</div><div style="font-weight:600;">${s.date_of_birth || 'Not set'}</div></div>
+              <div><div style="font-size:.75rem;color:var(--tlt);">Parent Phone</div><div style="font-weight:600;">${s.parent_phone || 'Not set'}</div></div>
+              <div><div style="font-size:.75rem;color:var(--tlt);">Status</div><div style="font-weight:600;"><span class="badge b-ok">${s.status || 'active'}</span></div></div>
+              <div><div style="font-size:.75rem;color:var(--tlt);">School</div><div style="font-weight:600;">${s.school_code || ''}</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card card-sm">
+        <div class="ch"><div class="ct"><i class="fas fa-edit"></i> Update Profile</div></div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Full Name</label><input id="spFullName" class="fc" value="${s.full_name || ''}"></div>
+          <div class="fg"><label class="fl">Gender</label>
+            <select id="spGender" class="fc">
+              <option value="">Select</option>
+              <option value="male" ${s.gender === 'male' ? 'selected' : ''}>Male</option>
+              <option value="female" ${s.gender === 'female' ? 'selected' : ''}>Female</option>
+            </select>
+          </div>
+        </div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Date of Birth</label><input id="spDob" class="fc" type="date" value="${s.date_of_birth || ''}"></div>
+          <div class="fg"><label class="fl">Parent Phone</label><input id="spPhone" class="fc" value="${s.parent_phone || ''}"></div>
+        </div>
+        <div class="fg"><label class="fl">Photo URL</label><input id="spPhoto" class="fc" value="${s.photo_url || ''}" placeholder="https://..."></div>
+        <div class="fa"><button class="btn btn-ok" onclick="updateStudentProfile()"><i class="fas fa-save"></i> Save Changes</button></div>
+      </div>
+    `;
+  } catch(e) { el.innerHTML = '<div class="alert a-err">' + e.message + '</div>'; }
+}
+
+async function updateStudentProfile() {
+  const btn = document.querySelector('#stuProfile .btn-ok');
+  btn.innerHTML = '<span class="loader"></span>'; btn.disabled = true;
+  try {
+    const r = await api({
+      action: 'updateStudentProfile',
+      student_id: S.student.student_id,
+      school_code: S.student.school_code,
+      full_name: document.getElementById('spFullName').value.trim(),
+      gender: document.getElementById('spGender').value,
+      date_of_birth: document.getElementById('spDob').value,
+      parent_phone: document.getElementById('spPhone').value.trim(),
+      photo_url: document.getElementById('spPhoto').value.trim()
+    });
+    if (r.success) { toast('Profile updated!', 'ok'); loadStudentProfile(); }
+    else { toast(r.message, 'err'); }
+  } catch(e) { toast(e.message, 'err'); }
+  finally { btn.innerHTML = '<i class="fas fa-save"></i> Save Changes'; btn.disabled = false; }
+}
+
 // ════════════════════════════════════════════════
 // STUDENT TABS & PROGRESS
 // ════════════════════════════════════════════════
@@ -1614,6 +2621,9 @@ function showStuTab(tab) {
   document.querySelectorAll('.stu-tab').forEach(t => t.classList.add('hidden'));
   document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
   document.getElementById('stu' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.remove('hidden');
+  // Load data for new tabs
+  if (tab === 'timetable') loadStudentTimetable();
+  if (tab === 'profile') loadStudentProfile();
 }
 
 async function loadStudentProgress() {
@@ -2215,6 +3225,8 @@ async function adminLogin() {
       document.getElementById('adminIcon').textContent = (code || 'AD').substring(0, 2);
       document.getElementById('adminName').textContent = r.school_name || code;
       document.getElementById('adminCode').textContent = 'Code: ' + code;
+      document.getElementById('adminSidebarAvatar').textContent = (code || 'AD').substring(0, 2);
+      document.getElementById('adminSidebarName').textContent = r.school_name || code;
       // Save API URL from settings if provided
       if (r.settings && r.settings.api_url) localStorage.setItem('acadex_api', r.settings.api_url);
       go('admin'); msg('aLMsg', ''); toast('Welcome, Admin!', 'ok');
@@ -2252,7 +3264,8 @@ function refreshAdmin() {
 }
 function aTab(i) {
   document.querySelectorAll('#adminTabs .tab').forEach((t, j) => t.classList.toggle('active', i === j));
-  ['at0','at1','at2','at3','at4','at5','at6','at7','at8','at9','at10','at11','at12','at13'].forEach((id, j) => {
+  document.querySelectorAll('#adminSidebarNav .admin-sidebar-item').forEach((t, j) => t.classList.toggle('active', j === i));
+  ['at0','at1','at2','at3','at4','at5','at6','at7','at8','at9','at10','at11','at12','at14','at15','at16','at13','at17'].forEach((id, j) => {
     const el = document.getElementById(id);
     if (el) el.classList.toggle('active', j === i);
   });
@@ -2261,6 +3274,17 @@ function aTab(i) {
   if (i === 9) loadAnnouncements();
   if (i === 10) loadFees();
   if (i === 11) loadReportCardsTab();
+  if (i === 14) loadLibraryAdmin();
+  if (i === 15) loadTimetableAdmin();
+  if (i === 16) loadEventsAdmin();
+  if (i === 3) { loadClasses(); loadClassArms(); }
+  if (i === 17) { setTimeout(wbInit, 120); }
+}
+function toggleAdminSidebar() {
+  document.getElementById('adminSidebar').classList.toggle('open');
+  document.getElementById('adminSidebarOverlay').classList.toggle('open');
+  document.getElementById('adminSidebarToggle').classList.toggle('shifted');
+  document.getElementById('adminMain').classList.toggle('sidebar-open');
 }
 // ════════════════════════════════════════════════
 // DASHBOARD
@@ -2663,6 +3687,64 @@ async function deleteClass(name) {
     else toast(r.message,'err');
   } catch(e) { toast(e.message,'err'); }
 }
+
+// ════════════════════════════════════════════════
+// CLASS ARMS MANAGEMENT
+// ════════════════════════════════════════════════
+async function loadClassArms() {
+  const w = document.getElementById('classArmsList');
+  if (!w) return;
+  w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({ action: 'getClassArms', school_code: S.admin.code });
+    const arms = r.arms || [];
+    if (!arms.length) {
+      w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-layer-group"></i></span><h4>No class arms</h4><p>Add arms like Science, Commercial, Arts for senior classes</p></div>';
+      return;
+    }
+    // Group by class
+    const byClass = {};
+    arms.forEach(a => {
+      if (!byClass[a.class_name]) byClass[a.class_name] = [];
+      byClass[a.class_name].push(a);
+    });
+    let html = '';
+    Object.keys(byClass).sort().forEach(cls => {
+      html += `<div class="card card-sm" style="margin-bottom:12px;"><div class="ct">${cls}</div><table><thead><tr><th>Arm</th><th>Level</th><th>Capacity</th><th>Actions</th></tr></thead><tbody>`;
+      html += byClass[cls].map(a => `<tr>
+        <td><strong>${a.arm || 'Default'}</strong></td>
+        <td>${a.class_level || '—'}</td>
+        <td>${a.capacity || '—'}</td>
+        <td><button class="btn btn-err btn-sm" onclick="deleteClassArm('${cls}','${a.arm || ''}')" title="Delete"><i class="fas fa-trash"></i></button></td>
+      </tr>`).join('');
+      html += '</tbody></table></div>';
+    });
+    w.innerHTML = html;
+  } catch(e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+async function saveClassArm() {
+  const className = document.getElementById('armClassName').value.trim();
+  const arm = document.getElementById('armName').value.trim();
+  const level = document.getElementById('armLevel').value.trim();
+  const cap = document.getElementById('armCap').value.trim();
+  if (!className || !arm) { toast('Class name and arm are required.', 'err'); return; }
+  try {
+    const r = await api({ action: 'addClassArm', school_code: S.admin.code, class_name: className, arm: arm, class_level: level, capacity: cap });
+    if (r.success) { toast('Arm added: ' + className + ' ' + arm, 'ok'); toggleForm('armForm', true); loadClassArms(); }
+    else { toast(r.message, 'err'); }
+  } catch(e) { toast(e.message, 'err'); }
+}
+
+async function deleteClassArm(className, arm) {
+  if (!confirm('Delete arm "' + arm + '" from ' + className + '?')) return;
+  try {
+    const r = await api({ action: 'deleteClassArm', school_code: S.admin.code, class_name: className, arm: arm });
+    if (r.success) { toast('Arm deleted.', 'ok'); loadClassArms(); }
+    else { toast(r.message, 'err'); }
+  } catch(e) { toast(e.message, 'err'); }
+}
+
 // ════════════════════════════════════════════════
 // STAFF EDIT & SUBJECT ASSIGNMENT
 // ════════════════════════════════════════════════
@@ -2864,6 +3946,13 @@ async function loadSubjTable() {
       if (stuCF && stuCF.options.length <= 1) {
         stuCF.innerHTML = '<option value="">All Classes</option>' + classOpts;
       }
+      // Populate fee class filters
+      ['feeClassFilter','feeRptClass','feeHistClass','attClassFilter','feeClass'].forEach(sid => {
+        const sel = document.getElementById(sid);
+        if (sel && sel.options.length <= 1) {
+          sel.innerHTML = sel.id === 'feeClass' ? '<option value="">-- Select Class --</option>' + classOpts : '<option value="">All Classes</option>' + classOpts;
+        }
+      });
       // Populate CA class dropdown in admin Results tab
       const caClassEl = document.getElementById('caClass');
       if (caClassEl) caClassEl.innerHTML = '<option value="">-- Select Class --</option>' + classOpts;
@@ -3550,9 +4639,13 @@ async function loadAnnouncements() {
     w.innerHTML = ann.map(a => `<div class="ann-item ${a.priority}">
       <div class="ann-h">${a.title}<span class="ann-prio ${a.priority}">${a.priority}</span></div>
       <div class="ann-c">${a.content}</div>
-      <div class="ann-f"><span><i class="fas fa-users"></i> ${a.target_role || 'All'}</span><span><i class="fas fa-user"></i> ${a.created_by}</span></div>
-      ${a.start_date || a.end_date ? `<div class="ann-d"><i class="fas fa-calendar"></i> ${a.start_date || ''} ${a.end_date ? ' - ' + a.end_date : ''}</div>` : ''}
-      <button class="btn btn-err btn-sm" style="margin-top:10px;" onclick="deleteAnnouncement(${a.id})"><i class="fas fa-trash"></i> Delete</button>
+      <div class="ann-f"><span><i class="fas fa-users"></i> ${a.target_role || 'All'}</span><span><i class="fas fa-user"></i> ${a.created_by}</span>${a.target_class ? `<span><i class="fas fa-school"></i> ${a.target_class}</span>` : ''}</div>
+      ${a.start_date || a.end_date ? `<div class="ann-d"><i class="fas fa-calendar"></i> ${a.start_date || ''} ${a.end_date ? ' — ' + a.end_date : ''}</div>` : ''}
+      <div style="display:flex;gap:6px;margin-top:10px;">
+        <button class="btn btn-info btn-sm" onclick="editAnnouncement(${a.id},'${(a.title||'').replace(/'/g,"\'")}','${(a.content||'').replace(/'/g,"\'").replace(/
+/g,'\n')}','${a.priority||'normal'}','${a.target_role||'all'}','${a.target_class||''}','${a.start_date||''}','${a.end_date||''}')"><i class="fas fa-edit"></i> Edit</button>
+        <button class="btn btn-err btn-sm" onclick="deleteAnnouncement(${a.id})"><i class="fas fa-trash"></i> Delete</button>
+      </div>
     </div>`).join('');
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
 }
@@ -3585,28 +4678,480 @@ async function deleteAnnouncement(rowNum) {
   } catch (e) { toast(e.message, 'err'); }
 }
 
+function editAnnouncement(rowNum, title, content, priority, targetRole, targetClass, startDate, endDate) {
+  // Fill the announcement form for editing
+  const form = document.getElementById('annForm');
+  if (!form) return;
+  form.classList.remove('hidden');
+  document.getElementById('annTitle').value = title.replace(/\\n/g,'\n');
+  document.getElementById('annContent').value = content.replace(/\\n/g,'\n');
+  document.getElementById('annPrio').value = priority || 'normal';
+  document.getElementById('annRole').value = targetRole || 'all';
+  document.getElementById('annClass').value = targetClass || '';
+  document.getElementById('annStart').value = startDate || '';
+  document.getElementById('annEnd').value = endDate || '';
+  // Change save button to update mode
+  const btn = document.getElementById('btnSaveAnn');
+  btn.innerHTML = '<i class="fas fa-sync"></i> Update Announcement';
+  btn.onclick = () => updateAnn(rowNum);
+  document.getElementById('annForm').scrollIntoView({ behavior: 'smooth' });
+  toast('Editing announcement — make changes and click Update', 'info');
+}
+
+async function updateAnn(rowNum) {
+  const title = document.getElementById('annTitle').value.trim();
+  const content = document.getElementById('annContent').value.trim();
+  if (!title || !content) { toast('Title and content required.', 'warn'); return; }
+  const btn = document.getElementById('btnSaveAnn');
+  btn.innerHTML = '<span class="loader"></span>'; btn.disabled = true;
+  try {
+    const r = await api({
+      action: 'updateAnnouncement', school_code: S.admin.code,
+      row_num: rowNum, title, content,
+      priority: document.getElementById('annPrio').value,
+      target_role: document.getElementById('annRole').value,
+      target_class: document.getElementById('annClass').value.trim(),
+      start_date: document.getElementById('annStart').value,
+      end_date: document.getElementById('annEnd').value
+    });
+    if (r.success) {
+      toast('Announcement updated!', 'ok');
+      toggleForm('annForm', true);
+      // Reset save button back to publish mode
+      const saveBtn = document.getElementById('btnSaveAnn');
+      saveBtn.innerHTML = '<i class="fas fa-save"></i> Publish';
+      saveBtn.onclick = saveAnnouncement;
+      loadAnnouncements();
+    } else { toast(r.message, 'err'); }
+  } catch (e) { toast(e.message, 'err'); }
+  finally { btn.innerHTML = '<i class="fas fa-sync"></i> Update Announcement'; btn.disabled = false; }
+}
+
 // ════════════════════════════════════════════════
 // FEES
 // ════════════════════════════════════════════════
+// Fee sub-tab switcher
+function aFeeTab(i) {
+  [0,1,2,3].forEach(j => {
+    const tab = document.getElementById('feeTab'+j);
+    const tc = document.getElementById('feeTc'+j);
+    if (tab) tab.classList.toggle('active', j===i);
+    if (tc) tc.classList.toggle('active', j===i);
+  });
+  // Populate class dropdowns for report/history tabs
+  if (i === 2 || i === 3) {
+    const stuCF = document.getElementById('stuClassFilter');
+    ['feeRptClass','feeHistClass'].forEach(sid => {
+      const sel = document.getElementById(sid);
+      if (sel && stuCF && sel.options.length <= 1) {
+        sel.innerHTML = '<option value="">All Classes</option>';
+        for (let k=1; k<stuCF.options.length; k++) {
+          sel.innerHTML += `<option value="${stuCF.options[k].value}">${stuCF.options[k].value}</option>`;
+        }
+      }
+    });
+  }
+  if (i === 0) loadFees();
+  if (i === 3) loadPaymentHistory();
+}
+
 async function loadFees() {
   const w = document.getElementById('feeTable');
+  if (!w) return;
   w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
   try {
-    const cls = document.getElementById('feeClassFilter').value;
+    const cls = document.getElementById('feeClassFilter')?.value || '';
     const r = await api({ action: 'getFees', school_code: S.admin.code, class: cls, term: S.settings.term, session: S.settings.session });
     const fees = r.fees || [];
-    if (!fees.length) { w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-money-bill-wave"></i></span><h4>No fees defined</h4></div>'; return; }
-    w.innerHTML = fees.map(f => `<div class="fee-item">
-      <div class="fee-l">
-        <div class="fee-n">${f.fee_type}</div>
-        <div class="fee-d">${f.class} · ${f.term || ''} ${f.session || ''} ${f.due_date ? '· Due: ' + f.due_date : ''}</div>
-      </div>
-      <div style="text-align:right;">
-        <div class="fee-amt">₦${Number(f.amount).toLocaleString()}</div>
-        <span class="fee-status ${f.status || 'active'}">${f.status || 'active'}</span>
-      </div>
-    </div>`).join('');
+    if (!fees.length) { w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-money-bill-wave"></i></span><h4>No fees defined</h4><p>Click "Add Fee" to get started</p></div>'; return; }
+    w.innerHTML = `<table><thead><tr><th>Class</th><th>Fee Type</th><th>Amount</th><th>Term</th><th>Due Date</th><th>Priority</th><th>Status</th><th>Actions</th></tr></thead><tbody>` +
+      fees.map(f => `<tr>
+        <td>${f.class}</td>
+        <td><strong>${f.fee_type}</strong>${f.description ? '<br><span style="font-size:.75rem;color:var(--tlt);">'+f.description+'</span>' : ''}</td>
+        <td class="mono" style="font-weight:800;color:var(--navy);">₦${Number(f.amount).toLocaleString()}</td>
+        <td>${f.term || '-'} ${f.session ? '·'+f.session : ''}</td>
+        <td>${f.due_date || '-'}</td>
+        <td><span class="badge b-info">P${f.priority || 5}</span></td>
+        <td><span class="fee-status ${f.status || 'active'}">${f.status || 'active'}</span></td>
+        <td><button class="btn btn-err btn-sm" onclick="deleteFee(${f.id})"><i class="fas fa-trash"></i></button></td>
+      </tr>`).join('') + `</tbody></table>`;
+    // Populate class filter for payment
+    const payClass = document.getElementById('feeRptClass');
+    if (payClass && payClass.options.length <= 1) {
+      const classes = [...new Set(fees.map(f=>f.class))].filter(Boolean);
+      classes.forEach(c => { payClass.innerHTML += `<option value="${c}">${c}</option>`; });
+    }
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+async function deleteFee(rowNum) {
+  if (!confirm('Delete this fee?')) return;
+  try {
+    const r = await api({ action: 'deleteFee', school_code: S.admin.code, row_num: rowNum });
+    if (r.success) { toast('Fee deleted', 'ok'); loadFees(); } else toast(r.message, 'err');
+  } catch(e) { toast(e.message, 'err'); }
+}
+
+async function recordFeePayment() {
+  const studentId = document.getElementById('payStudentId').value.trim();
+  const amount = parseFloat(document.getElementById('payAmount').value);
+  const date = document.getElementById('payDate').value || new Date().toISOString().split('T')[0];
+  const method = document.getElementById('payMethod').value;
+  const feeRef = document.getElementById('payFeeRef').value.trim();
+  if (!studentId || isNaN(amount) || amount <= 0) { msg('payMsg', 'Student ID and valid amount required.', 'err'); return; }
+  const btn = document.getElementById('btnRecordPay');
+  btn.innerHTML = '<span class="loader"></span>'; btn.disabled = true;
+  try {
+    const r = await api({
+      action: 'recordPayment', school_code: S.admin.code,
+      student_id: studentId, fee_id: feeRef || '0', amount_paid: amount,
+      payment_date: date, payment_method: method,
+      recorded_by: S.admin?.username || 'admin',
+      term: S.settings.term || '', session: S.settings.session || ''
+    });
+    if (r.success) {
+      toast('Payment recorded!', 'ok');
+      msg('payMsg', `✅ Payment of ₦${amount.toLocaleString()} recorded for ${studentId}`, 'ok');
+      document.getElementById('payStudentId').value = '';
+      document.getElementById('payAmount').value = '';
+      document.getElementById('payFeeRef').value = '';
+      // Auto lookup balance
+      document.getElementById('balStuId').value = studentId;
+      lookupFeeBalance();
+    } else { msg('payMsg', r.message, 'err'); }
+  } catch (e) { msg('payMsg', e.message, 'err'); }
+  finally { btn.innerHTML = '<i class="fas fa-check-circle"></i> Record Payment'; btn.disabled = false; }
+}
+
+async function lookupFeeBalance() {
+  const stuId = document.getElementById('balStuId').value.trim();
+  const w = document.getElementById('feeBalanceResult');
+  if (!stuId) { w.innerHTML = '<div class="alert a-warn"><i class="fas fa-exclamation-triangle"></i> Enter a Student ID</div>'; return; }
+  w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({ action: 'getFeeBalance', school_code: S.admin.code, student_id: stuId });
+    if (!r.success) { w.innerHTML = `<div class="alert a-err"><i class="fas fa-times-circle"></i> ${r.message}</div>`; return; }
+    const color = r.balance <= 0 ? 'var(--ok)' : r.balance < r.total_fees ? 'var(--warn)' : 'var(--err)';
+    const status = r.balance <= 0 ? 'CLEARED ✅' : r.balance < r.total_fees ? 'PARTIAL ⚠️' : 'OWING ❌';
+    w.innerHTML = `<div style="background:var(--off);border-radius:var(--rl);padding:16px;border-left:4px solid ${color};">
+      <div style="font-weight:800;font-size:1.05rem;color:var(--navy);margin-bottom:10px;">${stuId} — ${r.student_class}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:10px;">
+        <div style="text-align:center;background:#fff;padding:10px;border-radius:var(--r);"><div style="font-size:1.2rem;font-weight:800;color:var(--navy);">₦${Number(r.total_fees).toLocaleString()}</div><div style="font-size:.72rem;color:var(--tlt);">Total Fees</div></div>
+        <div style="text-align:center;background:#fff;padding:10px;border-radius:var(--r);"><div style="font-size:1.2rem;font-weight:800;color:var(--ok);">₦${Number(r.total_paid).toLocaleString()}</div><div style="font-size:.72rem;color:var(--tlt);">Paid</div></div>
+        <div style="text-align:center;background:#fff;padding:10px;border-radius:var(--r);"><div style="font-size:1.2rem;font-weight:800;color:${color};">₦${Math.abs(r.balance).toLocaleString()}</div><div style="font-size:.72rem;color:var(--tlt);">Balance</div></div>
+      </div>
+      <div style="text-align:center;font-weight:800;font-size:.9rem;color:${color};">${status}</div>
+      ${r.fees && r.fees.length ? `<div style="margin-top:12px;"><div style="font-weight:700;font-size:.8rem;color:var(--tmid);margin-bottom:6px;">Fee Breakdown:</div>${r.fees.map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:.85rem;"><span>${f.fee_type}</span><span style="font-weight:700;color:${f.status==='paid'?'var(--ok)':'var(--err)'};">₦${Number(f.amount).toLocaleString()} · ${f.status}</span></div>`).join('')}</div>` : ''}
+    </div>`;
+  } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+async function loadFeeReport() {
+  const cls = document.getElementById('feeRptClass').value;
+  const w = document.getElementById('feeReportTable');
+  w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({ action: 'getStudentFeeReport', school_code: S.admin.code, class: cls, term: S.settings.term, session: S.settings.session });
+    if (!r.success) { w.innerHTML = `<div class="alert a-err">${r.message}</div>`; return; }
+    const report = r.report || [];
+    if (!report.length) { w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-chart-pie"></i></span><h4>No student data</h4></div>'; return; }
+    const cleared = report.filter(s=>s.status==='cleared').length;
+    const partial = report.filter(s=>s.status==='partial').length;
+    const owing = report.filter(s=>s.status==='owing').length;
+    w.innerHTML = `<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;">
+      <div style="background:var(--okb);border-radius:var(--r);padding:12px;text-align:center;"><div style="font-size:1.4rem;font-weight:800;color:var(--ok);">${cleared}</div><div style="font-size:.75rem;color:var(--tlt);">Cleared</div></div>
+      <div style="background:var(--warnb);border-radius:var(--r);padding:12px;text-align:center;"><div style="font-size:1.4rem;font-weight:800;color:var(--warn);">${partial}</div><div style="font-size:.75rem;color:var(--tlt);">Partial</div></div>
+      <div style="background:var(--errb);border-radius:var(--r);padding:12px;text-align:center;"><div style="font-size:1.4rem;font-weight:800;color:var(--err);">${owing}</div><div style="font-size:.75rem;color:var(--tlt);">Owing</div></div>
+    </div>
+    <table><thead><tr><th>Student ID</th><th>Name</th><th>Class</th><th>Total Fees</th><th>Paid</th><th>Balance</th><th>Status</th></tr></thead><tbody>` +
+    report.map(s=>{
+      const sColor = s.status==='cleared'?'b-ok':s.status==='partial'?'b-warn':'b-err';
+      return `<tr>
+        <td class="mono">${s.student_id}</td><td><strong>${s.full_name}</strong></td><td>${s.class}</td>
+        <td class="mono">₦${Number(s.total_fees).toLocaleString()}</td>
+        <td class="mono" style="color:var(--ok);">₦${Number(s.total_paid).toLocaleString()}</td>
+        <td class="mono" style="color:${s.balance>0?'var(--err)':'var(--ok)'};">₦${Math.abs(s.balance).toLocaleString()}</td>
+        <td><span class="badge ${sColor}">${s.status}</span></td>
+      </tr>`;
+    }).join('') + `</tbody></table>`;
+    window._lastFeeReport = r;
+  } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+function exportFeeReport() {
+  if (!window._lastFeeReport) { toast('Generate report first', 'warn'); return; }
+  const report = window._lastFeeReport.report || [];
+  const csv = ['Student ID,Name,Class,Total Fees,Paid,Balance,Status',
+    ...report.map(s=>`${s.student_id},"${s.full_name}",${s.class},${s.total_fees},${s.total_paid},${s.balance},${s.status}`)
+  ].join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv,' + encodeURIComponent(csv);
+  a.download = `fee_report_${S.admin.code}_${new Date().toISOString().split('T')[0]}.csv`;
+  a.click();
+}
+
+async function loadPaymentHistory() {
+  const cls = document.getElementById('feeHistClass').value;
+  const stuId = document.getElementById('feeHistStudent').value.trim();
+  const w = document.getElementById('payHistoryTable');
+  w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({ action: 'getFeePayments', school_code: S.admin.code, student_id: stuId || undefined });
+    if (!r.success) { w.innerHTML = `<div class="alert a-err">${r.message}</div>`; return; }
+    const payments = r.payments || [];
+    if (!payments.length) { w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-history"></i></span><h4>No payment records</h4></div>'; return; }
+    const total = payments.reduce((s,p)=>s+(parseFloat(p.amount_paid)||0),0);
+    w.innerHTML = `<div class="alert a-info" style="margin-bottom:10px;"><i class="fas fa-info-circle"></i> ${payments.length} payment(s) · Total: <strong>₦${total.toLocaleString()}</strong></div>
+    <table><thead><tr><th>Student ID</th><th>Amount Paid</th><th>Date</th><th>Method</th><th>Term</th><th>Fee Ref</th><th>Actions</th></tr></thead><tbody>` +
+    payments.map(p=>`<tr>
+      <td class="mono">${p.student_id}</td>
+      <td class="mono" style="font-weight:800;color:var(--ok);">₦${Number(p.amount_paid).toLocaleString()}</td>
+      <td>${p.payment_date || '-'}</td>
+      <td>${p.payment_method || '-'}</td>
+      <td>${p.term || '-'}</td>
+      <td>${p.fee_id || '-'}</td>
+      <td><button class="btn btn-err btn-sm" onclick="deletePayment(${p.id})"><i class="fas fa-trash"></i></button></td>
+    </tr>`).join('') + `</tbody></table>`;
+  } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+async function deletePayment(rowNum) {
+  if (!confirm('Delete this payment record? This cannot be undone.')) return;
+  try {
+    const r = await api({ action: 'deleteFeePayment', school_code: S.admin.code, row_num: rowNum });
+    if (r.success) { toast('Payment deleted', 'ok'); loadPaymentHistory(); } else toast(r.message, 'err');
+  } catch (e) { toast(e.message, 'err'); }
+}
+
+// LIBRARY MANAGEMENT
+// ════════════════════════════════════════════════
+async function loadLibraryAdmin() {
+  const booksList = document.getElementById('libraryBooksList');
+  const loansList = document.getElementById('libraryLoansList');
+  booksList.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  loansList.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    // Load books
+    const r1 = await api({ action: 'getLibraryBooks', school_code: S.admin.code });
+    const books = r1.books || [];
+    if (!books.length) {
+      booksList.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-book"></i></span><h4>No books in library</h4></div>';
+    } else {
+      booksList.innerHTML = `<table class="stable"><thead><tr><th>Title</th><th>Author</th><th>ISBN</th><th>Category</th><th>Available</th><th>Total</th><th>Shelf</th></tr></thead><tbody>${books.map(b => `<tr>
+        <td>${b.title}</td><td>${b.author}</td><td>${b.isbn || '-'}</td><td>${b.category || '-'}</td><td>${b.available}</td><td>${b.quantity}</td><td>${b.shelf || '-'}</td>
+      </tr>`).join('')}</tbody></table>`;
+    }
+    // Load loans
+    const r2 = await api({ action: 'getLibraryLoans', school_code: S.admin.code });
+    const loans = r2.loans || [];
+    if (!loans.length) {
+      loansList.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-hand-holding"></i></span><h4>No active loans</h4></div>';
+    } else {
+      loansList.innerHTML = `<table class="stable"><thead><tr><th>Student</th><th>Book</th><th>Borrowed</th><th>Due</th><th>Status</th><th>Action</th></tr></thead><tbody>${loans.map(l => `<tr>
+        <td>${l.student_name}</td><td>${l.book_title}</td><td>${l.borrow_date}</td><td>${l.due_date}</td><td><span class="badge ${l.status === 'returned' ? 'badge-success' : 'badge-warn'}">${l.status}</span></td>
+        <td>${l.status !== 'returned' ? `<button class="btn btn-sm btn-ok" onclick="returnBook('${l.id}')"><i class="fas fa-undo"></i> Return</button>` : '-'}</td>
+      </tr>`).join('')}</tbody></table>`;
+    }
+  } catch (e) { booksList.innerHTML = `<div class="alert a-err">${e.message}</div>`; loansList.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+function showAddBookForm() { document.getElementById('addBookForm').style.display = 'block'; }
+function hideAddBookForm() { document.getElementById('addBookForm').style.display = 'none'; }
+
+async function addBook() {
+  const title = document.getElementById('bookTitle').value.trim();
+  const author = document.getElementById('bookAuthor').value.trim();
+  const isbn = document.getElementById('bookIsbn').value.trim();
+  const category = document.getElementById('bookCategory').value.trim();
+  const quantity = document.getElementById('bookQty').value;
+  const shelf = document.getElementById('bookShelf').value.trim();
+  if (!title || !author || !quantity) { toast('Title, author, and quantity required.', 'warn'); return; }
+  try {
+    const r = await api({ action: 'addLibraryBook', school_code: S.admin.code, title, author, isbn, category, quantity, shelf });
+    if (r.success) { toast('Book added!', 'ok'); hideAddBookForm(); loadLibraryAdmin(); }
+    else { toast(r.message, 'err'); }
+  } catch (e) { toast(e.message, 'err'); }
+}
+
+async function returnBook(loanId) {
+  try {
+    const r = await api({ action: 'returnBook', school_code: S.admin.code, loan_id: loanId });
+    if (r.success) { toast('Book returned!', 'ok'); loadLibraryAdmin(); }
+    else { toast(r.message, 'err'); }
+  } catch (e) { toast(e.message, 'err'); }
+}
+
+// TIMETABLE MANAGEMENT
+// ════════════════════════════════════════════════
+async function loadTimetableAdmin() {
+  const w = document.getElementById('timetableAdminList');
+  w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const cls = document.getElementById('filterTimetableClass').value;
+    const day = document.getElementById('filterTimetableDay').value;
+    const r = await api({ action: 'getTimetable', school_code: S.admin.code, class: cls, day: day });
+    const schedule = r.timetable || [];
+    if (!schedule.length) {
+      w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-calendar-alt"></i></span><h4>No timetable entries</h4></div>';
+      return;
+    }
+    // Group by day
+    const days = {};
+    schedule.forEach(s => { if (!days[s.day]) days[s.day] = []; days[s.day].push(s); });
+    let html = '';
+    for (const day of ['Monday','Tuesday','Wednesday','Thursday','Friday']) {
+      if (!days[day]) continue;
+      html += `<div class="card card-sm" style="margin-bottom:15px;"><div class="ct">${day}</div><table class="stable"><thead><tr><th>Period</th><th>Subject</th><th>Teacher</th><th>Time</th></tr></thead><tbody>`;
+      html += days[day].sort((a,b) => a.period - b.period).map(s => `<tr><td>${s.period}</td><td>${s.subject}</td><td>${s.teacher}</td><td>${s.start_time} - ${s.end_time}</td></tr>`).join('');
+      html += '</tbody></table></div>';
+    }
+    w.innerHTML = html;
+  } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+function showAddTimetableForm() {
+  // Populate class dropdown
+  const clsSelect = document.getElementById('timetableClass');
+  const filterSelect = document.getElementById('filterTimetableClass');
+  if (clsSelect.options.length <= 1 && filterSelect.options.length > 1) {
+    clsSelect.innerHTML = '<option value="">-- Select Class --</option>';
+    filterSelect.innerHTML = '<option value="">All Classes</option>';
+    for (let i = 1; i < filterSelect.options.length; i++) {
+      const val = filterSelect.options[i].value;
+      clsSelect.innerHTML += `<option value="${val}">${val}</option>`;
+      filterSelect.innerHTML += `<option value="${val}">${val}</option>`;
+    }
+  }
+  document.getElementById('addTimetableForm').style.display = 'block';
+}
+function hideAddTimetableForm() { document.getElementById('addTimetableForm').style.display = 'none'; }
+
+async function addTimetableEntry() {
+  const className = document.getElementById('timetableClass').value;
+  const day = document.getElementById('timetableDay').value;
+  const period = document.getElementById('timetablePeriod').value;
+  const subject = document.getElementById('timetableSubject').value.trim();
+  const teacher = document.getElementById('timetableTeacher').value.trim();
+  const startTime = document.getElementById('timetableStart').value;
+  const endTime = document.getElementById('timetableEnd').value;
+  if (!className || !day || !period || !subject) { toast('Class, day, period, and subject required.', 'warn'); return; }
+  try {
+    const r = await api({ action: 'addTimetable', school_code: S.admin.code, class: className, day, period, subject, teacher, start_time: startTime, end_time: endTime });
+    if (r.success) { toast('Schedule added!', 'ok'); hideAddTimetableForm(); loadTimetableAdmin(); }
+    else { toast(r.message, 'err'); }
+  } catch (e) { toast(e.message, 'err'); }
+}
+
+// ════════════════════════════════════════════════
+// EVENT CALENDAR
+// ════════════════════════════════════════════════
+
+function toggleEventForm() {
+  const form = document.getElementById('eventForm');
+  if (form.style.display === 'none') {
+    // Populate target class dropdown
+    const clsSelect = document.getElementById('evtTargetClass');
+    const stuCF = document.getElementById('stuClassFilter');
+    if (clsSelect.options.length <= 1 && stuCF && stuCF.options.length > 1) {
+      clsSelect.innerHTML = '<option value="all">All Classes</option>';
+      for (let i = 1; i < stuCF.options.length; i++) {
+        clsSelect.innerHTML += `<option value="${stuCF.options[i].value}">${stuCF.options[i].value}</option>`;
+      }
+    }
+    // Set default dates
+    document.getElementById('evtStart').value = new Date().toISOString().split('T')[0];
+    form.style.display = 'block';
+  } else {
+    form.style.display = 'none';
+  }
+}
+
+async function loadEventsAdmin() {
+  const w = document.getElementById('eventsAdminList');
+  w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const typeFilter = document.getElementById('filterEventType').value;
+    const monthFilter = document.getElementById('filterEventMonth').value;
+    let startDate = '', endDate = '';
+    if (monthFilter) {
+      const [year, month] = monthFilter.split('-');
+      startDate = `${year}-${month}-01`;
+      const lastDay = new Date(year, month, 0).getDate();
+      endDate = `${year}-${month}-${lastDay}`;
+    }
+    const r = await api({ action: 'getEvents', school_code: S.admin.code, event_type: typeFilter, start_date: startDate, end_date: endDate });
+    const events = r.events || [];
+    if (!events.length) {
+      w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-calendar-day"></i></span><h4>No events found</h4><p>Add school events, holidays, and activities</p></div>';
+      return;
+    }
+    // Group by month
+    const months = {};
+    events.forEach(e => {
+      const d = e.start_date ? new Date(e.start_date) : null;
+      const key = d ? `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}` : 'undated';
+      if (!months[key]) months[key] = [];
+      months[key].push(e);
+    });
+    let html = '';
+    Object.keys(months).sort().forEach(m => {
+      const monthName = m === 'undated' ? 'Undated' : new Date(m + '-01').toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+      html += `<div class="card card-sm" style="margin-bottom:15px;"><div class="ct">${monthName}</div>`;
+      html += months[m].map(e => {
+        const typeClass = e.event_type === 'holiday' ? 'b-err' : e.event_type === 'exam' ? 'b-warn' : e.event_type === 'meeting' ? 'b-info' : 'b-ok';
+        const typeIcon = e.event_type === 'holiday' ? 'fa-holiday' : e.event_type === 'exam' ? 'fa-clipboard-list' : e.event_type === 'meeting' ? 'fa-users' : 'fa-star';
+        return `<div class="event-item" style="display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid var(--border);">
+          <div>
+            <div style="font-weight:700;color:var(--navy);">${e.title}</div>
+            <div style="font-size:.8rem;color:var(--tlt);">${e.start_date || ''} ${e.end_date && e.end_date !== e.start_date ? ' - ' + e.end_date : ''}</div>
+            <div style="font-size:.75rem;color:var(--tlt);">${e.location || 'No location'}</div>
+          </div>
+          <div class="fa">
+            <span class="badge ${typeClass}">${e.event_type}</span>
+            <button class="btn btn-err btn-sm" onclick="deleteEvent('${e.event_id}', ${e.id})" title="Delete"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>`;
+      }).join('');
+      html += '</div>';
+    });
+    w.innerHTML = html;
+  } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+async function saveEvent() {
+  const title = document.getElementById('evtTitle').value.trim();
+  const startDate = document.getElementById('evtStart').value;
+  if (!title || !startDate) { toast('Title and start date required.', 'warn'); return; }
+  const btn = document.querySelector('#eventForm .btn-ok');
+  btn.innerHTML = '<span class="loader"></span>'; btn.disabled = true;
+  try {
+    const r = await api({
+      action: 'addEvent',
+      school_code: S.admin.code,
+      title: title,
+      description: document.getElementById('evtDesc').value.trim(),
+      event_type: document.getElementById('evtType').value,
+      start_date: startDate,
+      end_date: document.getElementById('evtEnd').value,
+      all_day: document.getElementById('evtAllDay').value,
+      location: document.getElementById('evtLocation').value.trim(),
+      target_role: document.getElementById('evtTargetRole').value,
+      target_class: document.getElementById('evtTargetClass').value,
+      created_by: S.admin.username
+    });
+    if (r.success) { toast('Event created!', 'ok'); toggleEventForm(); loadEventsAdmin(); }
+    else { toast(r.message, 'err'); }
+  } catch (e) { toast(e.message, 'err'); }
+  finally { btn.innerHTML = '<i class="fas fa-save"></i> Save Event'; btn.disabled = false; }
+}
+
+async function deleteEvent(eventId, rowNum) {
+  if (!confirm('Delete this event?')) return;
+  try {
+    const r = await api({ action: 'deleteEvent', school_code: S.admin.code, event_id: eventId, row_num: rowNum });
+    if (r.success) { toast('Event deleted', 'ok'); loadEventsAdmin(); }
+    else { toast(r.message, 'err'); }
+  } catch (e) { toast(e.message, 'err'); }
 }
 
 async function saveFee() {
@@ -3615,13 +5160,14 @@ async function saveFee() {
   const amount = document.getElementById('feeAmount').value;
   const description = document.getElementById('feeDesc').value.trim();
   const dueDate = document.getElementById('feeDue').value;
-  const term = document.getElementById('feeTerm').value;
-  const session = document.getElementById('feeSession').value.trim();
+  const term = document.getElementById('feeTerm').value || S.settings.term || '';
+  const session = document.getElementById('feeSession').value.trim() || S.settings.session || '';
+  const priority = document.getElementById('feePriority').value;
   if (!className || !feeType || !amount) { toast('Class, fee type, and amount required.', 'warn'); return; }
   const btn = document.getElementById('btnSaveFee');
   btn.innerHTML = '<span class="loader"></span>'; btn.disabled = true;
   try {
-    const r = await api({ action: 'addFee', school_code: S.admin.code, class: className, fee_type: feeType, amount, description, term, session, due_date: dueDate });
+    const r = await api({ action: 'addFee', school_code: S.admin.code, class: className, fee_type: feeType, amount, description, term, session, due_date: dueDate, priority: priority });
     if (r.success) { toast('Fee added!', 'ok'); toggleForm('feeForm', true); loadFees(); }
     else { toast(r.message, 'err'); }
   } catch (e) { toast(e.message, 'err'); }
@@ -3919,9 +5465,166 @@ async function staffLogin() {
   finally { btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login'; btn.disabled = false; }
 }
 function stLogout() { S.staff = null; S.settings = {}; setHeaderSchool(''); updateNav('home'); go('home'); toast('Logged out.', 'info'); }
+
+// ════════════════════════════════════════════════
+// PARENT PORTAL
+// ════════════════════════════════════════════════
+async function parentLogin() {
+  const stuId = document.getElementById('pLStuId').value.trim();
+  const phone = document.getElementById('pLPin').value.trim();
+  if (!stuId || !phone) { msg('pLMsg', 'Student ID and Parent Phone are required.'); return; }
+  const btn = document.getElementById('btnPL');
+  btn.innerHTML = '<span class="loader"></span> Logging in...'; btn.disabled = true;
+  try {
+    const r = await api({ action: 'parentLogin', student_id: stuId, parent_phone: phone });
+    if (r.success) { 
+      S.parent = r.parent; S.settings = r.settings || {};
+      msg('pLMsg', ''); toast('Welcome!', 'ok');
+      document.getElementById('parentIcon').textContent = 'PR';
+      document.getElementById('parentChildName').textContent = r.parent.student_name || stuId;
+      document.getElementById('parentChildInfo').textContent = r.parent.student_class + ' · ' + r.parent.school_code;
+      go('parent');
+      loadParentData();
+    } else { msg('pLMsg', r.message || 'Login failed.'); }
+  } catch (e) { msg('pLMsg', 'Network error: ' + e.message); }
+  finally { btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login'; btn.disabled = false; }
+}
+
+function pLogout() { S.parent = null; S.settings = {}; updateNav('home'); go('home'); toast('Logged out.', 'info'); }
+
+function pTab(i) {
+  document.querySelectorAll('#s-parent .tab').forEach((t, j) => t.classList.toggle('active', i === j));
+  ['pt0','pt1','pt2','pt3','pt4','pt5'].forEach((id, j) => { const el = document.getElementById(id); if (el) el.classList.toggle('active', j === i); });
+  // Load data for new tabs
+  if (i === 0) loadParentData();
+  if (i === 1) loadParentAttendance();
+  if (i === 2) loadParentFees();
+  if (i === 3) loadParentLibrary();
+  if (i === 4) loadParentSchedule();
+  if (i === 5) loadParentAnnouncements();
+}
+
+async function loadParentData() {
+  const statsEl = document.getElementById('parentStats');
+  const chartEl = document.getElementById('parentChart');
+  const resultsEl = document.getElementById('parentResults');
+  const attEl = document.getElementById('parentAttendance');
+  const feesEl = document.getElementById('parentFees');
+  
+  statsEl.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  resultsEl.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  attEl.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  feesEl.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  
+  try {
+    // Load results
+    const rr = await api({ action: 'getResults', school_code: S.parent.school_code, student_id: S.parent.student_id, term: S.settings.term, session: S.settings.session });
+    const results = rr.results || [];
+    
+    if (!results.length) {
+      statsEl.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-chart-line"></i></span><h4>No results yet</h4></div>';
+      resultsEl.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-list"></i></span><h4>No results available</h4></div>';
+    } else {
+      const totalExams = results.filter(r => parseFloat(r.exam) > 0).length;
+      const totalScore = results.reduce((sum, r) => sum + (parseFloat(r.total) || 0), 0);
+      const avgScore = totalExams > 0 ? Math.round(totalScore / totalExams) : 0;
+      const passed = results.filter(r => gradeOf(r.total).cls === 'pass').length;
+      const failed = totalExams - passed;
+      
+      let avgClass = 'ok';
+      if (avgScore < 50) avgClass = 'err';
+      else if (avgScore < 70) avgClass = 'warn';
+      
+      statsEl.innerHTML = `
+        <div class="pstat"><div class="pstat-n">${totalExams}</div><div class="pstat-l">Exams Taken</div></div>
+        <div class="pstat"><div class="pstat-n ${avgClass}">${avgScore}%</div><div class="pstat-l">Average Score</div></div>
+        <div class="pstat"><div class="pstat-n ok">${passed}</div><div class="pstat-l">Passed</div></div>
+        <div class="pstat"><div class="pstat-n err">${failed}</div><div class="pstat-l">Below 50%</div></div>
+      `;
+      
+      // Simple bar chart
+      const subjectScores = {};
+      results.forEach(r => {
+        if (!subjectScores[r.subject_name || r.subject_code]) subjectScores[r.subject_name || r.subject_code] = [];
+        subjectScores[r.subject_name || r.subject_code].push(r.total);
+      });
+      
+      let chartHtml = '<div style="display:flex;align-items:flex-end;gap:8px;height:180px;padding:10px 0;flex-wrap:wrap;">';
+      Object.entries(subjectScores).forEach(([subj, scores]) => {
+        const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+        const height = Math.max(20, avg * 1.5);
+        const color = avg >= 70 ? 'var(--ok)' : avg >= 50 ? 'var(--warn)' : 'var(--err)';
+        chartHtml += `<div style="flex:1;min-width:40px;text-align:center;">
+          <div style="height:${height}px;background:${color};border-radius:4px 4px 0 0;width:100%;max-width:60px;margin:0 auto;"></div>
+          <div style="font-size:.7rem;color:var(--tlt);margin-top:4px;">${subj.substring(0, 8)}</div>
+          <div style="font-size:.75rem;font-weight:700;color:var(--navy);">${avg}%</div>
+        </div>`;
+      });
+      chartHtml += '</div>';
+      chartEl.innerHTML = chartHtml;
+      
+      resultsEl.innerHTML = results.map(r => {
+        const g = gradeOf(r.total);
+        return `<div class="sritem">
+          <div class="sritem-l">
+            <div class="sritem-n">${r.subject_name || r.subject_code}</div>
+            <div class="sritem-s">${r.term || ''} ${r.session || ''}</div>
+          </div>
+          <div class="sritem-g">
+            <div class="sritem-sc">${r.total || 0}</div>
+            <span class="grade ${g.cls}">${g.g}</span>
+          </div>
+        </div>`;
+      }).join('');
+    }
+    
+    // Load attendance 
+    try {
+      const ar = await api({ action: 'getAttendance', school_code: S.parent.school_code, student_id: S.parent.student_id, term: S.settings.term, session: S.settings.session });
+      const att = ar.attendance || [];
+      if (!att.length) {
+        attEl.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-calendar-check"></i></span><h4>No attendance records</h4></div>';
+      } else {
+        const present = att.filter(a => a.status === 'present').length;
+        const absent = att.filter(a => a.status === 'absent').length;
+        const late = att.filter(a => a.status === 'late').length;
+        attEl.innerHTML = `<table><thead><tr><th>Date</th><th>Status</th></tr></thead><tbody>${att.slice(0, 30).map(a => `
+          <tr><td>${a.date}</td><td><span class="badge ${a.status === 'present' ? 'b-ok' : a.status === 'absent' ? 'b-err' : 'b-warn'}">${a.status}</span></td></tr>
+        `).join('')}</tbody></table>
+        <div style="margin-top:12px;padding:10px;background:var(--off);border-radius:var(--r);">
+          <strong>Summary:</strong> ${present} present, ${absent} absent, ${late} late
+        </div>`;
+      }
+    } catch(e) { attEl.innerHTML = '<div class="es"><h4>Unable to load attendance</h4></div>'; }
+    
+    // Load fees
+    try {
+      const fr = await api({ action: 'getFees', school_code: S.parent.school_code, class: S.parent.student_class, term: S.settings.term, session: S.settings.session });
+      const fees = fr.fees || [];
+      if (!fees.length) {
+        feesEl.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-money-bill-wave"></i></span><h4>No fees</h4></div>';
+      } else {
+        feesEl.innerHTML = fees.map(f => `<div class="fee-item">
+          <div class="fee-l">
+            <div class="fee-n">${f.fee_type}</div>
+            <div class="fee-d">${f.term || ''} ${f.due_date ? '· Due: ' + f.due_date : ''}</div>
+          </div>
+          <div class="fee-amt">₦${Number(f.amount).toLocaleString()}</div>
+        </div>`).join('');
+      }
+    } catch(e) { feesEl.innerHTML = '<div class="es"><h4>Unable to load fees</h4></div>'; }
+    
+  } catch (e) {
+    statsEl.innerHTML = `<div class="alert a-err">${e.message}</div>`;
+  }
+}
+
 function stTab(i) {
   document.querySelectorAll('#s-staff .tab').forEach((t, j) => t.classList.toggle('active', i === j));
-  ['st0','st1'].forEach((id, j) => { const el = document.getElementById(id); if (el) el.classList.toggle('active', j === i); });
+  ['st0','st1','st2','st3','st4'].forEach((id, j) => { const el = document.getElementById(id); if (el) el.classList.toggle('active', j === i); });
+  if (i === 2) loadStaffLibrary();
+  if (i === 3) loadStaffTimetable();
+  if (i === 4) loadStaffProfile();
 }
 async function loadStaffSubjects() {
   try {
@@ -4105,6 +5808,141 @@ async function stLoadResults() {
     w.innerHTML = `<table><thead><tr><th>Student ID</th><th>Name</th><th>Subject</th><th>1st</th><th>2nd</th><th>Exam</th><th>Total</th><th>Grade</th></tr></thead><tbody>${rs.map(r => { const g = gradeOf(r.total); return `<tr><td class="td-mono">${r.student_id}</td><td>${r.full_name || '—'}</td><td>${r.subject_name || r.subject_code}</td><td>${r.first_test||0}</td><td>${r.second_test||0}</td><td>${r.exam||0}</td><td><strong>${r.total||0}</strong></td><td><span class="grade ${g.cls}">${g.g}</span></td></tr>`; }).join('')}</tbody></table>`;
   } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
 }
+
+// STAFF LIBRARY & TIMETABLE
+// ════════════════════════════════════════════════
+async function loadStaffLibrary() {
+  const w = document.getElementById('staffLibLoans');
+  w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({ action: 'getLibraryLoans', school_code: S.staff.code });
+    const loans = r.loans || [];
+    if (!loans.length) { w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-hand-holding"></i></span><h4>No active loans</h4></div>'; return; }
+    w.innerHTML = `<table class="stable"><thead><tr><th>Student</th><th>Book</th><th>Borrowed</th><th>Due</th><th>Status</th><th>Action</th></tr></thead><tbody>${loans.map(l => `<tr>
+      <td>${l.student_name}</td><td>${l.book_title}</td><td>${l.borrow_date}</td><td>${l.due_date}</td><td><span class="badge ${l.status === 'returned' ? 'badge-success' : 'badge-warn'}">${l.status}</span></td>
+      <td>${l.status !== 'returned' ? `<button class="btn btn-sm btn-ok" onclick="staffReturnBook('${l.id}')"><i class="fas fa-undo"></i> Return</button>` : '-'}</td>
+    </tr>`).join('')}</tbody></table>`;
+  } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+async function staffBorrowBook() {
+  const studentId = document.getElementById('staffLibStudentId').value.trim();
+  const bookTitle = document.getElementById('staffLibBookTitle').value.trim();
+  if (!studentId || !bookTitle) { toast('Student ID and book title required.', 'warn'); return; }
+  try {
+    const r = await api({ action: 'borrowBook', school_code: S.staff.code, student_id: studentId, book_title: bookTitle });
+    if (r.success) { toast('Book borrowed!', 'ok'); loadStaffLibrary(); }
+    else { toast(r.message, 'err'); }
+  } catch (e) { toast(e.message, 'err'); }
+}
+
+async function staffReturnBook(loanId) {
+  try {
+    const r = await api({ action: 'returnBook', school_code: S.staff.code, loan_id: loanId });
+    if (r.success) { toast('Book returned!', 'ok'); loadStaffLibrary(); }
+    else { toast(r.message, 'err'); }
+  } catch (e) { toast(e.message, 'err'); }
+}
+
+async function loadStaffTimetable() {
+  const w = document.getElementById('staffTimetable');
+  w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({ action: 'getTimetable', school_code: S.staff.code });
+    let schedule = r.timetable || [];
+    // Filter by teacher name (match against teacher_id or teacher field)
+    const teacherName = S.staff.name.toLowerCase();
+    schedule = schedule.filter(s => {
+      const teacherId = String(s.teacher_id || '').toLowerCase();
+      return teacherId.includes(teacherName) || teacherId.includes(teacherName.split(' ')[0]);
+    });
+    if (!schedule.length) { w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-calendar-alt"></i></span><h4>No timetable assigned</h4></div>'; return; }
+    const days = {};
+    schedule.forEach(s => { if (!days[s.day]) days[s.day] = []; days[s.day].push(s); });
+    let html = '';
+    for (const day of ['Monday','Tuesday','Wednesday','Thursday','Friday']) {
+      if (!days[day]) continue;
+      html += `<div class="card card-sm" style="margin-bottom:15px;"><div class="ct">${day}</div><table class="stable"><thead><tr><th>Period</th><th>Class</th><th>Subject</th><th>Time</th></tr></thead><tbody>`;
+      html += days[day].sort((a,b) => a.period - b.period).map(s => `<tr><td>${s.period}</td><td>${s.class}</td><td>${s.subject_code}</td><td>${s.start_time || '-'} - ${s.end_time || '-'}</td></tr>`).join('');
+      html += '</tbody></table></div>';
+    }
+    w.innerHTML = html;
+  } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+}
+
+async function loadStaffProfile() {
+  const el = document.getElementById('staffProfileContent');
+  el.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+  try {
+    const r = await api({ action: 'getStaffProfile', staff_id: S.staff.staff_id, school_code: S.staff.code });
+    if (!r.success) { el.innerHTML = '<div class="alert a-err">' + r.message + '</div>'; return; }
+    const s = r.staff;
+    const subjects = r.assigned_subjects || [];
+    el.innerHTML = `
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px;">
+        <div style="flex:1;min-width:250px;">
+          <div style="background:var(--off);padding:20px;border-radius:var(--rl);text-align:center;">
+            <div style="width:80px;height:80px;background:var(--navy);border-radius:50%;margin:0 auto 15px;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#fff;font-weight:800;">${s.full_name ? s.full_name.charAt(0).toUpperCase() : 'S'}</div>
+            <div style="font-weight:800;font-size:1.1rem;color:var(--navy);">${s.full_name || 'N/A'}</div>
+            <div style="color:var(--tlt);font-size:.9rem;">${s.staff_id || ''}</div>
+          </div>
+        </div>
+        <div style="flex:2;min-width:300px;">
+          <div style="background:var(--off);padding:20px;border-radius:var(--rl);">
+            <div class="ct" style="margin-bottom:15px;"><i class="fas fa-info-circle"></i> Staff Information</div>
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+              <div><div style="font-size:.75rem;color:var(--tlt);">Role</div><div style="font-weight:600;">${s.role || 'Teacher'}</div></div>
+              <div><div style="font-size:.75rem;color:var(--tlt);">Email</div><div style="font-weight:600;">${s.email || 'Not set'}</div></div>
+              <div><div style="font-size:.75rem;color:var(--tlt);">Phone</div><div style="font-weight:600;">${s.phone || 'Not set'}</div></div>
+              <div><div style="font-size:.75rem;color:var(--tlt);">Status</div><div style="font-weight:600;"><span class="badge b-ok">${s.status || 'active'}</span></div></div>
+            </div>
+            <div style="margin-top:15px;">
+              <div style="font-size:.75rem;color:var(--tlt);">Assigned Subjects</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+                ${subjects.length ? subjects.map(sub => `<span class="badge b-info">${sub.subject_name || sub.subject_code} - ${sub.class}</span>`).join('') : '<span style="color:var(--tlt);">No subjects assigned</span>'}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card card-sm">
+        <div class="ch"><div class="ct"><i class="fas fa-edit"></i> Update Profile</div></div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Full Name</label><input id="stfFullName" class="fc" value="${s.full_name || ''}"></div>
+          <div class="fg"><label class="fl">Email</label><input id="stfEmail" class="fc" type="email" value="${s.email || ''}"></div>
+        </div>
+        <div class="fr2">
+          <div class="fg"><label class="fl">Phone</label><input id="stfPhone" class="fc" value="${s.phone || ''}"></div>
+          <div class="fg"><label class="fl">Photo URL</label><input id="stfPhoto" class="fc" value="${s.photo_url || ''}" placeholder="https://..."></div>
+        </div>
+        <div class="fg"><label class="fl">Qualifications</label><textarea id="stfQual" class="fc" rows="2" placeholder="Your qualifications">${s.qualifications || ''}</textarea></div>
+        <div class="fg"><label class="fl">Bio</label><textarea id="stfBio" class="fc" rows="2" placeholder="Short bio">${s.bio || ''}</textarea></div>
+        <div class="fa"><button class="btn btn-ok" onclick="updateStaffProfile()"><i class="fas fa-save"></i> Save Changes</button></div>
+      </div>
+    `;
+  } catch(e) { el.innerHTML = '<div class="alert a-err">' + e.message + '</div>'; }
+}
+
+async function updateStaffProfile() {
+  const btn = document.querySelector('#st4 .btn-ok');
+  btn.innerHTML = '<span class="loader"></span>'; btn.disabled = true;
+  try {
+    const r = await api({
+      action: 'updateStaffProfile',
+      staff_id: S.staff.staff_id,
+      school_code: S.staff.code,
+      full_name: document.getElementById('stfFullName').value.trim(),
+      email: document.getElementById('stfEmail').value.trim(),
+      phone: document.getElementById('stfPhone').value.trim(),
+      photo_url: document.getElementById('stfPhoto').value.trim(),
+      qualifications: document.getElementById('stfQual').value.trim(),
+      bio: document.getElementById('stfBio').value.trim()
+    });
+    if (r.success) { toast('Profile updated!', 'ok'); loadStaffProfile(); }
+    else { toast(r.message, 'err'); }
+  } catch(e) { toast(e.message, 'err'); }
+  finally { btn.innerHTML = '<i class="fas fa-save"></i> Save Changes'; btn.disabled = false; }
+}
 // ════════════════════════════════════════════════
 // SUPER ADMIN
 // ════════════════════════════════════════════════
@@ -4163,6 +6001,717 @@ async function saRegister() {
   finally { btn.innerHTML = '<i class="fas fa-plus-circle"></i> Register School'; btn.disabled = false; }
 }
 // ════════════════════════════════════════════════
+// WEBSITE BUILDER (embedded from acadex-wb-v2)
+// ════════════════════════════════════════════════
+
+(function(){
+'use strict';
+
+/* ─── State ────────────────────────────────────────────────────── */
+const W = {
+  c: { p:'#0d1b2a', a:'#c9922a', h:'#0d1b2a', r:'#1a2f45' },
+  theme: 0,
+  sec: { hero:true, stats:true, portals:true, about:true, blog:true, gallery:false, ann:true, contact:true },
+  ann: [],
+  blog: [],
+  gal: [],
+  logo: null,
+  heroImg: null,
+  heroUrl: '',
+  publishedUrl: null,
+  device: 'd'
+};
+window.W = W;
+
+/* ─── Presets ──────────────────────────────────────────────────── */
+const PRESETS = [
+  { c:'#0d1b2a', a:'#c9922a', h:'#0d1b2a', r:'#1a2f45' },
+  { c:'#0c2461', a:'#ffd32a', h:'#0c2461', r:'#1e3799' },
+  { c:'#1e3a2f', a:'#a3cb38', h:'#1e3a2f', r:'#2d5a3d' },
+  { c:'#6b0000', a:'#e8b84b', h:'#6b0000', r:'#8b0000' },
+  { c:'#341f97', a:'#e8b84b', h:'#341f97', r:'#5f27cd' },
+  { c:'#0d0d0d', a:'#00d2d3', h:'#0d0d0d', r:'#1a1a2e' },
+  { c:'#0a3d62', a:'#60a3bc', h:'#0a3d62', r:'#1289a7' },
+  { c:'#4a0404', a:'#e8b84b', h:'#4a0404', r:'#6b0000' },
+  { c:'#3d2000', a:'#ffd32a', h:'#3d2000', r:'#7a4000' },
+  { c:'#b34000', a:'#ffcc02', h:'#7a2900', r:'#c94b0c' },
+  { c:'#0d4f4f', a:'#2ecdb0', h:'#0a3d3d', r:'#136b6b' },
+  { c:'#1a0a00', a:'#ff6b35', h:'#1a0a00', r:'#3d1a00' },
+  { c:'#07284a', a:'#6cbcf5', h:'#07284a', r:'#1564a3' },
+  { c:'#2e3b1e', a:'#c8b560', h:'#2e3b1e', r:'#3f5229' },
+];
+
+/* ─── Init swatches ────────────────────────────────────────────── */
+function initSwatches(){
+  const g = document.getElementById('wbSwatches');
+  if(!g) return;
+  g.innerHTML = PRESETS.map((p,i)=>`
+    <div class="wb-sw ${i===0?'sel':''}" style="background:linear-gradient(135deg,${p.c},${p.r});"
+      title="Preset ${i+1}" onclick="applyPreset(${i})"></div>`).join('');
+}
+
+window.applyPreset = function(i){
+  const p = PRESETS[i];
+  W.c = { p:p.c, a:p.a, h:p.h, r:p.r };
+  syncColourInputs();
+  document.querySelectorAll('.wb-sw').forEach((el,j)=>el.classList.toggle('sel',j===i));
+  wbRender();
+};
+
+function syncColourInputs(){
+  const m = { wbCP:'p', wbCA:'a', wbCH:'h', wbCR:'r' };
+  Object.entries(m).forEach(([id,k])=>{
+    const c = document.getElementById(id);
+    const t = document.getElementById(id+'t');
+    if(c) c.value = W.c[k];
+    if(t) t.value = W.c[k];
+  });
+}
+
+/* ─── Tab switching ────────────────────────────────────────────── */
+window.wbTab = function(i){
+  document.querySelectorAll('.wb-t').forEach((el,j)=>el.classList.toggle('on',j===i));
+  document.querySelectorAll('.wb-p').forEach((el,j)=>el.classList.toggle('on',j===i));
+};
+
+/* ─── Theme ────────────────────────────────────────────────────── */
+window.wbTheme = function(i){
+  W.theme = i;
+  document.querySelectorAll('[id^=wbTh]').forEach((el,j)=>el.classList.toggle('sel',j===i));
+  wbRender();
+};
+
+/* ─── Colour inputs ────────────────────────────────────────────── */
+window.wbC = function(k,v){
+  W.c[k]=v;
+  const t=document.getElementById({p:'wbCPt',a:'wbCAt',h:'wbCHt',r:'wbCRt'}[k]);
+  if(t) t.value=v;
+  wbRender();
+};
+window.wbCt = function(k,v){
+  if(/^#[0-9a-fA-F]{6}$/.test(v)){
+    W.c[k]=v;
+    const c=document.getElementById({p:'wbCP',a:'wbCA',h:'wbCH',r:'wbCR'}[k]);
+    if(c) c.value=v;
+    wbRender();
+  }
+};
+
+/* ─── Logo upload ───────────────────────────────────────────────── */
+window.wbUploadLogo = function(inp){
+  const f=inp.files[0]; if(!f) return;
+  if(f.size>2*1024*1024){ if(typeof toast==='function') toast('Logo must be under 2MB','warn'); return; }
+  const r=new FileReader(); r.onload=e=>{ W.logo=e.target.result; document.getElementById('wbLogoThumb').innerHTML=`<img src="${W.logo}" style="max-width:54px;max-height:54px;border-radius:6px;">`; wbRender(); }; r.readAsDataURL(f);
+};
+
+/* ─── Hero image upload ────────────────────────────────────────── */
+window.wbUploadHero = function(inp){
+  const f=inp.files[0]; if(!f) return;
+  if(f.size>3*1024*1024){ if(typeof toast==='function') toast('Hero image must be under 3MB','warn'); return; }
+  const r=new FileReader(); r.onload=e=>{ W.heroImg=e.target.result; document.getElementById('wbHeroThumb').innerHTML=`<img src="${W.heroImg}" style="max-width:100%;max-height:58px;border-radius:6px;object-fit:cover;">`; wbRender(); }; r.readAsDataURL(f);
+};
+
+/* ─── Gallery ───────────────────────────────────────────────────── */
+window.wbUploadGal = function(inp){
+  const files=Array.from(inp.files).slice(0,6-W.gal.length);
+  let done=0;
+  if(!files.length) return;
+  files.forEach(f=>{
+    if(f.size>2*1024*1024) return;
+    const r=new FileReader(); r.onload=e=>{ W.gal.push({src:e.target.result,cap:''}); done++; if(done===files.length){ renderGalEdit(); wbRender(); } }; r.readAsDataURL(f);
+  });
+  inp.value='';
+};
+
+window.wbSyncGalUrls = function(){
+  const urls=(document.getElementById('wbGalUrls')?.value||'').split('\n').map(s=>s.trim()).filter(Boolean).slice(0,6);
+  const uploaded=W.gal.filter(g=>!g.isUrl);
+  W.gal=[...uploaded,...urls.map(u=>({src:u,cap:'',isUrl:true}))].slice(0,6);
+  renderGalEdit(); wbRender();
+};
+
+function renderGalEdit(){
+  const g=document.getElementById('wbGalGrid'); if(!g) return;
+  g.innerHTML=W.gal.map((it,i)=>`
+    <div class="wb-gal-cell">
+      <img src="${it.src}" alt="">
+      <button class="wb-gal-cell-del" onclick="W.gal.splice(${i},1);renderGalEdit();wbRender();">✕</button>
+      <input value="${(it.cap||'').replace(/"/g,'&quot;')}" placeholder="Caption..." oninput="W.gal[${i}].cap=this.value;wbRender();">
+    </div>`).join('');
+  const add=document.getElementById('wbGalAdd');
+  if(add) add.style.display=W.gal.length>=6?'none':'';
+}
+window.renderGalEdit = renderGalEdit;
+
+/* ─── Section toggles ───────────────────────────────────────────── */
+window.wbTog = function(el,k){
+  el.classList.toggle('on');
+  W.sec[k]=el.classList.contains('on');
+  wbRender();
+};
+
+/* ─── Announcements ─────────────────────────────────────────────── */
+window.wbAddAnn = function(){
+  W.ann.push({title:'New Announcement',body:'Enter details here.',priority:'normal'});
+  renderAnnList(); wbRender();
+};
+window.wbDelAnn = function(i){ W.ann.splice(i,1); renderAnnList(); wbRender(); };
+function renderAnnList(){
+  const el=document.getElementById('wbAnnList'); if(!el) return;
+  el.innerHTML=W.ann.map((a,i)=>`
+    <div class="wb-item">
+      <button class="wb-item-del" onclick="wbDelAnn(${i})">✕</button>
+      <input class="fc" value="${a.title.replace(/"/g,'&quot;')}" placeholder="Headline" oninput="W.ann[${i}].title=this.value;wbRender();" style="margin-bottom:5px;padding:5px;">
+      <textarea class="fc" rows="2" oninput="W.ann[${i}].body=this.value;wbRender();" style="padding:5px;">${a.body}</textarea>
+      <select class="fc" onchange="W.ann[${i}].priority=this.value;wbRender();" style="padding:5px;margin-top:4px;">
+        <option ${a.priority==='normal'?'selected':''}>normal</option>
+        <option value="high" ${a.priority==='high'?'selected':''}>Important</option>
+        <option value="urgent" ${a.priority==='urgent'?'selected':''}>Urgent</option>
+      </select>
+    </div>`).join('');
+}
+
+/* ─── Blog ──────────────────────────────────────────────────────── */
+window.wbAddBlog = function(data){
+  W.blog.push(data||{title:'Blog Post Title',excerpt:'Brief description of the post.',date:new Date().toISOString().split('T')[0],author:'Admin',category:'News',img:''});
+  renderBlogList(); wbRender();
+};
+window.wbDelBlog = function(i){ W.blog.splice(i,1); renderBlogList(); wbRender(); };
+function renderBlogList(){
+  const el=document.getElementById('wbBlogList'); if(!el) return;
+  el.innerHTML=W.blog.map((b,i)=>`
+    <div class="wb-item">
+      <button class="wb-item-del" onclick="wbDelBlog(${i})">✕</button>
+      <input class="fc" value="${b.title.replace(/"/g,'&quot;')}" placeholder="Post title" oninput="W.blog[${i}].title=this.value;wbRender();" style="margin-bottom:4px;padding:5px;">
+      <textarea class="fc" rows="2" oninput="W.blog[${i}].excerpt=this.value;wbRender();" style="padding:5px;margin-bottom:4px;">${b.excerpt}</textarea>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:4px;">
+        <input class="fc" value="${b.date}" placeholder="Date" oninput="W.blog[${i}].date=this.value;wbRender();" style="padding:5px;font-size:.74rem;">
+        <input class="fc" value="${b.author}" placeholder="Author" oninput="W.blog[${i}].author=this.value;wbRender();" style="padding:5px;font-size:.74rem;">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+        <select class="fc" onchange="W.blog[${i}].category=this.value;wbRender();" style="padding:5px;font-size:.74rem;">
+          ${['News','Achievement','Event','Alumni','Academics','Sports'].map(c=>`<option ${b.category===c?'selected':''}>${c}</option>`).join('')}
+        </select>
+        <input class="fc" value="${b.img||''}" placeholder="Image URL (opt)" oninput="W.blog[${i}].img=this.value;wbRender();" style="padding:5px;font-size:.74rem;">
+      </div>
+    </div>`).join('');
+}
+
+/* ─── AI generator ──────────────────────────────────────────────── */
+window.wbAiGen = async function(){
+  const topic=(document.getElementById('wbAiTopic')?.value||'').trim();
+  if(!topic){ if(typeof toast==='function') toast('Enter a topic first','warn'); return; }
+  const cat=document.getElementById('wbAiCat')?.value||'News';
+  const tone=document.getElementById('wbAiTone')?.value||'Professional';
+  const school=document.getElementById('wbName')?.value||'the school';
+  const btn=document.getElementById('wbAiBtn');
+  const lbl=document.getElementById('wbAiLbl');
+  btn.disabled=true; lbl.textContent='Generating...';
+  try {
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:600,
+        messages:[{role:'user',content:`Write a school blog post for ${school} about: "${topic}". Category: ${cat}. Tone: ${tone}. Return ONLY valid JSON, no markdown fences: {"title":"...","excerpt":"2-3 sentence summary for website news card","author":"School Communications","category":"${cat}"}`}]
+      })
+    });
+    const d=await res.json();
+    const txt=(d.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();
+    const post=JSON.parse(txt);
+    post.date=new Date().toISOString().split('T')[0]; post.img='';
+    wbAddBlog(post);
+    if(typeof toast==='function') toast('Post generated — edit as needed','ok');
+  } catch(e){ if(typeof toast==='function') toast('AI generation failed: '+e.message,'err'); }
+  finally{ btn.disabled=false; lbl.textContent='Generate Post'; }
+};
+
+/* ─── Device switcher ───────────────────────────────────────────── */
+window.wbDev = function(d){
+  W.device=d;
+  const frame=document.getElementById('wbFrame');
+  if(frame) frame.classList.toggle('mob',d==='m');
+  ['wbDevD','wbdD'].forEach(id=>document.getElementById(id)?.classList.toggle('on',d==='d'));
+  ['wbDevM','wbdM'].forEach(id=>document.getElementById(id)?.classList.toggle('on',d==='m'));
+  resizeIframe();
+};
+
+/* ─── Helper: read input ────────────────────────────────────────── */
+function g(id){ return document.getElementById(id)?.value||''; }
+
+/* ─── Collect config ────────────────────────────────────────────── */
+function collectCfg(){
+  return {
+    c:{...W.c}, theme:W.theme, sec:{...W.sec},
+    ann:W.ann, blog:W.blog, gal:W.gal,
+    logo:W.logo, heroImg:W.heroImg, heroUrl:W.heroUrl,
+    name:g('wbName'), motto:g('wbMotto'), addr:g('wbAddr'), city:g('wbCity'),
+    state:g('wbState'), phone:g('wbPhone'), email:g('wbEmail'),
+    term:g('wbTerm'), heroTxt:g('wbHeroTxt'), about:g('wbAbout'),
+    footer:g('wbFooter'), nav:g('wbNav'),
+    stats:[{v:g('wbSv1'),l:g('wbSl1')},{v:g('wbSv2'),l:g('wbSl2')},{v:g('wbSv3'),l:g('wbSl3')}],
+    social:{fb:g('wbFb'),ig:g('wbIg'),wa:g('wbWa'),yt:g('wbYt')}
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   BUILD FULL PUBLIC PAGE HTML
+   ═══════════════════════════════════════════════════════════════════ */
+function buildPage(cfg){
+  const c=cfg.c, sec=cfg.sec;
+  const name=cfg.name||'Your School';
+  const initials=(name.trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase())||'SC';
+  const addr=[cfg.addr,cfg.city,cfg.state].filter(Boolean).join(', ');
+  const heroSrc=cfg.heroImg||cfg.heroUrl||'';
+  const navItems=(cfg.nav||'Home,About,Admissions,Contact').split(',').map(s=>s.trim()).filter(Boolean);
+
+  /* hero content shared between gradient and photo overlays */
+  const heroCnt=`
+    ${cfg.term?`<div style="display:inline-block;border:1.5px solid ${c.a};color:${c.a};padding:4px 14px;border-radius:20px;font-size:.82rem;font-weight:700;margin-bottom:14px;">✦ ${cfg.term}</div>`:''}
+    <h1 style="font-size:clamp(1.8rem,4vw,3rem);font-weight:900;color:#fff;line-height:1.2;margin:0 0 8px;">${name}</h1>
+    ${addr?`<p style="color:rgba(255,255,255,.7);font-size:.9rem;margin:0 0 5px;">📍 ${addr}</p>`:''}
+    ${cfg.motto?`<p style="color:${c.a};font-style:italic;font-size:.9rem;margin:0 0 20px;">"${cfg.motto}"</p>`:''}
+    ${cfg.heroTxt?`<p style="color:rgba(255,255,255,.75);font-size:.9rem;max-width:520px;line-height:1.7;margin:0 0 24px;">${cfg.heroTxt}</p>`:''}
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <a href="#portals" style="background:${c.a};color:${c.p};padding:13px 28px;border-radius:10px;font-weight:800;font-size:.92rem;text-decoration:none;">🎓 Student Login</a>
+      <a href="#portals" style="background:rgba(255,255,255,.12);color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:13px 28px;border-radius:10px;font-weight:700;font-size:.92rem;text-decoration:none;">📋 Check Results</a>
+    </div>`;
+
+  const heroSection=sec.hero?(heroSrc
+    ?`<div style="position:relative;min-height:420px;background:${c.r} url('${heroSrc}') center/cover;display:flex;align-items:flex-end;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.78) 0%,rgba(0,0,0,.25) 55%,transparent 100%);"></div>
+        <div style="position:relative;z-index:1;padding:50px 40px;">${heroCnt}</div>
+      </div>`
+    :`<div style="background:linear-gradient(135deg,${c.r} 0%,${c.p} 100%);padding:70px 40px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:-60px;right:-60px;width:300px;height:300px;border-radius:50%;background:rgba(255,255,255,.04);border:60px solid rgba(255,255,255,.04);"></div>
+        <div style="position:relative;z-index:1;">${heroCnt}</div>
+      </div>`)
+    :'';
+
+  const statsSection=sec.stats&&cfg.stats?.length?`
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1100px;margin:0 auto;padding:28px 24px 0;">
+      ${cfg.stats.map(s=>`<div style="background:#fff;border-radius:12px;border:1px solid #e5e9f0;padding:22px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05);">
+        <div style="font-size:2.2rem;font-weight:900;color:${c.p};">${s.v||'—'}</div>
+        <div style="font-size:.74rem;color:#6b7a90;text-transform:uppercase;letter-spacing:.5px;margin-top:4px;">${s.l}</div>
+      </div>`).join('')}
+    </div>`:'';
+
+  const aboutSection=sec.about&&cfg.about?`
+    <div style="max-width:1100px;margin:0 auto;padding:36px 24px;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;">
+      <div>
+        <div style="font-size:.76rem;font-weight:800;color:${c.a};text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;">About Us</div>
+        <h2 style="font-size:1.6rem;font-weight:900;color:${c.p};line-height:1.3;margin:0 0 16px;">Quality &amp; Excellence</h2>
+        <p style="font-size:.96rem;color:#4a5568;line-height:1.8;">${cfg.about}</p>
+      </div>
+      <div style="background:${c.p};border-radius:16px;padding:32px;color:rgba(255,255,255,.85);">
+        ${cfg.stats?.map(s=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.1);">
+          <span style="font-size:.88rem;">${s.l}</span>
+          <span style="font-size:1.2rem;font-weight:900;color:${c.a};">${s.v}</span>
+        </div>`).join('')||''}
+      </div>
+    </div>`:'';
+
+  const portalsSection=sec.portals?`
+    <div id="portals" style="max-width:1100px;margin:0 auto;padding:20px 24px 36px;">
+      <h2 style="font-size:1.3rem;font-weight:900;color:${c.p};margin:0 0 6px;">Our Portals</h2>
+      <div style="width:48px;height:3px;background:${c.a};border-radius:2px;margin-bottom:20px;"></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+        <div style="background:#fff;border-radius:16px;border:2px solid #e5e9f0;padding:28px 22px;text-align:center;cursor:pointer;transition:all .22s;" onmouseover="this.style.borderColor='${c.a}';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#e5e9f0';this.style.transform='none'">
+          <div style="width:60px;height:60px;border-radius:16px;background:${c.p}18;color:${c.p};display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 16px;">🎓</div>
+          <div style="font-size:1rem;font-weight:800;color:${c.p};margin-bottom:6px;">Student Portal</div>
+          <div style="font-size:.84rem;color:#6b7a90;line-height:1.5;">Login to take CBT exams and view your academic results</div>
+        </div>
+        <div style="background:#fff;border-radius:16px;border:2px solid #e5e9f0;padding:28px 22px;text-align:center;cursor:pointer;" onmouseover="this.style.borderColor='${c.a}';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#e5e9f0';this.style.transform='none'">
+          <div style="width:60px;height:60px;border-radius:16px;background:${c.a}22;color:${c.a};display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 16px;">👨‍👩‍👦</div>
+          <div style="font-size:1rem;font-weight:800;color:${c.p};margin-bottom:6px;">Parent Portal</div>
+          <div style="font-size:.84rem;color:#6b7a90;line-height:1.5;">View your child's progress, fee status and attendance</div>
+        </div>
+        <div style="background:#fff;border-radius:16px;border:2px solid #e5e9f0;padding:28px 22px;text-align:center;cursor:pointer;" onmouseover="this.style.borderColor='${c.a}';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#e5e9f0';this.style.transform='none'">
+          <div style="width:60px;height:60px;border-radius:16px;background:#1a7a4520;color:#1a7a45;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 16px;">🏆</div>
+          <div style="font-size:1rem;font-weight:800;color:${c.p};margin-bottom:6px;">Check Results</div>
+          <div style="font-size:.84rem;color:#6b7a90;line-height:1.5;">Enter your Result ID to download your report card</div>
+        </div>
+      </div>
+    </div>`:'';
+
+  const blogSection=sec.blog&&cfg.blog?.length?`
+    <div style="background:#f8f9fb;padding:40px 24px;">
+      <div style="max-width:1100px;margin:0 auto;">
+        <h2 style="font-size:1.3rem;font-weight:900;color:${c.p};margin:0 0 6px;">Featured News</h2>
+        <div style="width:48px;height:3px;background:${c.a};border-radius:2px;margin-bottom:24px;"></div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;">
+          ${cfg.blog.map(b=>`
+          <div style="background:#fff;border-radius:14px;overflow:hidden;border:1px solid #e5e9f0;box-shadow:0 2px 8px rgba(0,0,0,.04);transition:all .2s;" onmouseover="this.style.boxShadow='0 8px 28px rgba(0,0,0,.1)';this.style.transform='translateY(-3px)'" onmouseout="this.style.boxShadow='0 2px 8px rgba(0,0,0,.04)';this.style.transform='none'">
+            ${b.img?`<img src="${b.img}" style="width:100%;height:180px;object-fit:cover;display:block;" alt="">`
+              :`<div style="width:100%;height:180px;background:${c.a}18;display:flex;align-items:center;justify-content:center;font-size:2.5rem;">📰</div>`}
+            <div style="padding:16px 18px;">
+              <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:${c.a};margin-bottom:6px;">${b.category||'News'}</div>
+              <h3 style="font-size:1rem;font-weight:800;color:${c.p};line-height:1.35;margin:0 0 8px;">${b.title}</h3>
+              <p style="font-size:.84rem;color:#4a5568;line-height:1.6;margin:0 0 10px;">${b.excerpt}</p>
+              <div style="font-size:.74rem;color:#8a94a6;">${b.date} · ${b.author}</div>
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>`:'';
+
+  const gallerySection=sec.gallery&&cfg.gal?.length?`
+    <div style="max-width:1100px;margin:0 auto;padding:40px 24px;">
+      <h2 style="font-size:1.3rem;font-weight:900;color:${c.p};margin:0 0 6px;">Gallery</h2>
+      <div style="width:48px;height:3px;background:${c.a};border-radius:2px;margin-bottom:24px;"></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">
+        ${cfg.gal.map(g=>`
+          <div style="border-radius:10px;overflow:hidden;position:relative;">
+            <img src="${g.src}" alt="${g.cap||''}" style="width:100%;height:180px;object-fit:cover;display:block;">
+            ${g.cap?`<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.65));color:#fff;padding:8px 10px;font-size:.76rem;font-weight:600;">${g.cap}</div>`:''}
+          </div>`).join('')}
+      </div>
+    </div>`:'';
+
+  const annSection=sec.ann&&cfg.ann?.length?`
+    <div style="background:#f8f9fb;padding:40px 24px;">
+      <div style="max-width:1100px;margin:0 auto;">
+        <h2 style="font-size:1.3rem;font-weight:900;color:${c.p};margin:0 0 6px;">Announcements</h2>
+        <div style="width:48px;height:3px;background:${c.a};border-radius:2px;margin-bottom:24px;"></div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          ${cfg.ann.map(a=>`
+          <div style="background:#fff;border-radius:10px;border-left:4px solid ${a.priority==='urgent'?'#b52020':a.priority==='high'?'#b56b00':c.a};padding:16px 20px;box-shadow:0 2px 6px rgba(0,0,0,.04);">
+            <div style="font-size:.96rem;font-weight:800;color:${c.p};margin-bottom:5px;">${a.title}</div>
+            <div style="font-size:.86rem;color:#4a5568;line-height:1.6;">${a.body}</div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>`:'';
+
+  const socials=[];
+  if(cfg.social?.fb) socials.push(`<a href="${cfg.social.fb}" target="_blank" style="width:38px;height:38px;border-radius:9px;background:#1877f2;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.9rem;text-decoration:none;font-weight:800;">f</a>`);
+  if(cfg.social?.ig) socials.push(`<a href="${cfg.social.ig}" target="_blank" style="width:38px;height:38px;border-radius:9px;background:linear-gradient(45deg,#f09433,#dc2743,#bc1888);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.76rem;text-decoration:none;font-weight:800;">ig</a>`);
+  if(cfg.social?.yt) socials.push(`<a href="${cfg.social.yt}" target="_blank" style="width:38px;height:38px;border-radius:9px;background:#ff0000;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.9rem;text-decoration:none;">▶</a>`);
+  if(cfg.social?.wa) socials.push(`<a href="https://wa.me/${cfg.social.wa}" target="_blank" style="width:38px;height:38px;border-radius:9px;background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.76rem;text-decoration:none;font-weight:800;">wa</a>`);
+
+  const contactSection=sec.contact?`
+    <div style="max-width:1100px;margin:0 auto;padding:40px 24px;">
+      <h2 style="font-size:1.3rem;font-weight:900;color:${c.p};margin:0 0 6px;">Contact Us</h2>
+      <div style="width:48px;height:3px;background:${c.a};border-radius:2px;margin-bottom:24px;"></div>
+      <div style="background:${c.p};border-radius:16px;padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:32px;color:#fff;">
+        <div>
+          <div style="font-size:.78rem;font-weight:800;color:${c.a};text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;">Get In Touch</div>
+          ${addr?`<div style="margin-bottom:10px;font-size:.9rem;opacity:.85;">📍 ${addr}</div>`:''}
+          ${cfg.phone?`<div style="margin-bottom:10px;font-size:.9rem;opacity:.85;">📱 ${cfg.phone}</div>`:''}
+          ${cfg.email?`<div style="margin-bottom:14px;font-size:.9rem;opacity:.85;">✉️ ${cfg.email}</div>`:''}
+          ${socials.length?`<div style="display:flex;gap:8px;margin-top:8px;">${socials.join('')}</div>`:''}
+        </div>
+        <div>
+          <div style="font-size:.78rem;font-weight:800;color:${c.a};text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;">We're Here For You</div>
+          <p style="font-size:.9rem;opacity:.8;line-height:1.7;margin:0 0 16px;">Our administrative office is open Monday to Friday. We welcome admissions enquiries, feedback, and general information requests.</p>
+          ${cfg.social?.wa?`<a href="https://wa.me/${cfg.social.wa}" style="display:inline-flex;align-items:center;gap:8px;background:#25d366;color:#fff;padding:10px 20px;border-radius:9px;font-weight:700;font-size:.88rem;text-decoration:none;">💬 Chat on WhatsApp</a>`:''}
+        </div>
+      </div>
+    </div>`:'';
+
+  const logoHtml=cfg.logo
+    ?`<img src="${cfg.logo}" style="width:42px;height:42px;border-radius:10px;object-fit:contain;" alt="Logo">`
+    :`<div style="width:42px;height:42px;border-radius:10px;background:${c.a};color:${c.p};display:flex;align-items:center;justify-content:center;font-weight:900;font-size:.9rem;font-family:monospace;">${initials}</div>`;
+
+  const footerTxt=cfg.footer||`${name} &middot; Powered by <strong style="color:${c.a};">ACADEX</strong> &middot; &copy; ${new Date().getFullYear()}`;
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${name}${cfg.motto?' — '+cfg.motto:''}</title>
+<meta name="theme-color" content="${c.h}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Sora',sans-serif;background:#f4f5f7;color:#1a2332;}
+a{text-decoration:none;}
+nav{background:${c.h};border-bottom:3px solid ${c.a};position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.18);}
+.nav-inner{max-width:1100px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:66px;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-name{color:#fff;font-weight:900;font-size:1.1rem;}
+.brand-sub{color:rgba(255,255,255,.4);font-size:.62rem;}
+.nav-links{display:flex;gap:4px;align-items:center;}
+.nav-link{color:rgba(255,255,255,.8);padding:7px 13px;border-radius:7px;font-size:.84rem;font-weight:600;}
+.nav-link:hover{background:rgba(255,255,255,.1);color:#fff;}
+.nav-cta{background:${c.a};color:${c.p};padding:8px 18px;border-radius:8px;font-weight:800;font-size:.84rem;}
+.nav-cta:hover{opacity:.9;}
+@media(max-width:768px){
+  .nav-links .nav-link{display:none;}
+  .nav-cta{display:flex;}
+  .nav-inner{height:58px;}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <div class="brand">
+      ${logoHtml}
+      <div><div class="brand-name">${name}</div><div class="brand-sub">Powered by ACADEX</div></div>
+    </div>
+    <div class="nav-links">
+      ${navItems.map(n=>`<a href="#" class="nav-link">${n}</a>`).join('')}
+      <a href="#portals" class="nav-cta">Login</a>
+    </div>
+  </div>
+</nav>
+${heroSection}
+${statsSection}
+${aboutSection}
+${portalsSection}
+${blogSection}
+${gallerySection}
+${annSection}
+${contactSection}
+<footer style="background:${c.p};border-top:3px solid ${c.a};color:rgba(255,255,255,.55);text-align:center;padding:22px 20px;font-size:.84rem;">${footerTxt}</footer>
+</body>
+</html>`;
+}
+
+/* ─── Render preview into iframe ────────────────────────────────── */
+function wbRender(){
+  const iframe=document.getElementById('wbIframe');
+  if(!iframe) return;
+  const html=buildPage(collectCfg());
+  const doc=iframe.contentDocument||iframe.contentWindow?.document;
+  if(!doc) return;
+  doc.open(); doc.write(html); doc.close();
+  /* auto-resize after paint */
+  clearTimeout(wbRender._t);
+  wbRender._t=setTimeout(resizeIframe,400);
+}
+wbRender._t=null;
+window.wbRender=wbRender;
+
+function resizeIframe(){
+  const iframe=document.getElementById('wbIframe');
+  if(!iframe||!iframe.contentDocument?.body) return;
+  iframe.style.height='0';
+  iframe.style.height=iframe.contentDocument.body.scrollHeight+'px';
+}
+
+/* ─── Open full preview ─────────────────────────────────────────── */
+window.wbOpenFull=function(){
+  const html=buildPage(collectCfg());
+  const w=window.open('','_blank','width=1100,height=800');
+  w.document.write(html); w.document.close();
+};
+
+/* ─── Publish modal ─────────────────────────────────────────────── */
+window.wbOpenPublish=function(){
+  const m=document.getElementById('wbModal'); if(!m) return;
+  const inp=document.getElementById('wbPubCode');
+  if(typeof S!=='undefined'&&S?.admin?.code) inp.value=S.admin.code;
+  wbPubCodeChange(inp);
+  document.getElementById('wbMStep1').classList.remove('hidden');
+  document.getElementById('wbMStep2').classList.add('hidden');
+  m.classList.add('open');
+};
+window.wbCloseModal=function(){
+  document.getElementById('wbModal')?.classList.remove('open');
+};
+window.wbPubCodeChange=function(el){
+  const code=el.value.toUpperCase().replace(/[^A-Z0-9]/g,'');
+  el.value=code;
+  const base=window.location.origin+window.location.pathname;
+  const prev=document.getElementById('wbPubPreview');
+  if(prev) prev.textContent=`${base}?school=${code||'SCHOOLCODE'}`;
+};
+window.wbPublish=async function(){
+  const code=document.getElementById('wbPubCode').value.trim().toUpperCase();
+  if(!code){ if(typeof toast==='function') toast('Enter school code','warn'); return; }
+  const btn=document.getElementById('wbPubBtn');
+  btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Publishing...'; btn.disabled=true;
+  try{
+    const cfg=collectCfg();
+    try{ await api({action:'saveWebsiteConfig',school_code:code,config_json:JSON.stringify(cfg),published:'yes'}); }catch(e){}
+    const base=window.location.origin+window.location.pathname;
+    const url=`${base}?school=${code}`;
+    W.publishedUrl=url;
+    document.getElementById('wbPubFinalUrl').textContent=url;
+    const ob=document.getElementById('wbPubOpenBtn'); if(ob) ob.href=url;
+    document.getElementById('wbMStep1').classList.add('hidden');
+    document.getElementById('wbMStep2').classList.remove('hidden');
+    /* update live bar */
+    const bar=document.getElementById('wbLiveBar'); if(bar) bar.classList.remove('hidden');
+    const lu=document.getElementById('wbLiveUrl'); if(lu) lu.textContent=url;
+    const ll=document.getElementById('wbLiveLink'); if(ll) ll.href=url;
+  }finally{ btn.innerHTML='<i class="fas fa-rocket"></i> Publish Now'; btn.disabled=false; }
+};
+window.wbCopyUrl=function(){
+  if(!W.publishedUrl) return;
+  navigator.clipboard?.writeText(W.publishedUrl).then(()=>{if(typeof toast==='function') toast('URL copied','ok');});
+};
+
+/* ─── Save / Load ───────────────────────────────────────────────── */
+window.wbSave=async function(){
+  if(typeof S==='undefined'||!S?.admin){ if(typeof toast==='function') toast('Not logged in','err'); return; }
+  const cfg=collectCfg();
+  try{
+    if(typeof toast==='function') toast('Saving...','info');
+    const r=await api({action:'saveWebsiteConfig',school_code:S.admin.code,config_json:JSON.stringify(cfg)});
+    if(r.success){ if(typeof toast==='function') toast('Saved!','ok'); }
+    else if(typeof toast==='function') toast(r.message||'Save failed','err');
+  }catch(e){ if(typeof toast==='function') toast('Error: '+e.message,'err'); }
+};
+window.wbLoad=async function(){
+  if(typeof S==='undefined'||!S?.admin) return;
+  try{
+    const r=await api({action:'getWebsiteConfig',school_code:S.admin.code});
+    if(r.success&&r.config){ wbApplyConfig(JSON.parse(r.config)); if(typeof toast==='function') toast('Loaded saved config','ok'); }
+    else if(typeof toast==='function') toast('No saved config — start building!','info');
+  }catch(e){ if(typeof toast==='function') toast('Could not load: '+e.message,'err'); }
+};
+
+function wbApplyConfig(cfg){
+  if(!cfg) return;
+  if(cfg.c){ Object.assign(W.c,cfg.c); syncColourInputs(); }
+  if(cfg.theme!==undefined) wbTheme(cfg.theme);
+  if(cfg.sec) Object.assign(W.sec,cfg.sec);
+  if(cfg.ann){ W.ann=cfg.ann; renderAnnList(); }
+  if(cfg.blog){ W.blog=cfg.blog; renderBlogList(); }
+  if(cfg.gal){ W.gal=cfg.gal; renderGalEdit(); }
+  if(cfg.logo){ W.logo=cfg.logo; document.getElementById('wbLogoThumb').innerHTML=`<img src="${cfg.logo}" style="max-width:54px;max-height:54px;border-radius:6px;">`; }
+  if(cfg.heroImg){ W.heroImg=cfg.heroImg; document.getElementById('wbHeroThumb').innerHTML=`<img src="${cfg.heroImg}" style="max-width:100%;max-height:58px;border-radius:6px;object-fit:cover;">`; }
+  const fm={wbName:'name',wbMotto:'motto',wbAddr:'addr',wbCity:'city',wbState:'state',wbPhone:'phone',wbEmail:'email',wbTerm:'term',wbHeroTxt:'heroTxt',wbAbout:'about',wbFooter:'footer',wbNav:'nav',wbHeroUrl:'heroUrl',wbFb:'social.fb',wbIg:'social.ig',wbWa:'social.wa',wbYt:'social.yt'};
+  Object.entries(fm).forEach(([id,path])=>{
+    const keys=path.split('.'); let val=cfg; for(const k of keys) val=val?.[k];
+    const el=document.getElementById(id); if(el&&val) el.value=val;
+  });
+  if(cfg.stats) cfg.stats.forEach((s,i)=>{
+    const vi=document.getElementById('wbSv'+(i+1)); const li=document.getElementById('wbSl'+(i+1));
+    if(vi) vi.value=s.v; if(li) li.value=s.l;
+  });
+  Object.entries(W.sec).forEach(([k,v])=>{
+    const tog=document.getElementById('wbTog'+k[0].toUpperCase()+k.slice(1));
+    if(tog) tog.classList.toggle('on',v);
+  });
+  if(cfg.heroUrl){ W.heroUrl=cfg.heroUrl; const el=document.getElementById('wbHeroUrl'); if(el) el.value=cfg.heroUrl; }
+  wbRender();
+}
+
+/* ─── Auto-fill from admin settings ────────────────────────────── */
+function wbAutoFill(){
+  if(typeof S==='undefined'||!S?.admin) return;
+  const sc=S.settings||{};
+  const si=(id,v)=>{ const el=document.getElementById(id); if(el&&!el.value&&v) el.value=v; };
+  si('wbName', sc.school_name||S.admin.name);
+  si('wbMotto', sc.motto);
+  si('wbAddr', sc.address);
+  si('wbCity', sc.town);
+  si('wbState', sc.state);
+  si('wbTerm', sc.term?(sc.term+(sc.session?' · '+sc.session:'')):null);
+  wbRender();
+}
+
+/* ─── PUBLIC LANDING PAGE ───────────────────────────────────────── */
+async function loadPublicLanding(code){
+  if(typeof go==='function') go('public-landing');
+  const wrap=document.getElementById('plWrap'); if(!wrap) return;
+  wrap.innerHTML='<div style="text-align:center;padding:60px 20px;"><div style="font-size:2rem;margin-bottom:12px;">⏳</div><div>Loading school page…</div></div>';
+  try{
+    const r=await api({action:'getWebsiteConfig',school_code:code});
+    if(!r.success||!r.config){
+      wrap.innerHTML=`<div style="text-align:center;padding:60px 20px;"><div style="font-size:3rem;margin-bottom:12px;">🏫</div><h2>Page not found</h2><p style="color:#666;margin-top:8px;">School code <strong>${code}</strong> has no published website.</p><a href="${window.location.pathname}" style="display:inline-block;margin-top:20px;background:#0d1b2a;color:#fff;padding:10px 24px;border-radius:8px;font-weight:700;">Go to ACADEX Home</a></div>`;
+      return;
+    }
+    const cfg=JSON.parse(r.config);
+    const html=buildPage(cfg);
+    wrap.innerHTML='<iframe style="width:100%;border:none;" id="plIframe" scrolling="yes"></iframe>';
+    const iframe=document.getElementById('plIframe');
+    const doc=iframe.contentDocument||iframe.contentWindow.document;
+    doc.open(); doc.write(html); doc.close();
+    iframe.style.height='100vh';
+    setTimeout(()=>{ try{ iframe.style.height=doc.body.scrollHeight+'px'; }catch(e){} },600);
+  }catch(e){
+    wrap.innerHTML=`<div style="text-align:center;padding:60px 20px;"><div style="font-size:2rem;margin-bottom:10px;">⚠️</div><h3>Could not load page</h3><p style="margin-top:6px;color:#666;">${e.message}</p></div>`;
+  }
+}
+
+/* ─── Init ──────────────────────────────────────────────────────── */
+function wbInit(){
+  initSwatches();
+  renderAnnList();
+  renderBlogList();
+  renderGalEdit();
+  syncColourInputs();
+  wbAutoFill();
+  wbRender();
+  wbLoad();
+}
+
+/* hook into aTab */
+(function(){
+  // wbInit is already hooked into aTab(17) via the main aTab function
+  // This IIFE hook is kept for compatibility but defers to main aTab
+})();
+
+/* auto-detect ?school= */
+(function(){
+  const code=new URLSearchParams(window.location.search).get('school');
+  if(code){
+    const run=()=>setTimeout(()=>loadPublicLanding(code.toUpperCase()),300);
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',run); else run();
+  }
+})();
+
+})();
+
+/*
+╔═══════════════════════════════════════════════════════════════════════╗
+║  GOOGLE APPS SCRIPT — add these cases to your doPost handler          ║
+╠═══════════════════════════════════════════════════════════════════════╣
+
+  case 'saveWebsiteConfig': {
+    const sh = getOrCreateSheet('WebsiteConfig');
+    ensureHeaders(sh, ['school_code','config_json','published','updated_at']);
+    const rows = sh.getDataRange().getValues();
+    let rowIdx = -1;
+    for (let i = 1; i < rows.length; i++) {
+      if (rows[i][0] === p.school_code) { rowIdx = i + 1; break; }
+    }
+    const row = [p.school_code, p.config_json, p.published || 'no', new Date().toISOString()];
+    if (rowIdx > 0) sh.getRange(rowIdx, 1, 1, 4).setValues([row]);
+    else sh.appendRow(row);
+    return json({ success: true });
+  }
+
+  case 'getWebsiteConfig': {
+    const sh2 = ss.getSheetByName('WebsiteConfig');
+    if (!sh2) return json({ success: false, message: 'No config sheet' });
+    const d = sh2.getDataRange().getValues();
+    for (let i = 1; i < d.length; i++) {
+      if (d[i][0] === p.school_code) return json({ success: true, config: d[i][1] });
+    }
+    return json({ success: false, message: 'Not found' });
+  }
+
+╚═══════════════════════════════════════════════════════════════════════╝
+*/
+
+
+
+// ════════════════════════════════════════════════
+// HOME — SCHOOL PAGE VISITOR
+// ════════════════════════════════════════════════
+function visitSchoolPage() {
+  const code = (document.getElementById('homeSchoolCode')?.value || '').trim().toUpperCase();
+  if (!code) { toast('Enter a school code first', 'warn'); return; }
+  const url = window.location.origin + window.location.pathname + '?school=' + code;
+  window.open(url, '_blank');
+}
+document.addEventListener('input', e => {
+  if (e.target.id === 'homeSchoolCode') {
+    const code = e.target.value.toUpperCase();
+    const prev = document.getElementById('homeSchoolPreview');
+    if (prev) prev.textContent = code ? (window.location.origin + window.location.pathname + '?school=' + code) : '';
+  }
+});
+
+// ════════════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
@@ -4181,6 +6730,9 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
   // Event listeners
+  // Set default payment date to today
+  const payDateEl = document.getElementById('payDate');
+  if (payDateEl) payDateEl.value = new Date().toISOString().split('T')[0];
   document.getElementById('stuCsvFile').addEventListener('change', e => {
     if (e.target.files[0]) handleStudentCsv(e.target.files[0]);
     e.target.value = '';
@@ -4201,6 +6753,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('editModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeEdit(); });
   document.getElementById('staffEditModal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeStaffEdit(); });
   document.getElementById('assignModal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeAssign(); });
+  // Close wb modal on backdrop click
+  document.getElementById('wbModal')?.addEventListener('click', e => { if (e.target === e.currentTarget) wbCloseModal?.(); });
   // Check for saved exam state on load
   const savedExam = localStorage.getItem(EXAM_SAVE_KEY);
   if (savedExam) {
