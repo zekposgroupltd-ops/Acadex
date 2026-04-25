@@ -2276,6 +2276,7 @@ async function loadParentAnnouncements() {
       <div class="ann-f"><span><i class="fas fa-calendar"></i> ${a.start_date || 'Ongoing'}</span></div>
     </div>`).join('');
   } catch(e) { el.innerHTML = '<div class="alert a-err">Unable to load announcements</div>'; }
+}
 
 // ════════════════════════════════════════════════
 // NAVIGATION
@@ -4642,8 +4643,7 @@ async function loadAnnouncements() {
       <div class="ann-f"><span><i class="fas fa-users"></i> ${a.target_role || 'All'}</span><span><i class="fas fa-user"></i> ${a.created_by}</span>${a.target_class ? `<span><i class="fas fa-school"></i> ${a.target_class}</span>` : ''}</div>
       ${a.start_date || a.end_date ? `<div class="ann-d"><i class="fas fa-calendar"></i> ${a.start_date || ''} ${a.end_date ? ' — ' + a.end_date : ''}</div>` : ''}
       <div style="display:flex;gap:6px;margin-top:10px;">
-        <button class="btn btn-info btn-sm" onclick="editAnnouncement(${a.id},'${(a.title||'').replace(/'/g,"\'")}','${(a.content||'').replace(/'/g,"\'").replace(/
-/g,'\n')}','${a.priority||'normal'}','${a.target_role||'all'}','${a.target_class||''}','${a.start_date||''}','${a.end_date||''}')"><i class="fas fa-edit"></i> Edit</button>
+        <button class="btn btn-info btn-sm" onclick="editAnnouncement(${a.id},'${(a.title||'').replace(/'/g,"\'")}','${(a.content||'').replace(/'/g,"\'").replace(/\n/g,'\n')}','${a.priority||'normal'}','${a.target_role||'all'}','${a.target_class||''}','${a.start_date||''}','${a.end_date||''}')"><i class="fas fa-edit"></i> Edit</button>
         <button class="btn btn-err btn-sm" onclick="deleteAnnouncement(${a.id})"><i class="fas fa-trash"></i> Delete</button>
       </div>
     </div>`).join('');
