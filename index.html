@@ -4073,6 +4073,33 @@
                                     class="fas fa-money-check-alt"></i> Record Payment</button>
                             <button class="btn btn-warn btn-sm" onclick="aFeeTab(2)"><i class="fas fa-chart-pie"></i>
                                 Fee Report</button>
+                            <button class="btn btn-prim btn-sm" onclick="openFinanceDashboard()"><i class="fas fa-gauge"></i> Finance Dashboard</button>
+                            <button class="btn btn-warn btn-sm" onclick="openWaiverDialog()"><i class="fas fa-hand-holding-usd"></i> Apply Waiver</button>
+                            <button class="btn btn-err btn-sm" onclick="doTermRollover()"><i class="fas fa-sync-alt"></i> End-Term Rollover</button>
+                        </div>
+                        <div id="financeDashWrap" class="hidden" style="margin-bottom:14px;"></div>
+                        <div id="waiverDlg" class="hidden card card-sm" style="margin-bottom:14px;border-left:4px solid var(--warn);">
+                            <div class="ch"><div class="ct"><i class="fas fa-hand-holding-usd"></i> Apply Fee Waiver</div></div>
+                            <div class="fr2">
+                                <div class="fg"><label class="fl">Student ID</label><input id="wvStuId" class="fc fc-mono" placeholder="e.g. SCH001-001"></div>
+                                <div class="fg"><label class="fl">Bucket</label>
+                                    <select id="wvBucket" class="fc">
+                                        <option value="1">1 — Old Debt</option>
+                                        <option value="2">2 — Graduation/Party</option>
+                                        <option value="3">3 — Lesson</option>
+                                        <option value="4" selected>4 — School Fee</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="fr2">
+                                <div class="fg"><label class="fl">Amount (₦)</label><input id="wvAmt" class="fc" type="number" placeholder="0.00"></div>
+                                <div class="fg"><label class="fl">Reason <span style="color:red">*</span></label><input id="wvReason" class="fc" placeholder="e.g. scholarship"></div>
+                            </div>
+                            <div class="fa">
+                                <button class="btn btn-warn" onclick="submitWaiver()"><i class="fas fa-check"></i> Apply Waiver</button>
+                                <button class="btn btn-ghost" onclick="document.getElementById('waiverDlg').classList.add('hidden')">Cancel</button>
+                            </div>
+                            <div id="wvMsg"></div>
                         </div>
                         <!-- Fee Sub-Tabs -->
                         <div class="tabs" style="margin-bottom:0;">
@@ -8335,25 +8362,30 @@
             const amount = parseFloat(document.getElementById('payAmount').value);
             const date = document.getElementById('payDate').value || new Date().toISOString().split('T')[0];
             const method = document.getElementById('payMethod').value;
-            const feeRef = document.getElementById('payFeeRef').value.trim();
             if (!studentId || isNaN(amount) || amount <= 0) { msg('payMsg', 'Student ID and valid amount required.', 'err'); return; }
             const btn = document.getElementById('btnRecordPay');
             btn.innerHTML = '<span class="loader"></span>'; btn.disabled = true;
             try {
                 const r = await api({
-                    action: 'recordPayment', school_code: S.admin.code,
-                    student_id: studentId, fee_id: feeRef || '0', amount_paid: amount,
+                    action: 'recordPaymentAllocated', school_code: S.admin.code,
+                    student_id: studentId, amount_paid: amount,
                     payment_date: date, payment_method: method,
                     recorded_by: S.admin?.username || 'admin',
                     term: S.settings.term || '', session: S.settings.session || ''
                 });
                 if (r.success) {
-                    toast('Payment recorded!', 'ok');
-                    msg('payMsg', `✅ Payment of ₦${amount.toLocaleString()} recorded for ${studentId}`, 'ok');
+                    toast('Payment recorded & auto-allocated', 'ok');
+                    const rec = r.receipt || {};
+                    msg('payMsg', `<div style="background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:12px;margin-top:8px;">
+                        <div style="font-weight:800;color:var(--navy);margin-bottom:6px;">Receipt ${rec.ref || ''}</div>
+                        <div style="font-size:.85rem;">${rec.full_name || ''} (${studentId}) · ${rec.class || ''}</div>
+                        <div style="margin:8px 0;font-size:1.1rem;font-weight:800;color:var(--ok);">₦${Number(amount).toLocaleString()} via ${method}</div>
+                        <div style="font-size:.8rem;color:var(--tlt);">Allocated: ${rec.allocation_readable || '-'}</div>
+                        <div style="font-size:.8rem;margin-top:4px;">Balance: <strong>₦${Number(rec.balance_after || 0).toLocaleString()}</strong></div>
+                        <button class="btn btn-prim btn-sm" style="margin-top:8px;" onclick="window.print()"><i class="fas fa-print"></i> Print Receipt</button>
+                        </div>`, 'ok');
                     document.getElementById('payStudentId').value = '';
                     document.getElementById('payAmount').value = '';
-                    document.getElementById('payFeeRef').value = '';
-                    // Auto lookup balance
                     document.getElementById('balStuId').value = studentId;
                     lookupFeeBalance();
                 } else { msg('payMsg', r.message, 'err'); }
@@ -8367,21 +8399,80 @@
             if (!stuId) { w.innerHTML = '<div class="alert a-warn"><i class="fas fa-exclamation-triangle"></i> Enter a Student ID</div>'; return; }
             w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
             try {
-                const r = await api({ action: 'getFeeBalance', school_code: S.admin.code, student_id: stuId });
+                const r = await api({ action: 'getStudentLedger', school_code: S.admin.code, student_id: stuId });
                 if (!r.success) { w.innerHTML = `<div class="alert a-err"><i class="fas fa-times-circle"></i> ${r.message}</div>`; return; }
-                const color = r.balance <= 0 ? 'var(--ok)' : r.balance < r.total_fees ? 'var(--warn)' : 'var(--err)';
-                const status = r.balance <= 0 ? 'CLEARED ✅' : r.balance < r.total_fees ? 'PARTIAL ⚠️' : 'OWING ❌';
+                const color = r.balance <= 0 ? 'var(--ok)' : (r.total_paid > 0 ? 'var(--warn)' : 'var(--err)');
+                const status = r.status === 'cleared' ? 'CLEARED ✅' : r.status === 'partial' ? 'PARTIAL ⚠️' : 'OWING ❌';
+                const bk = r.buckets || {};
+                const bucketRows = [1,2,3,4].map(i => {
+                    const b = bk[i] || {label:'',charged:0,paid:0};
+                    const out = Math.max(0, (b.charged||0) - (b.paid||0));
+                    return `<tr><td>${i}. ${b.label}</td><td class="mono">₦${Number(b.charged||0).toLocaleString()}</td><td class="mono" style="color:var(--ok);">₦${Number(b.paid||0).toLocaleString()}</td><td class="mono" style="color:${out>0?'var(--err)':'var(--ok)'};">₦${Number(out).toLocaleString()}</td></tr>`;
+                }).join('');
+                const ledgerRows = (r.ledger||[]).slice(-10).reverse().map(l => `<tr><td>${l.date||'-'}</td><td><span class="badge b-info">${l.type||'-'}</span></td><td class="mono">₦${Number(l.amount||0).toLocaleString()}</td><td style="font-size:.75rem;color:var(--tlt);">${l.note||l.allocation||''}</td></tr>`).join('') || '<tr><td colspan="4" style="text-align:center;color:var(--tlt);">No ledger entries</td></tr>';
                 w.innerHTML = `<div style="background:var(--off);border-radius:var(--rl);padding:16px;border-left:4px solid ${color};">
-      <div style="font-weight:800;font-size:1.05rem;color:var(--navy);margin-bottom:10px;">${stuId} — ${r.student_class}</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:10px;">
-        <div style="text-align:center;background:#fff;padding:10px;border-radius:var(--r);"><div style="font-size:1.2rem;font-weight:800;color:var(--navy);">₦${Number(r.total_fees).toLocaleString()}</div><div style="font-size:.72rem;color:var(--tlt);">Total Fees</div></div>
+      <div style="font-weight:800;font-size:1.05rem;color:var(--navy);margin-bottom:10px;">${stuId} — ${r.student?.full_name||''} (${r.student?.class||''} ${r.student?.arm||''})</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px;">
+        <div style="text-align:center;background:#fff;padding:10px;border-radius:var(--r);"><div style="font-size:1.2rem;font-weight:800;color:var(--navy);">₦${Number(r.total_charged).toLocaleString()}</div><div style="font-size:.72rem;color:var(--tlt);">Total Charged</div></div>
         <div style="text-align:center;background:#fff;padding:10px;border-radius:var(--r);"><div style="font-size:1.2rem;font-weight:800;color:var(--ok);">₦${Number(r.total_paid).toLocaleString()}</div><div style="font-size:.72rem;color:var(--tlt);">Paid</div></div>
         <div style="text-align:center;background:#fff;padding:10px;border-radius:var(--r);"><div style="font-size:1.2rem;font-weight:800;color:${color};">₦${Math.abs(r.balance).toLocaleString()}</div><div style="font-size:.72rem;color:var(--tlt);">Balance</div></div>
       </div>
-      <div style="text-align:center;font-weight:800;font-size:.9rem;color:${color};">${status}</div>
-      ${r.fees && r.fees.length ? `<div style="margin-top:12px;"><div style="font-weight:700;font-size:.8rem;color:var(--tmid);margin-bottom:6px;">Fee Breakdown:</div>${r.fees.map(f => `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:.85rem;"><span>${f.fee_type}</span><span style="font-weight:700;color:${f.status === 'paid' ? 'var(--ok)' : 'var(--err)'};">₦${Number(f.amount).toLocaleString()} · ${f.status}</span></div>`).join('')}</div>` : ''}
+      <div style="text-align:center;font-weight:800;font-size:.9rem;color:${color};margin-bottom:10px;">${status}${r.old_debt>0?` · Old Debt ₦${Number(r.old_debt).toLocaleString()}`:''}</div>
+      <div class="tw"><table><thead><tr><th>Bucket</th><th>Charged</th><th>Paid</th><th>Outstanding</th></tr></thead><tbody>${bucketRows}</tbody></table></div>
+      <div style="margin-top:12px;font-weight:700;font-size:.85rem;color:var(--tmid);">Recent Ledger</div>
+      <div class="tw"><table><thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Note</th></tr></thead><tbody>${ledgerRows}</tbody></table></div>
     </div>`;
             } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+        }
+
+        function openWaiverDialog() {
+            document.getElementById('waiverDlg').classList.toggle('hidden');
+        }
+        async function submitWaiver() {
+            const stu = document.getElementById('wvStuId').value.trim();
+            const bucket = parseInt(document.getElementById('wvBucket').value);
+            const amount = parseFloat(document.getElementById('wvAmt').value);
+            const reason = document.getElementById('wvReason').value.trim();
+            if (!stu || !bucket || isNaN(amount) || amount<=0 || !reason) { msg('wvMsg','All fields required.','err'); return; }
+            try {
+                const r = await api({ action:'applyFeeWaiver', school_code:S.admin.code, student_id:stu, bucket:bucket, amount:amount, reason:reason, recorded_by:S.admin?.username||'admin' });
+                if (r.success) { toast('Waiver applied', 'ok'); document.getElementById('waiverDlg').classList.add('hidden'); document.getElementById('wvStuId').value=''; document.getElementById('wvAmt').value=''; document.getElementById('wvReason').value=''; }
+                else msg('wvMsg', r.message, 'err');
+            } catch(e) { msg('wvMsg', e.message, 'err'); }
+        }
+
+        async function doTermRollover() {
+            const newTerm = prompt('Enter the NEW term label (e.g. "Second Term"):', S.settings.term || '');
+            if (!newTerm) return;
+            const newSess = prompt('Enter the NEW session (e.g. "2024/2025"):', S.settings.session || '');
+            if (!newSess) return;
+            if (!confirm(`This will carry every active student's outstanding balance forward as Old Debt for ${newTerm} ${newSess}. Continue?`)) return;
+            toast('Running rollover...', 'info');
+            try {
+                const r = await api({ action:'rolloverTerm', school_code:S.admin.code, new_term:newTerm, new_session:newSess });
+                if (r.success) toast(`Rollover done · ${r.processed} students · ₦${Number(r.total_carried).toLocaleString()} carried`, 'ok');
+                else toast(r.message, 'err');
+            } catch(e) { toast(e.message, 'err'); }
+        }
+
+        async function openFinanceDashboard() {
+            const w = document.getElementById('financeDashWrap');
+            w.classList.remove('hidden');
+            w.innerHTML = '<div class="ls"><div class="loader loader-dk"></div></div>';
+            try {
+                const r = await api({ action:'getFinanceDashboard', school_code:S.admin.code });
+                if (!r.success) { w.innerHTML = `<div class="alert a-err">${r.message}</div>`; return; }
+                const recent = (r.recent||[]).map(l=>`<tr><td>${l.date||'-'}</td><td>${l.student_id||'-'}</td><td><span class="badge b-info">${l.type||'-'}</span></td><td class="mono">₦${Number(l.amount||0).toLocaleString()}</td><td style="font-size:.75rem;color:var(--tlt);">${l.note||''}</td></tr>`).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--tlt);">No activity</td></tr>';
+                w.innerHTML = `<div class="card card-sm"><div class="ch"><div class="ct"><i class="fas fa-gauge"></i> Finance Dashboard</div><button class="btn btn-ghost btn-sm" onclick="document.getElementById('financeDashWrap').classList.add('hidden')"><i class="fas fa-times"></i></button></div>
+                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:12px;">
+                    <div style="background:var(--off);padding:12px;border-radius:var(--r);text-align:center;"><div style="font-size:1.3rem;font-weight:800;color:var(--navy);">₦${Number(r.total_expected).toLocaleString()}</div><div style="font-size:.72rem;color:var(--tlt);">Expected</div></div>
+                    <div style="background:var(--okb);padding:12px;border-radius:var(--r);text-align:center;"><div style="font-size:1.3rem;font-weight:800;color:var(--ok);">₦${Number(r.total_collected).toLocaleString()}</div><div style="font-size:.72rem;color:var(--tlt);">Collected</div></div>
+                    <div style="background:var(--errb);padding:12px;border-radius:var(--r);text-align:center;"><div style="font-size:1.3rem;font-weight:800;color:var(--err);">₦${Number(r.outstanding).toLocaleString()}</div><div style="font-size:.72rem;color:var(--tlt);">Outstanding</div></div>
+                    <div style="background:var(--warnb);padding:12px;border-radius:var(--r);text-align:center;"><div style="font-size:1.3rem;font-weight:800;color:var(--warn);">${r.collection_rate}%</div><div style="font-size:.72rem;color:var(--tlt);">Collection Rate</div></div>
+                </div>
+                <div style="padding:0 12px 12px;"><div style="font-weight:700;margin-bottom:6px;">Recent Transactions</div>
+                <div class="tw"><table><thead><tr><th>Date</th><th>Student</th><th>Type</th><th>Amount</th><th>Note</th></tr></thead><tbody>${recent}</tbody></table></div></div></div>`;
+            } catch(e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
         }
 
         async function loadFeeReport() {
