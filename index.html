@@ -2787,8 +2787,8 @@
                 overflow: visible !important;
             }
 
-            body * {
-                visibility: hidden !important;
+            body > *:not(#reportModal):not(#cardModal) {
+                display: none !important;
             }
 
             #reportSheet,
@@ -2799,8 +2799,8 @@
                 color: #000 !important;
             }
 
-            #reportModal,
-            #cardModal {
+            #reportModal.open,
+            #cardModal.open {
                 display: block !important;
                 position: static !important;
                 background: none !important;
@@ -2811,14 +2811,13 @@
                 inset: auto !important;
             }
 
+            .ptb { display: none !important; }
+
             #reportSheet {
-                position: absolute !important;
-                left: 0 !important;
-                top: 0 !important;
-                right: auto !important;
-                bottom: auto !important;
+                position: static !important;
+                display: block !important;
                 width: 210mm !important;
-                min-height: 297mm !important;
+                min-height: 0 !important;
                 height: auto !important;
                 max-height: none !important;
                 overflow: visible !important;
@@ -2835,13 +2834,10 @@
             }
 
             #cardPrintArea {
-                position: absolute !important;
-                left: 0 !important;
-                top: 0 !important;
-                right: auto !important;
-                bottom: auto !important;
+                position: static !important;
+                display: block !important;
                 width: 210mm !important;
-                min-height: 297mm !important;
+                min-height: 0 !important;
                 height: auto !important;
                 padding: 6mm !important;
                 margin: 0 !important;
@@ -4940,7 +4936,8 @@
                 </div><!-- /at17 -->
             </div>
         </div>
-        <!-- STAFF LOGIN -->
+    </div><!-- /s-admin -->
+    <!-- STAFF LOGIN -->
         <div id="s-staff-login" class="section">
             <div class="con">
                 <div class="pw">
@@ -5221,7 +5218,6 @@
                 </div>
             </div>
         </div>
-    </div>
     <!-- SUPER ADMIN LOGIN -->
     <div id="s-sa-login" class="section">
         <div class="con">
