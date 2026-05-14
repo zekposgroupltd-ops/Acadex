@@ -2209,11 +2209,29 @@
             border-radius: 4px;
             padding: 5mm 6mm;
             page-break-inside: avoid;
-            page-break-after: always;
+            break-inside: avoid;
             background: #fff;
             position: relative;
             overflow: hidden;
+            min-height: 55mm;
         }
+        .card-page { page-break-after: always; break-after: page; }
+        .card-page:last-child { page-break-after: auto; break-after: auto; }
+        .ec-back { background: #fcfaf3; }
+        .ec-back-rid {
+            background: #0d1b2a;
+            color: #e8b84b;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11pt;
+            font-weight: 900;
+            padding: 4mm 4mm;
+            border-radius: 4px;
+            letter-spacing: 3px;
+            text-align: center;
+            word-break: break-all;
+            margin: 4mm 0;
+        }
+        .ec-back-note { font-size: 6.5pt; color: #555; text-align: center; margin-top: 2mm; }
 
         .exam-card::before {
             content: '';
@@ -3676,6 +3694,17 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="fr2">
+                                <div class="fg"><label class="fl">Stream / Arm</label>
+                                    <select id="fSubArm" class="fc">
+                                        <option value="">General (all students in this class)</option>
+                                        <option value="Science">Science only</option>
+                                        <option value="Arts">Arts only</option>
+                                        <option value="Commercial">Commercial only</option>
+                                    </select>
+                                    <div class="fh">Use General for subjects every student takes (e.g. English, Maths). Pick a stream so only those students see it on their report.</div>
+                                </div>
+                            </div>
                             <div class="fa"><button class="btn btn-ok" id="btnSaveSubj" onclick="saveSubject()"><i
                                         class="fas fa-save"></i> Save Subject</button><button class="btn btn-ghost"
                                     onclick="toggleForm('subjForm',true)">Cancel</button></div>
@@ -4995,10 +5024,8 @@
                         <div class="li" style="background:var(--warnb);color:var(--warn);"><i
                                 class="fas fa-user-friends"></i></div>
                         <div class="lt">Parent Portal</div>
-                        <div class="ls2">Enter your child's Student ID and your phone number to view results</div>
+                        <div class="ls2">Enter your phone number to view your child's results. If your number is registered for more than one student, all of them will appear on the dashboard.</div>
                         <div id="pLMsg"></div>
-                        <div class="fg"><label class="fl">Student ID</label><input id="pLStuId" class="fc fc-mono"
-                                placeholder="e.g. SCH001-2026-0001" autocomplete="off"></div>
                         <div class="fg"><label class="fl">Parent Phone</label><input id="pLPin" class="fc fc-mono"
                                 type="tel" placeholder="e.g. 08012345678" autocomplete="off"></div>
                         <div class="fa"><button class="btn btn-warn btn-bl" id="btnPL" onclick="parentLogin()"><i
@@ -5020,8 +5047,14 @@
                             <div id="parentChildInfo" style="font-size:.78rem;color:var(--tlt);"></div>
                         </div>
                     </div>
-                    <button class="btn btn-err btn-sm" onclick="pLogout()"><i class="fas fa-sign-out-alt"></i>
-                        Logout</button>
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                        <div id="parentChildSwitcherWrap" class="hidden" style="display:flex;align-items:center;gap:6px;">
+                            <label style="font-size:.72rem;color:var(--tlt);font-weight:600;">Child:</label>
+                            <select id="parentChildSwitcher" class="fc" style="padding:6px 10px;font-size:.85rem;min-width:170px;" onchange="switchParentChild(this.value)"></select>
+                        </div>
+                        <button class="btn btn-err btn-sm" onclick="pLogout()"><i class="fas fa-sign-out-alt"></i>
+                            Logout</button>
+                    </div>
                 </div>
                 <div class="tabs">
                     <div class="tab active" onclick="pTab(0)"><i class="fas fa-chart-line"></i> My Child's Progress
@@ -6699,7 +6732,9 @@
             const isScratch = type === 'scratch';
             const term = S.settings.term || S.admin?.settings?.term || 'Current Term';
             const session = S.settings.session || S.admin?.settings?.session || '';
-            const cards = students.map(s => {
+            const PER_PAGE = 8; // 4 rows × 2 columns
+
+            const frontCard = (s) => {
                 if (isScratch) {
                     return `<div class="exam-card">
         <div class="ec-school">${schoolName}</div>
@@ -6709,12 +6744,12 @@
         <div class="ec-row"><span class="ec-label">Student ID:</span><span class="ec-val">${s.student_id}</span></div>
         <div class="ec-scratch">
           <div class="ec-scratch-lbl">Result ID</div>
-          <div style="background:#0d1b2a;color:#e8b84b;font-family:\'JetBrains Mono\',monospace;font-size:8pt;font-weight:900;padding:2mm 4mm;border-radius:3px;letter-spacing:2px;text-align:center;word-break:break-all;">${s.result_id || '—'}</div>
+          <div style="background:#0d1b2a;color:#e8b84b;font-family:'JetBrains Mono',monospace;font-size:11pt;font-weight:800;padding:2mm 4mm;border-radius:3px;letter-spacing:2px;text-align:center;">${s.result_id || '— NO ACTIVE RID —'}</div>
         </div>
         <div class="ec-footer">© 2026 ACADEX · ${schoolCode}</div>
       </div>`;
-                } else {
-                    return `<div class="exam-card">
+                }
+                return `<div class="exam-card">
         <div class="ec-school">${schoolName}</div>
         <div class="ec-type">📋 Exam Pass / Login Card</div>
         <div class="ec-name">${s.full_name || s.student_id}</div>
@@ -6724,12 +6759,49 @@
         <div class="ec-pin-box">${s.exam_pin !== undefined && s.exam_pin !== '' ? s.exam_pin : '????'}</div>
         <div class="ec-footer">© 2026 ACADEX · Keep this card safe · ${schoolCode}</div>
       </div>`;
+            };
+
+            const backCard = (s) => {
+                if (!s || !s.student_id) {
+                    return `<div class="exam-card ec-back" style="border-style:dashed;opacity:.3"></div>`;
                 }
+                return `<div class="exam-card ec-back">
+        <div class="ec-school">${schoolName}</div>
+        <div class="ec-type">🎫 Result ID — Back</div>
+        <div class="ec-name" style="font-size:7.5pt;">${s.full_name || s.student_id}</div>
+        <div class="ec-class">ID: ${s.student_id} · ${s.class || '—'}</div>
+        <div class="ec-back-rid">${s.result_id || '—'}</div>
+        <div class="ec-back-note">Use this Result ID with Student ID to view the report online.</div>
+        <div class="ec-footer">© 2026 ACADEX · ${schoolCode}</div>
+      </div>`;
+            };
+
+            // Chunk into pages of PER_PAGE so every student prints
+            const pages = [];
+            for (let i = 0; i < students.length; i += PER_PAGE) pages.push(students.slice(i, i + PER_PAGE));
+
+            const header = `<div style="text-align:center;margin-bottom:5mm;font-size:9pt;font-weight:900;color:#0d1b2a;text-transform:uppercase;letter-spacing:1px;">${schoolName}</div>
+     <div style="text-align:center;margin-bottom:4mm;font-size:7pt;color:#555;">${isScratch ? 'Result Scratch Cards' : 'Exam Pass Cards'} ${cls ? '— Class: ' + cls : ''} ${term ? '· ' + term : ''} · ${students.length} student(s)</div>`;
+
+            const pagesHtml = pages.map((pageStudents, pIdx) => {
+                const fronts = pageStudents.map(frontCard).join('');
+                let backHtml = '';
+                if (isScratch) {
+                    // Mirror columns per row so duplex printing aligns front↔back
+                    const mirrored = [];
+                    for (let i = 0; i < pageStudents.length; i += 2) {
+                        const a = pageStudents[i], b = pageStudents[i + 1];
+                        mirrored.push(b || null);
+                        mirrored.push(a || null);
+                    }
+                    // Pad to full row pairs
+                    while (mirrored.length % 2 !== 0) mirrored.push(null);
+                    backHtml = `<div class="card-page"><div class="card-grid">${mirrored.map(backCard).join('')}</div></div>`;
+                }
+                return `<div class="card-page"><div class="card-grid">${fronts}</div></div>${backHtml}`;
             }).join('');
-            document.getElementById('cardPrintArea').innerHTML =
-                `<div style="text-align:center;margin-bottom:5mm;font-size:9pt;font-weight:900;color:#0d1b2a;text-transform:uppercase;letter-spacing:1px;">${schoolName}</div>
-     <div style="text-align:center;margin-bottom:4mm;font-size:7pt;color:#555;">${isScratch ? 'Result Scratch Cards' : 'Exam Pass Cards'} ${cls ? '— Class: ' + cls : ''} ${term ? '· ' + term : ''}</div>
-     <div class="card-grid">${cards}</div>`;
+
+            document.getElementById('cardPrintArea').innerHTML = header + pagesHtml;
             document.getElementById('cardModal').classList.add('open');
         }
         // Print scratch cards for a class from RIDs tab
@@ -7519,31 +7591,63 @@
                     if (caClassEl) caClassEl.innerHTML = '<option value="">-- Select Class --</option>' + classOpts;
                 } catch (e) { }
                 if (!subjects.length) { w.innerHTML = '<div class="es"><span class="es-i"><i class="fas fa-book"></i></span><h4>No subjects</h4></div>'; return; }
-                w.innerHTML = `<table><thead><tr><th>Code</th><th>Name</th><th>Class</th><th>Duration</th><th>Term</th><th>CBT</th><th>Actions</th></tr></thead><tbody>${subjects.map(s => `
-      <tr><td class="td-mono">${s.subject_code}</td><td><strong>${s.subject_name}</strong></td><td>${s.class}</td><td>${s.duration_minutes} min</td><td>${s.term}</td>
+                w.innerHTML = `<table><thead><tr><th>Code</th><th>Name</th><th>Class</th><th>Stream</th><th>Duration</th><th>Term</th><th>CBT</th><th>Actions</th></tr></thead><tbody>${subjects.map(s => {
+                    const armLabel = (s.arm && String(s.arm).trim()) ? s.arm : 'General';
+                    const armBadge = armLabel === 'General' ? 'b-info' : (armLabel.toLowerCase()==='science'?'b-ok':(armLabel.toLowerCase()==='arts'?'b-warn':'b-info'));
+                    return `<tr><td class="td-mono">${s.subject_code}</td><td><strong>${s.subject_name}</strong></td><td>${s.class}</td>
+      <td><span class="badge ${armBadge}">${armLabel}</span></td>
+      <td>${s.duration_minutes} min</td><td>${s.term}</td>
       <td><span class="badge ${s.cbt_enabled === 'yes' ? 'b-ok' : 'b-warn'}">${s.cbt_enabled === 'yes' ? 'Yes' : 'No'}</span></td>
-      <td><button class="btn btn-err btn-sm" onclick="deleteSubj('${s.subject_code}')"><i class="fas fa-trash"></i></button></td></tr>`).join('')}</tbody></table>`;
+      <td><button class="btn btn-info btn-sm" onclick='editSubj(${JSON.stringify(s).replace(/'/g,"&#39;")})'><i class="fas fa-edit"></i></button>
+          <button class="btn btn-err btn-sm" onclick="deleteSubj('${s.subject_code}')"><i class="fas fa-trash"></i></button></td></tr>`;
+                }).join('')}</tbody></table>`;
             } catch (e) { w.innerHTML = `<div class="alert a-err">${e.message}</div>`; }
+        }
+        let _editingSubjCode = null;
+        function editSubj(s) {
+            _editingSubjCode = s.subject_code;
+            // Strip school prefix for code field (saveSubject re-adds via backend full code logic)
+            const shortCode = String(s.subject_code).replace(/^[^-]+-/, '');
+            document.getElementById('fSubCode').value = shortCode;
+            document.getElementById('fSubName').value = s.subject_name || '';
+            document.getElementById('fSubClass').value = s.class || '';
+            document.getElementById('fSubDur').value = s.duration_minutes || 45;
+            document.getElementById('fSubTerm').value = s.term || 'First Term';
+            document.getElementById('fSubCbt').value = s.cbt_enabled || 'yes';
+            const armEl = document.getElementById('fSubArm');
+            if (armEl) armEl.value = s.arm || '';
+            const form = document.getElementById('subjForm');
+            if (form && form.classList.contains('hidden')) toggleForm('subjForm');
+            const btn = document.getElementById('btnSaveSubj');
+            if (btn) btn.innerHTML = '<i class="fas fa-save"></i> Update Subject';
+            window.scrollTo({top:0, behavior:'smooth'});
         }
         async function saveSubject() {
             const code = document.getElementById('fSubCode').value.trim().toUpperCase();
             const name = document.getElementById('fSubName').value.trim();
             const cls = document.getElementById('fSubClass').value.trim();
+            const arm = (document.getElementById('fSubArm')||{}).value || '';
             if (!code || !name || !cls) { toast('Code, name and class are required.', 'err'); return; }
             const btn = document.getElementById('btnSaveSubj'); btn.innerHTML = '<span class="loader"></span>'; btn.disabled = true;
             try {
-                const r = await api({
-                    action: 'addSubject', school_code: S.admin.code,
-                    subject_code: code, subject_name: name, class: cls,
+                const isEdit = !!_editingSubjCode;
+                const payload = {
+                    school_code: S.admin.code,
+                    subject_code: isEdit ? _editingSubjCode : code,
+                    subject_name: name, class: cls, arm: arm,
                     duration_minutes: document.getElementById('fSubDur').value || 45,
                     term: document.getElementById('fSubTerm').value,
                     session: S.settings.session || '',
                     cbt_enabled: document.getElementById('fSubCbt').value
-                });
+                };
+                payload.action = isEdit ? 'updateSubject' : 'addSubject';
+                const r = await api(payload);
                 if (r.success) {
-                    toast('Subject added: ' + r.subject_code, 'ok');
+                    toast(isEdit ? 'Subject updated.' : ('Subject added: ' + (r.subject_code||code)), 'ok');
                     toggleForm('subjForm', true);
                     ['fSubCode', 'fSubName', 'fSubClass'].forEach(i => document.getElementById(i).value = '');
+                    if (document.getElementById('fSubArm')) document.getElementById('fSubArm').value = '';
+                    _editingSubjCode = null;
                     loadSubjTable();
                 } else { toast(r.message, 'err'); }
             } catch (e) { toast(e.message, 'err'); }
@@ -7844,8 +7948,8 @@
             document.getElementById('caPendingBadge').textContent = `${total - filled} pending`;
             document.getElementById('caDoneBadge').textContent = `${filled} done`;
             document.getElementById('caProgress').classList.remove('hidden');
-            // Re-sort: move rows with blank score entries to top
-            caSortTable();
+            // NOTE: do NOT auto-sort while typing — it steals focus and jumps the row.
+            // Sorting only happens on demand via the "Sort" button or after save.
         }
 
         async function loadCaStudents() {
@@ -8975,9 +9079,18 @@
         async function generateAllReportCards() {
             const cls = document.getElementById('rcClass').value;
             if (!cls) { toast('Select a class first.', 'warn'); return; }
-            toast('Generating report cards...', 'info');
+            toast('Generating report cards for whole class...', 'info');
+            // Force "all students" by clearing the single-student selector before fetching
+            const stuSel = document.getElementById('rcStudent');
+            const prev = stuSel ? stuSel.value : '';
+            if (stuSel) stuSel.value = '';
             await loadSingleReportCard();
-            if (_reportCardData) printReportCard();
+            if (stuSel) stuSel.value = prev;
+            if (_reportCardData && _reportCardData.students && _reportCardData.students.length) {
+                printReportCard();
+            } else {
+                toast('No results found for this class.', 'warn');
+            }
         }
 
         // ════════════════════════════════════════════════
@@ -9125,24 +9238,76 @@
         // PARENT PORTAL
         // ════════════════════════════════════════════════
         async function parentLogin() {
-            const stuId = document.getElementById('pLStuId').value.trim();
             const phone = document.getElementById('pLPin').value.trim();
-            if (!stuId || !phone) { msg('pLMsg', 'Student ID and Parent Phone are required.'); return; }
+            if (!phone) { msg('pLMsg', 'Parent Phone is required.'); return; }
             const btn = document.getElementById('btnPL');
             btn.innerHTML = '<span class="loader"></span> Logging in...'; btn.disabled = true;
             try {
-                const r = await api({ action: 'parentLogin', student_id: stuId, parent_phone: phone });
+                const r = await api({ action: 'parentLogin', parent_phone: phone });
                 if (r.success) {
-                    S.parent = r.parent; S.settings = r.settings || {};
-                    msg('pLMsg', ''); toast('Welcome!', 'ok');
-                    document.getElementById('parentIcon').textContent = 'PR';
-                    document.getElementById('parentChildName').textContent = r.parent.student_name || stuId;
-                    document.getElementById('parentChildInfo').textContent = r.parent.student_class + ' · ' + r.parent.school_code;
+                    const children = r.children || (r.parent && r.parent.children) || [];
+                    S.parent = r.parent; S.parent.children = children;
+                    S.parent.activeChildId = children[0] ? children[0].student_id : r.parent.student_id;
+                    S.settings = r.settings || {};
+                    msg('pLMsg', ''); 
+                    toast(children.length > 1 ? `Welcome! ${children.length} children linked.` : 'Welcome!', 'ok');
+                    renderParentChildSwitcher();
+                    applyActiveChild();
                     go('parent');
                     loadParentData();
                 } else { msg('pLMsg', r.message || 'Login failed.'); }
-            } catch (e) { msg('pLMsg', 'Network error: ' + e.message); }
+            } catch (e) {
+                const em = String(e && e.message || e || '');
+                // Distinguish backend validation errors from real network/transport errors
+                const isNetwork = /failed to fetch|networkerror|load failed|abort|timeout|net::|server returned/i.test(em);
+                if (!isNetwork && em) {
+                    // Backend returned success:false with a message (thrown by api())
+                    let friendly = em;
+                    if (/student\s*id/i.test(em) && /parent\s*phone/i.test(em)) {
+                        friendly = 'The server is running an older version that also requires a Student ID. Ask the admin to redeploy the Apps Script Web App (Deploy → Manage deployments → New version), then try again.';
+                    }
+                    msg('pLMsg', friendly);
+                } else {
+                    msg('pLMsg', 'Network error: ' + em);
+                }
+            }
             finally { btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login'; btn.disabled = false; }
+        }
+
+        function renderParentChildSwitcher() {
+            const wrap = document.getElementById('parentChildSwitcherWrap');
+            const sel = document.getElementById('parentChildSwitcher');
+            if (!wrap || !sel) return;
+            const kids = (S.parent && S.parent.children) || [];
+            if (kids.length <= 1) { wrap.classList.add('hidden'); return; }
+            wrap.classList.remove('hidden');
+            sel.innerHTML = kids.map(k => `<option value="${k.student_id}">${k.student_name} — ${k.student_class}${k.arm ? ' ('+k.arm+')':''}</option>`).join('');
+            sel.value = S.parent.activeChildId;
+        }
+
+        function applyActiveChild() {
+            if (!S.parent) return;
+            const kids = S.parent.children || [];
+            const active = kids.find(k => k.student_id === S.parent.activeChildId) || kids[0];
+            if (!active) return;
+            S.parent.student_id = active.student_id;
+            S.parent.student_name = active.student_name;
+            S.parent.student_class = active.student_class;
+            S.parent.school_code = active.school_code;
+            document.getElementById('parentIcon').textContent = (active.student_name || 'PR').slice(0, 2).toUpperCase();
+            document.getElementById('parentChildName').textContent = active.student_name || active.student_id;
+            document.getElementById('parentChildInfo').textContent = (active.student_class || '') + (active.arm ? ' · ' + active.arm : '') + ' · ' + active.school_code;
+        }
+
+        function switchParentChild(stuId) {
+            if (!S.parent) return;
+            S.parent.activeChildId = stuId;
+            applyActiveChild();
+            // Reload whichever tab is active
+            const activeTab = document.querySelector('#s-parent .tab.active');
+            const tabs = Array.from(document.querySelectorAll('#s-parent .tab'));
+            const idx = Math.max(0, tabs.indexOf(activeTab));
+            pTab(idx);
         }
 
         function pLogout() { S.parent = null; S.settings = {}; updateNav('home'); go('home'); toast('Logged out.', 'info'); }
@@ -9371,7 +9536,7 @@
             document.getElementById('stCaPendingBadge').textContent = `${students.length - filled} pending`;
             document.getElementById('stCaDoneBadge').textContent = `${filled} done`;
             document.getElementById('stCaProgress').classList.remove('hidden');
-            stSortTable();
+            // NOTE: don't auto-sort during typing — it pushes the focused row away.
         }
 
         async function stLoadStudents() {
