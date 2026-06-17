@@ -10636,14 +10636,37 @@ ${contactSection}
             updateNav('home');
 
             // Register Service Worker for PWA
+            let swRefreshing = false;
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('./service-worker.js')
                     .then((registration) => {
                         console.log('ServiceWorker registered:', registration.scope);
+
+                        if (registration.waiting) {
+                            registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+                        }
+
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            if (!newWorker) return;
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    newWorker.postMessage({ type: 'SKIP_WAITING' });
+                                }
+                            });
+                        });
+
+                        registration.update();
                     })
                     .catch((error) => {
                         console.log('ServiceWorker registration failed:', error);
                     });
+
+                navigator.serviceWorker.addEventListener('controllerchange', () => {
+                    if (swRefreshing) return;
+                    swRefreshing = true;
+                    window.location.reload();
+                });
             }
             // Event listeners
             // Set default payment date to today
