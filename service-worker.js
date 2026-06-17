@@ -45,6 +45,24 @@ self.addEventListener('fetch', (event) => {
       event.request.url.includes('googleusercontent.com')) {
     return;
   }
+
+  const isHtmlRequest = event.request.mode === 'navigate' ||
+    (event.request.headers.get('accept') || '').includes('text/html');
+
+  if (isHtmlRequest) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response && response.status === 200) {
+            const cloned = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, cloned));
+          }
+          return response;
+        })
+        .catch(() => caches.match('./index.html'))
+    );
+    return;
+  }
   
   event.respondWith(
     caches.match(event.request)
